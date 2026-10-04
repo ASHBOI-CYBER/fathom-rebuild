@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 import type { Player } from '@/lib/player';
 import type { Highlight, Meeting } from '@/lib/types';
 
-export type Tab = 'notes' | 'transcript' | 'actions' | 'clips' | 'ask' | 'people';
+export type Tab = 'notes' | 'transcript' | 'actions' | 'clips' | 'ask';
 
 export type MeetingCtx = {
   meeting: Meeting;

@@ -11,13 +11,14 @@ import { Avatar } from '../Avatar';
 import { toast } from '../Toast';
 import { useMeeting } from './context';
 
+/** A quiet timestamp that becomes a play button on hover. */
 export function TimeChip({ ts, className = '' }: { ts: number | null | undefined; className?: string }) {
   const { jump } = useMeeting();
   if (ts == null) return null;
   return (
     <button
       onClick={() => jump(ts, true)}
-      className={`inline-flex shrink-0 items-center rounded-md bg-shoal px-1.5 py-px align-baseline text-[12px] font-medium text-ink-soft tabular transition-colors hover:bg-magenta hover:text-white ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-md px-1 align-baseline text-[13px] text-fg-faint tabular transition-colors hover:bg-coral-soft hover:text-coral ${className}`}
       aria-label={`Play from ${clock(ts)}`}
     >
       {clock(ts)}
@@ -46,7 +47,7 @@ export function NotesPanel() {
     if (shownTemplate.current === current) return;
     shownTemplate.current = current;
     if (!body.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    settle(gsap.fromTo(body.current.children, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' }));
+    settle(gsap.fromTo(body.current.children, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }));
   }, [current]);
 
   useEffect(() => {
@@ -62,65 +63,67 @@ export function NotesPanel() {
   };
 
   return (
-    <div className="px-5 pb-16 pt-4">
-      <div className="mb-4 flex flex-wrap items-center gap-2">
+    <div className="px-6 pb-16 pt-5">
+      <div className="mb-6 flex flex-wrap items-center gap-2">
         <div ref={menu} className="relative">
           <button
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-haspopup="listbox"
-            className="flex items-center gap-2 rounded-lg border border-rule bg-paper px-3 py-1.5 text-[14px] font-semibold hover:border-ink-faint"
+            className="flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-[14px] text-fg-soft transition-colors hover:border-line-strong hover:text-fg"
           >
-            <Sparkles size={15} className="text-magenta" />
-            {templateName(current)}
-            <ChevronDown size={15} className="text-ink-faint" />
+            <Sparkles size={15} className="text-coral" />
+            <span>
+              Template: <span className="font-semibold text-fg">{templateName(current)}</span>
+            </span>
+            <ChevronDown size={15} className="text-fg-faint" />
           </button>
           {open && (
-            <div role="listbox" className="absolute left-0 top-full z-30 mt-1.5 w-[320px] overflow-hidden rounded-xl border border-rule bg-paper py-1 shadow-[0_18px_40px_-16px_rgba(15,34,54,0.4)]">
+            <div role="listbox" className="absolute left-0 top-full z-30 mt-2 w-[340px] overflow-hidden rounded-2xl border border-line-strong bg-raised py-1.5 shadow-2xl">
               {TEMPLATES.filter((t) => available.includes(t.id)).map((t) => (
-                <button key={t.id} role="option" aria-selected={t.id === current} onClick={() => pick(t.id)} className="flex w-full items-start gap-2.5 px-3 py-2 text-left hover:bg-shoal/60">
-                  <span className="mt-0.5 w-4 shrink-0 text-magenta">{t.id === current && <Check size={15} />}</span>
+                <button key={t.id} role="option" aria-selected={t.id === current} onClick={() => pick(t.id)} className="flex w-full items-start gap-3 px-4 py-2.5 text-left hover:bg-hover">
+                  <span className="mt-0.5 w-4 shrink-0 text-coral">{t.id === current && <Check size={16} />}</span>
                   <span>
-                    <span className="flex items-center gap-2 text-[14px] font-semibold">
+                    <span className="flex items-center gap-2 text-[15px] font-semibold text-fg">
                       {t.name}
-                      {t.id === suggested && <span className="rounded-full bg-magenta-wash px-1.5 text-[11px] font-semibold text-magenta-deep">Best fit</span>}
+                      {t.id === suggested && <span className="rounded-full bg-coral-soft px-2 text-[11px] font-semibold text-coral">Best fit</span>}
                     </span>
-                    <span className="block text-[13px] text-ink-soft">{t.blurb}</span>
+                    <span className="block text-[13px] text-fg-soft">{t.blurb}</span>
                   </span>
                 </button>
               ))}
-              <div className="mt-1 border-t border-rule-soft px-3 pb-1.5 pt-2 text-[12px] text-ink-faint">
-                Not written for a {meeting.type.toLowerCase()} call:{' '}
-                {TEMPLATES.filter((t) => !available.includes(t.id))
-                  .map((t) => t.name)
-                  .join(', ')}
-              </div>
+              <p className="mx-4 mt-1.5 border-t border-line pb-1.5 pt-2.5 text-[12px] leading-relaxed text-fg-faint">
+                Other templates (sales, interview, stand-up…) aren’t written for a {meeting.type.toLowerCase()} call.
+              </p>
             </div>
           )}
         </div>
         <button
           onClick={() => {
             navigator.clipboard?.writeText(toMarkdown(meeting.title, summary));
-            toast('Notes copied as Markdown');
+            toast('Summary copied');
           }}
-          className="ml-auto flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] text-ink-soft hover:bg-shoal hover:text-ink"
+          className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[14px] text-fg-soft hover:bg-raised hover:text-fg"
         >
-          <Copy size={14} /> Copy
+          <Copy size={15} /> Copy
         </button>
       </div>
 
       <div ref={body}>
-        <p className="mb-6 font-serif text-[21px] leading-[1.4] text-ink">{summary.tldr}</p>
+        <div className="mb-8 rounded-2xl bg-raised px-5 py-4">
+          <p className="mb-1 text-[13px] font-semibold text-coral">In short</p>
+          <p className="text-[17px] leading-[1.6] text-fg">{summary.tldr}</p>
+        </div>
         {summary.sections.map((sec) => (
-          <section key={sec.heading} className="mb-6">
-            <h3 className="mb-2 text-[15px] font-semibold text-ink">{sec.heading}</h3>
-            <ul className="space-y-2">
+          <section key={sec.heading} className="mb-8">
+            <h3 className="mb-3 text-[17px] font-semibold text-fg">{sec.heading}</h3>
+            <ul className="space-y-3">
               {sec.items.map((it, i) => (
-                <li key={i} className="flex gap-2.5 text-[15px] leading-[1.55] text-ink">
-                  <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-ink-faint" />
+                <li key={i} className="flex gap-3 text-[15px] leading-[1.65] text-fg-soft">
+                  <span className="mt-[11px] h-1.5 w-1.5 shrink-0 rounded-full bg-fg-faint" />
                   <span className="min-w-0">
-                    {it.owner && <span className="mr-1 font-semibold">{firstName(it.owner)}:</span>}
-                    {it.text} <TimeChip ts={it.ts} className="ml-0.5" />
+                    {it.owner && <span className="mr-1 font-semibold text-fg">{firstName(it.owner)}:</span>}
+                    {it.text} <TimeChip ts={it.ts} />
                   </span>
                 </li>
               ))}
@@ -128,8 +131,8 @@ export function NotesPanel() {
           </section>
         ))}
         {!readOnly && (
-          <p className="mt-8 border-t border-rule-soft pt-4 text-[12px] leading-relaxed text-ink-faint">
-            Notes were written by an AI model from the transcript when this demo was seeded. Every point links to the moment it came from. Check before you forward.
+          <p className="mt-10 border-t border-line pt-5 text-[13px] leading-relaxed text-fg-faint">
+            Written by an AI model from the transcript when this demo was set up. Each point links to the moment it came from, so you can check it before you forward it.
           </p>
         )}
       </div>
@@ -139,10 +142,10 @@ export function NotesPanel() {
 
 export function OwnerTag({ id }: { id?: string }) {
   const { colorOf } = useMeeting();
-  if (!id) return <span className="text-[12px] text-ink-faint">Unassigned</span>;
+  if (!id) return <span className="text-[13px] text-fg-faint">Unassigned</span>;
   return (
-    <span className="inline-flex items-center gap-1.5 text-[13px] text-ink-soft">
-      <Avatar id={id} color={colorOf(id)} size={18} />
+    <span className="inline-flex items-center gap-1.5 text-[14px] text-fg-soft">
+      <Avatar id={id} color={colorOf(id)} size={20} />
       {firstName(id)}
     </span>
   );

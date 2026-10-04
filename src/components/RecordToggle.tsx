@@ -2,16 +2,11 @@
 
 export function RecordToggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void }) {
   return (
-    <button
-      role="switch"
-      aria-checked={on}
-      onClick={() => onChange(!on)}
-      className="flex items-center gap-2 self-start text-[13px] text-ink-soft"
-    >
-      <span className={`relative inline-flex h-[18px] w-8 shrink-0 rounded-full transition-colors ${on ? 'bg-magenta' : 'bg-rule'}`}>
-        <span className={`absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white shadow transition-transform ${on ? 'translate-x-[16px]' : 'translate-x-[2px]'}`} />
+    <button role="switch" aria-checked={on} onClick={() => onChange(!on)} className="flex shrink-0 items-center gap-2.5 text-[14px] text-fg-soft">
+      <span className={`relative inline-flex h-6 w-10 shrink-0 rounded-full transition-colors ${on ? 'bg-coral' : 'bg-hover'}`}>
+        <span className={`absolute top-[3px] h-[18px] w-[18px] rounded-full bg-white shadow transition-transform ${on ? 'translate-x-[19px]' : 'translate-x-[3px]'}`} />
       </span>
-      {on ? 'Sounding will record' : 'Not recording'}
+      {on ? 'Will record' : 'Won’t record'}
     </button>
   );
 }

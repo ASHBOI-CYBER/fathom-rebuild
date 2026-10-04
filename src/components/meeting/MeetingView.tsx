@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ChevronLeft, Link2, Share2 } from 'lucide-react';
+import { ArrowLeft, Link2, Share2 } from 'lucide-react';
 import { createPlayer } from '@/lib/player';
 import { clock, dateLabel, minutes, PLATFORM_LABEL, timeLabel } from '@/lib/format';
-import { ME, person, speakerColor } from '@/lib/people';
+import { ME, speakerColor } from '@/lib/people';
 import { selectHighlights, userStore, useUserState } from '@/lib/store';
 import type { Highlight, Meeting } from '@/lib/types';
 import { useClient } from '@/lib/useClient';
@@ -14,14 +14,13 @@ import { ShareDialog, shareUrl } from '../ShareDialog';
 import { toast, Toaster } from '../Toast';
 import { Ctx, type MeetingCtx, type Tab } from './context';
 import { Stage } from './Stage';
-import { Controls } from './Controls';
-import { SoundingChart } from './SoundingChart';
+import { PlayerBar } from './PlayerBar';
+import { Outline } from './Outline';
 import { Transcript } from './Transcript';
 import { NotesPanel } from './NotesPanel';
 import { ActionsPanel } from './ActionsPanel';
 import { ClipsPanel } from './ClipsPanel';
 import { AskPanel } from './AskPanel';
-import { PeoplePanel } from './PeoplePanel';
 
 export type Initial = { t?: number; q?: string; tab?: Tab };
 
@@ -32,7 +31,19 @@ export function MeetingFromParams(props: Omit<Parameters<typeof MeetingView>[0],
   return <MeetingView {...props} initial={initial} />;
 }
 
-export function MeetingView({ meeting, readOnly = false, bounds = null, header, initial = {} }: { meeting: Meeting; readOnly?: boolean; bounds?: [number, number] | null; header?: React.ReactNode; initial?: Initial }) {
+export function MeetingView({
+  meeting,
+  readOnly = false,
+  bounds = null,
+  header,
+  initial = {},
+}: {
+  meeting: Meeting;
+  readOnly?: boolean;
+  bounds?: [number, number] | null;
+  header?: React.ReactNode;
+  initial?: Initial;
+}) {
   // Deep link: /meetings/x?t=754.2 opens at that moment (seeked before first render).
   const [player] = useState(() => {
     const p = createPlayer(meeting.duration, bounds);
@@ -83,122 +94,87 @@ export function MeetingView({ meeting, readOnly = false, bounds = null, header, 
     return () => window.removeEventListener('keydown', onKey);
   }, [player]);
 
-  const ctx: MeetingCtx = {
-    meeting,
-    player,
-    starts,
-    colorOf,
-    focus,
-    setFocus,
-    query,
-    setQuery,
-    tab,
-    setTab,
-    highlights,
-    createClip,
-    share: (clip) => setSharing({ clip }),
-    jump,
-    readOnly,
-  };
+  const ctx: MeetingCtx = { meeting, player, starts, colorOf, focus, setFocus, query, setQuery, tab, setTab, highlights, createClip, share: (clip) => setSharing({ clip }), jump, readOnly };
 
   const tabs: { id: Tab; label: string; count?: number }[] = [
-    { id: 'notes', label: 'Notes' },
+    { id: 'notes', label: 'Summary' },
     { id: 'transcript', label: 'Transcript' },
-    { id: 'actions', label: 'Actions', count: meeting.actionItems.length },
+    { id: 'actions', label: 'Action items', count: meeting.actionItems.length },
     { id: 'clips', label: 'Clips', count: highlights.length },
     ...(readOnly ? [] : [{ id: 'ask' as Tab, label: 'Ask' }]),
-    { id: 'people', label: 'People', count: meeting.participants.length },
   ];
 
   return (
     <Ctx.Provider value={ctx}>
-      <div className="flex flex-col lg:h-dvh">
-        <header className="border-b border-rule px-4 pb-4 pt-4 sm:px-6">
-          {header ??
-            (!readOnly && (
-              <Link href="/" className="mb-2 inline-flex items-center gap-1 text-[13px] text-ink-soft hover:text-ink">
-                <ChevronLeft size={15} /> Meetings
-              </Link>
-            ))}
-          <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-            <div className="min-w-0">
-              <h1 className="font-serif text-[26px] leading-tight tracking-tight sm:text-[30px]">{meeting.title}</h1>
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-ink-soft">
-                <span>
-                  {dateLabel(meeting.startsAt, local)}, {timeLabel(meeting.startsAt, local)}
-                </span>
-                <span className="text-rule">|</span>
-                <span className="tabular">{minutes(meeting.duration)}</span>
-                <span className="text-rule">|</span>
-                <span>{PLATFORM_LABEL[meeting.platform]}</span>
-                <span className="rounded-full border border-rule px-2 py-px text-[12px]">{meeting.type}</span>
-                {meeting.externalCompany && <span className="text-ink-faint">with {meeting.externalCompany}</span>}
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <AvatarStack ids={meeting.participants} colorOf={colorOf} size={28} max={8} />
-              {!readOnly && (
-                <div className="flex overflow-hidden rounded-lg">
-                  <button onClick={() => setSharing({})} className="flex items-center gap-1.5 bg-magenta px-3.5 py-2 text-[14px] font-semibold text-white hover:bg-magenta-deep">
-                    <Share2 size={15} /> Share
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard?.writeText(shareUrl(meeting));
-                      toast('Meeting link copied');
-                    }}
-                    aria-label="Copy meeting link"
-                    className="border-l border-white/25 bg-magenta px-2.5 text-white hover:bg-magenta-deep"
-                  >
-                    <Link2 size={15} />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-          {readOnly && (
-            <p className="mt-2 text-[13px] text-ink-faint">
-              With {meeting.participants.map((p) => person(p).name).join(', ')}
+      <div className={`mx-auto flex w-full max-w-[1480px] flex-col px-4 sm:px-6 ${readOnly ? 'lg:h-dvh' : 'lg:h-[calc(100dvh-4rem)]'}`}>
+        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 pb-5 pt-6">
+          <div className="min-w-0">
+            {header ??
+              (!readOnly && (
+                <Link href="/" className="mb-3 inline-flex items-center gap-1.5 text-[14px] text-fg-faint hover:text-fg">
+                  <ArrowLeft size={15} /> All meetings
+                </Link>
+              ))}
+            <h1 className="text-[26px] font-semibold leading-tight tracking-[-0.015em] sm:text-[30px]">{meeting.title}</h1>
+            <p className="mt-1.5 text-[15px] text-fg-soft">
+              {dateLabel(meeting.startsAt, local)} at {timeLabel(meeting.startsAt, local)} · {minutes(meeting.duration)} · {PLATFORM_LABEL[meeting.platform]}
+              {meeting.externalCompany ? ` · with ${meeting.externalCompany}` : ''}
             </p>
-          )}
+          </div>
+          <div className="flex items-center gap-4">
+            <AvatarStack ids={meeting.participants} colorOf={colorOf} size={32} max={6} />
+            {!readOnly && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    navigator.clipboard?.writeText(shareUrl(meeting));
+                    toast('Meeting link copied');
+                  }}
+                  aria-label="Copy meeting link"
+                  title="Copy link"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-soft transition-colors hover:border-line-strong hover:text-fg"
+                >
+                  <Link2 size={17} />
+                </button>
+                <button onClick={() => setSharing({})} className="flex h-10 items-center gap-2 rounded-full bg-coral px-5 text-[15px] font-semibold text-on-coral transition-colors hover:bg-coral-hover">
+                  <Share2 size={16} /> Share
+                </button>
+              </div>
+            )}
+          </div>
         </header>
 
-        <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(400px,44%)]">
-          <div className="quiet-scroll min-h-0 space-y-4 px-4 py-4 sm:px-6 lg:overflow-y-auto">
-            <div className="mx-auto max-w-[880px] space-y-3">
-              <Stage />
-              <Controls />
-            </div>
-            <div className="mx-auto max-w-[880px] rounded-xl border border-rule bg-paper px-4 pb-3 pt-4">
-              <SoundingChart />
-            </div>
+        <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] gap-6 pb-6 lg:grid-cols-[minmax(0,1fr)_minmax(420px,40%)]">
+          <div className="quiet-scroll min-h-0 space-y-5 lg:overflow-y-auto lg:pr-1">
+            <Stage />
+            <PlayerBar />
+            <Outline />
           </div>
 
-          <div className="flex min-h-0 flex-col border-t border-rule bg-paper lg:border-l lg:border-t-0">
-            <div className="quiet-scroll flex shrink-0 gap-1 overflow-x-auto border-b border-rule px-3" role="tablist" aria-label="Meeting views">
+          <section className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface" aria-label="Meeting details">
+            <div className="quiet-scroll flex shrink-0 gap-1 overflow-x-auto border-b border-line px-4 pt-2" role="tablist" aria-label="Meeting views">
               {tabs.map((t) => (
                 <button
                   key={t.id}
                   role="tab"
                   aria-selected={tab === t.id}
                   onClick={() => setTab(t.id)}
-                  className={`relative shrink-0 px-2.5 py-3 text-[14px] transition-colors ${tab === t.id ? 'font-semibold text-ink' : 'text-ink-soft hover:text-ink'}`}
+                  className={`relative shrink-0 px-3 pb-3 pt-2.5 text-[15px] transition-colors ${tab === t.id ? 'font-semibold text-fg' : 'text-fg-faint hover:text-fg-soft'}`}
                 >
                   {t.label}
-                  {t.count != null && <span className="ml-1 text-[12px] text-ink-faint tabular">{t.count}</span>}
-                  {tab === t.id && <span className="absolute inset-x-2 bottom-0 h-[2px] rounded-full bg-magenta" />}
+                  {t.count != null && t.count > 0 && <span className="ml-1.5 text-[13px] font-normal text-fg-faint tabular">{t.count}</span>}
+                  {tab === t.id && <span className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-coral" />}
                 </button>
               ))}
             </div>
-            <div className={`min-h-0 ${tab === 'transcript' ? 'h-[72vh] flex-none lg:h-auto lg:flex-1' : 'quiet-scroll flex-1 overflow-y-auto'}`} role="tabpanel">
+            <div className={`min-h-0 ${tab === 'transcript' ? 'h-[72vh] flex-none lg:h-auto lg:flex-1' : 'quiet-scroll max-h-[80vh] flex-1 overflow-y-auto lg:max-h-none'}`} role="tabpanel">
               {tab === 'notes' && <NotesPanel />}
               {tab === 'transcript' && <Transcript />}
               {tab === 'actions' && <ActionsPanel />}
               {tab === 'clips' && <ClipsPanel />}
               {tab === 'ask' && <AskPanel />}
-              {tab === 'people' && <PeoplePanel />}
             </div>
-          </div>
+          </section>
         </div>
       </div>
       {sharing && <ShareDialog meeting={meeting} clip={sharing.clip} onClose={() => setSharing(null)} />}

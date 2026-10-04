@@ -21,24 +21,26 @@ Speak naturally. The lines below are a guide, not a script to read word for word
 
 ### 0:30–1:30 · The hour-long, 8-person call
 
-> "This is a 62-minute planning call with eight people. In Fathom you get a video and a long transcript. The first thing I added is this chart. Every lane is a person, and every mark is when they spoke. Before pressing play I can see that Asher and Tom dominated, Kenji barely spoke, and the middle chapter, 'The live ETA collision', is where it got heated."
+> "This is a 62-minute planning call with eight people. In Fathom you get a video and a long transcript. Here, under the player, the timeline is coloured by who's speaking, and the meeting is split into chapters, so I can jump straight to 'The live ETA collision', where it got heated."
 
-- Hover over the chart to show the tooltip, then click inside "The live ETA collision" chapter.
+- Hover over the timeline to show the tooltip, then click **The live ETA collision** in the Chapters list.
 - Press play (space bar). Point at the lit-up tile and the captions.
 
 > "Playback is simulated from the transcript timings. That's the stubbed capture layer. The transcript follows along."
 
-- Click **Kenji** on the chart.
+- Switch to **Speakers** under the player.
 
-> "If I only care about one person, I click their name. Now the transcript shows only what Kenji said. He spoke 6% of the time, and he raised the most important risk in the meeting."
+> "This is the view built for an eight-person call: one lane per person, showing exactly when they spoke. Kenji spoke 6% of the time, but he raised the biggest risk. I click his name and the transcript shows only what he said."
+
+- Click **Kenji Watanabe**.
 
 ### 1:30–2:15 · Notes and action items
 
-- Open **Notes** and switch the template to **Decision log**.
+- Open **Summary**, then switch the template to **Decision log**.
 
-> "The AI notes come in eleven templates, and it marks the best fit for the meeting type. This one lists every decision, who made it and why. Every point is a timestamp, so I can check it in one click."
+> "The summary starts with a short version, then the detail. The template picker marks the best fit for each kind of meeting. This one lists every decision, who made it and why, and every point links to the second it was said."
 
-- Click a timestamp chip, then open **Actions** and filter to one person.
+- Click a timestamp, then open **Action items** and pick one person from the dropdown.
 
 > "Action items have owners and due dates, and each links to the moment it was agreed."
 

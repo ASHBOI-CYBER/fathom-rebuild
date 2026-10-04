@@ -99,13 +99,13 @@ export function Transcript() {
     const h = createClip(a.start, b.end, title ? `“${title}”` : undefined, 'quote');
     window.getSelection()?.removeAllRanges();
     setSelection(null);
-    toast(`Clip saved · ${clock(h.start)}–${clock(h.end)}`);
+    toast(`Clip saved, ${clock(h.start)} to ${clock(h.end)}`);
   };
 
   const clipTurn = useCallback(
     (t: Turn) => {
       const h = createClip(t.start, t.end, `${firstName(t.s)}: “${t.t.split(/\s+/).slice(0, 9).join(' ')}…”`, 'bookmark');
-      toast(`Clip saved · ${clock(h.start)}–${clock(h.end)}`);
+      toast(`Clip saved, ${clock(h.start)} to ${clock(h.end)}`);
     },
     [createClip],
   );
@@ -116,95 +116,100 @@ export function Transcript() {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-rule-soft px-4 py-2.5">
-        <label className="flex min-w-[180px] flex-1 items-center gap-2 rounded-lg border border-rule bg-paper px-2.5 py-1.5">
-          <Search size={15} className="text-ink-faint" />
+      <div className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
+        <label className="flex min-w-[180px] flex-1 items-center gap-2 rounded-full border border-line bg-abyss/50 px-3.5 py-2 focus-within:border-line-strong">
+          <Search size={15} className="text-fg-faint" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && hitIds.length) setHitCursor((c) => (e.shiftKey ? (c - 1 + hitIds.length) % hitIds.length : (c + 1) % hitIds.length));
             }}
-            placeholder="Find in transcript"
-            aria-label="Find in transcript"
-            className="w-full bg-transparent text-[14px] outline-none placeholder:text-ink-faint"
+            placeholder="Find in this transcript"
+            aria-label="Find in this transcript"
+            className="w-full bg-transparent text-[14px] text-fg outline-none placeholder:text-fg-faint"
           />
           {query && (
             <>
-              <span className="shrink-0 text-[12px] text-ink-faint tabular">{hitIds.length ? `${Math.min(hitCursor, hitIds.length - 1) + 1}/${hitIds.length}` : '0'}</span>
-              <button aria-label="Previous match" onClick={() => setHitCursor((c) => (c - 1 + hitIds.length) % Math.max(1, hitIds.length))} className="text-ink-faint hover:text-ink">
-                <ChevronUp size={16} />
+              <span className="shrink-0 text-[13px] text-fg-faint tabular">{hitIds.length ? `${Math.min(hitCursor, hitIds.length - 1) + 1} of ${hitIds.length}` : 'No matches'}</span>
+              <button aria-label="Previous match" onClick={() => setHitCursor((c) => (c - 1 + hitIds.length) % Math.max(1, hitIds.length))} className="text-fg-faint hover:text-fg">
+                <ChevronUp size={17} />
               </button>
-              <button aria-label="Next match" onClick={() => setHitCursor((c) => (c + 1) % Math.max(1, hitIds.length))} className="text-ink-faint hover:text-ink">
-                <ChevronDown size={16} />
+              <button aria-label="Next match" onClick={() => setHitCursor((c) => (c + 1) % Math.max(1, hitIds.length))} className="text-fg-faint hover:text-fg">
+                <ChevronDown size={17} />
               </button>
-              <button aria-label="Clear search" onClick={() => setQuery('')} className="text-ink-faint hover:text-ink">
-                <X size={15} />
+              <button aria-label="Clear search" onClick={() => setQuery('')} className="text-fg-faint hover:text-fg">
+                <X size={16} />
               </button>
             </>
           )}
         </label>
         {focus.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 text-[13px]">
-            <span className="text-ink-faint">Only</span>
+          <div className="flex w-full flex-wrap items-center gap-2 text-[14px]">
+            <span className="text-fg-faint">Showing only</span>
             {focus.map((id) => (
-              <button key={id} onClick={() => setFocus(focus.filter((f) => f !== id))} className="flex items-center gap-1 rounded-full py-0.5 pl-2 pr-1.5 text-white" style={{ background: colorOf(id) }}>
-                {firstName(id)} <X size={12} />
+              <button key={id} onClick={() => setFocus(focus.filter((f) => f !== id))} className="flex items-center gap-1 rounded-full py-0.5 pl-2.5 pr-2 font-semibold" style={{ background: colorOf(id), color: 'var(--abyss)' }}>
+                {firstName(id)} <X size={13} />
               </button>
             ))}
-            <button onClick={() => setFocus([])} className="text-ink-soft underline-offset-2 hover:underline">
-              Everyone
+            <button onClick={() => setFocus([])} className="text-fg-soft underline-offset-4 hover:text-fg hover:underline">
+              Show everyone
             </button>
           </div>
         )}
       </div>
 
-      <div ref={scroller} onScroll={onScroll} onMouseUp={onMouseUp} className="quiet-scroll relative min-h-0 flex-1 overflow-y-auto px-2 pb-24 pt-2 sm:px-3">
-        {visible.length === 0 && <p className="p-6 text-ink-soft">No lines in this range.</p>}
-        {visible.map((t) => (
-          <div key={t.id}>
-            {!focus.length && chapterStarts.has(t.id) && <ChapterRule title={chapterStarts.get(t.id)!.title} gist={chapterStarts.get(t.id)!.gist} start={chapterStarts.get(t.id)!.start} />}
-            <TurnRow turn={t} active={t.id === activeId} hit={hitSet.has(t.id)} current={t.id === currentHit} query={query} onClip={readOnly ? undefined : clipTurn} />
-          </div>
-        ))}
+      <div ref={scroller} onScroll={onScroll} onMouseUp={onMouseUp} className="quiet-scroll relative min-h-0 flex-1 overflow-y-auto px-3 pb-28 pt-2 sm:px-4">
+        {visible.length === 0 && <p className="p-6 text-fg-soft">Nothing was said in this range.</p>}
+        {visible.map((t, i) => {
+          const chapter = !focus.length ? chapterStarts.get(t.id) : undefined;
+          const showHeader = !!chapter || i === 0 || visible[i - 1].s !== t.s;
+          return (
+            <div key={t.id}>
+              {chapter && <ChapterRule title={chapter.title} start={chapter.start} />}
+              <TurnRow turn={t} showHeader={showHeader} active={t.id === activeId} hit={hitSet.has(t.id)} current={t.id === currentHit} query={query} onClip={readOnly ? undefined : clipTurn} />
+            </div>
+          );
+        })}
         {selection && (
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={clipSelection}
-            className="absolute z-10 flex -translate-x-1/2 -translate-y-[130%] items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-[13px] font-semibold text-white shadow-lg"
+            className="absolute z-10 flex -translate-x-1/2 -translate-y-[130%] items-center gap-1.5 rounded-full bg-coral px-3.5 py-2 text-[14px] font-semibold text-on-coral shadow-xl"
             style={{ left: selection.x, top: selection.y }}
           >
-            <Scissors size={13} /> Clip this
+            <Scissors size={14} /> Clip this
           </button>
         )}
       </div>
       {!follow && playing && (
         <button
           onClick={() => setFollow(true)}
-          className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold text-white shadow-lg"
+          className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-fg px-4 py-2 text-[14px] font-semibold text-abyss shadow-xl"
         >
-          <ArrowDownToLine size={14} /> Back to now
+          <ArrowDownToLine size={15} /> Back to now
         </button>
       )}
     </div>
   );
 }
 
-function ChapterRule({ title, gist, start }: { title: string; gist: string; start: number }) {
+function ChapterRule({ title, start }: { title: string; start: number }) {
   const { jump } = useMeeting();
   return (
-    <div className="mx-2 mb-2 mt-5 border-t border-rule pt-3 first:mt-1">
-      <button onClick={() => jump(start)} className="group flex items-baseline gap-2 text-left">
-        <span className="text-[12px] text-ink-faint tabular">{clock(start)}</span>
-        <span className="font-serif text-[19px] italic leading-tight text-ink group-hover:underline group-hover:underline-offset-4">{title}</span>
+    <div className="mb-1 mt-7 flex items-center gap-3 px-2 first:mt-3">
+      <button onClick={() => jump(start)} className="flex shrink-0 items-baseline gap-2 text-left hover:text-coral">
+        <span className="text-[13px] text-fg-faint tabular">{clock(start)}</span>
+        <span className="text-[14px] font-semibold text-fg">{title}</span>
       </button>
-      <p className="mt-0.5 pl-[46px] text-[13px] leading-snug text-ink-soft">{gist}</p>
+      <span className="h-px flex-1 bg-line" />
     </div>
   );
 }
 
 const TurnRow = memo(function TurnRow({
   turn,
+  showHeader,
   active,
   hit,
   current,
@@ -212,6 +217,7 @@ const TurnRow = memo(function TurnRow({
   onClip,
 }: {
   turn: Turn;
+  showHeader: boolean;
   active: boolean;
   hit: boolean;
   current: boolean;
@@ -222,28 +228,36 @@ const TurnRow = memo(function TurnRow({
   return (
     <div
       data-turn={turn.id}
-      className={`group relative grid grid-cols-[44px_1fr] gap-x-2 rounded-lg py-1.5 pl-1 pr-8 transition-colors ${
-        active ? 'bg-magenta-wash/70' : current ? 'bg-[#fbf1dc]' : 'hover:bg-shoal/40'
+      className={`group relative rounded-xl px-3 transition-colors ${showHeader ? 'mt-3 pb-1.5 pt-2' : 'py-1'} ${
+        active ? 'bg-coral-soft' : current ? 'bg-[#f0b54a]/10' : 'hover:bg-raised/60'
       }`}
     >
-      {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-magenta" />}
-      <button onClick={() => jump(turn.start, true)} className="pt-[3px] text-right text-[12px] text-ink-faint tabular hover:text-magenta" aria-label={`Play from ${clock(turn.start)}`}>
-        {clock(turn.start)}
-      </button>
-      <div className="min-w-0">
-        <div className="text-[13px] font-semibold" style={{ color: colorOf(turn.s) }}>
-          {person(turn.s).name}
+      {active && <span className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-coral" />}
+      {showHeader && (
+        <div className="mb-0.5 flex items-baseline gap-2.5">
+          <span className="text-[14px] font-semibold" style={{ color: colorOf(turn.s) }}>
+            {person(turn.s).name}
+          </span>
+          <button onClick={() => jump(turn.start, true)} className="text-[13px] text-fg-faint tabular hover:text-coral" aria-label={`Play from ${clock(turn.start)}`}>
+            {clock(turn.start)}
+          </button>
         </div>
-        <p className="text-[15px] leading-[1.6] text-ink">{hit ? <Marked text={turn.t} q={query} /> : turn.t}</p>
-      </div>
+      )}
+      <p
+        className={`pr-7 text-[16px] leading-[1.65] ${active ? 'text-fg' : 'text-fg-soft'}`}
+        onDoubleClick={() => jump(turn.start, true)}
+        title={showHeader ? undefined : `${clock(turn.start)} · double-click to play`}
+      >
+        {hit ? <Marked text={turn.t} q={query} /> : turn.t}
+      </p>
       {onClip && (
         <button
           onClick={() => onClip(turn)}
           title="Clip this line"
           aria-label="Clip this line"
-          className="absolute right-1.5 top-1.5 rounded-md p-1 text-ink-faint opacity-0 transition-opacity hover:bg-paper hover:text-magenta focus:opacity-100 group-hover:opacity-100"
+          className="absolute right-2 top-2 rounded-lg p-1 text-fg-faint opacity-0 transition-opacity hover:bg-hover hover:text-coral focus:opacity-100 group-hover:opacity-100"
         >
-          <Plus size={16} />
+          <Plus size={17} />
         </button>
       )}
     </div>

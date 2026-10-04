@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Meeting recordings you can actually navigate — transcripts, notes, decisions and clips.',
 };
 
-export const viewport: Viewport = { themeColor: '#eef3f4' };
+export const viewport: Viewport = { themeColor: '#08121d' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

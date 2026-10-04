@@ -17,8 +17,13 @@ export const TEMPLATES: TemplateDef[] = [
 
 export const templateName = (id: string) => TEMPLATES.find((t) => t.id === id)?.name ?? id;
 
-/** Best template for a meeting type, falling back to General. */
+/**
+ * Best template for a meeting type. Types with a purpose-built template (sales,
+ * demo, 1:1…) get it; open-ended ones like planning start on General, which
+ * leads with purpose and takeaways — the right first read.
+ */
 export function suggestedTemplate(type: string, available: string[]) {
-  const fit = TEMPLATES.find((t) => t.fits[0] && t.fits.includes(type) && available.includes(t.id) && t.id !== 'decisions');
+  const generic = new Set(['decisions', 'project_update']);
+  const fit = TEMPLATES.find((t) => !generic.has(t.id) && t.fits.includes(type) && available.includes(t.id));
   return fit?.id ?? 'general';
 }

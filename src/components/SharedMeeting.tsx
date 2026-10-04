@@ -19,45 +19,39 @@ export function SharedMeeting({ meeting }: { meeting: Meeting }) {
 
 /** What someone who wasn't on the call sees: no account, read-only, optionally one clip. */
 export function SharedView({ meeting, clip }: { meeting: Meeting; clip: { from: number; to: number; title: string | null } | null }) {
-  const isClip = !!clip;
-  const from = clip?.from ?? 0;
-  const to = clip?.to ?? 0;
-  const title = clip?.title;
-  const bounds: [number, number] | null = isClip ? [Math.max(0, from), Math.min(meeting.duration, to)] : null;
+  const bounds: [number, number] | null = clip ? [Math.max(0, clip.from), Math.min(meeting.duration, clip.to)] : null;
 
   const header = (
-    <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-      <span className="flex items-center gap-3">
-        <Wordmark />
-        <span className="hidden text-[13px] text-ink-faint sm:inline">Shared by {person(meeting.host).name}</span>
-      </span>
-      {isClip ? (
-        <Link href={`/share/${meeting.id}/`} className="rounded-lg border border-rule bg-paper px-3 py-1.5 text-[13px] font-semibold hover:border-ink-faint">
-          Watch the whole meeting
-        </Link>
-      ) : (
-        <Link href="/" className="text-[13px] font-medium text-ink-soft hover:text-ink hover:underline">
-          Open the demo workspace
-        </Link>
+    <div className="mb-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="flex items-center gap-4">
+          <Wordmark />
+          <span className="hidden text-[14px] text-fg-faint sm:inline">Shared with you by {person(meeting.host).name}</span>
+        </span>
+        {clip ? (
+          <Link href={`/share/${meeting.id}/`} className="rounded-full border border-line px-4 py-2 text-[14px] font-semibold text-fg-soft hover:border-line-strong hover:text-fg">
+            Watch the whole meeting
+          </Link>
+        ) : (
+          <Link href="/" className="text-[14px] text-fg-faint underline-offset-4 hover:text-fg hover:underline">
+            Explore the demo workspace
+          </Link>
+        )}
+      </div>
+      {clip && bounds && (
+        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-coral-soft px-4 py-3">
+          <Scissors size={17} className="mt-0.5 shrink-0 text-coral" />
+          <p className="text-[15px] text-fg">
+            <b>{clip.title || 'A clip'}</b>
+            <span className="text-fg-soft">
+              {' '}
+              · {clock(bounds[0])} to {clock(bounds[1])}. Press play to watch just this part.
+            </span>
+          </p>
+        </div>
       )}
     </div>
   );
 
-  return (
-    <div className="min-h-dvh bg-chart">
-      {isClip && bounds && (
-        <div className="flex items-center gap-2 bg-ink px-4 py-2 text-[13px] text-white sm:px-6">
-          <Scissors size={14} className="shrink-0 text-[#f2a5c9]" />
-          <span className="truncate">
-            <b>{title || 'A clip'}</b>
-            <span className="text-white/65">
-              {' '}
-              · {clock(bounds[0])}–{clock(bounds[1])} of {meeting.title}
-            </span>
-          </span>
-        </div>
-      )}
-      <MeetingView key={isClip ? `${from}-${to}` : 'full'} meeting={meeting} readOnly bounds={bounds} header={header} />
-    </div>
-  );
+  return <MeetingView key={clip ? `${clip.from}-${clip.to}` : 'full'} meeting={meeting} readOnly bounds={bounds} header={header} />;
 }

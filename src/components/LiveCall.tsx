@@ -103,27 +103,25 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
 
   return (
     <Ctx.Provider value={ctx}>
-      <div className="flex min-h-dvh flex-col bg-[#0b1a2a] text-white">
-        <header className="flex flex-wrap items-center gap-3 border-b border-white/10 px-4 py-3 sm:px-6">
-          <span className="rounded-lg bg-white px-2 py-1">
-            <Wordmark />
-          </span>
+      <div className="flex min-h-dvh flex-col text-fg">
+        <header className="flex flex-wrap items-center gap-5 border-b border-line px-4 py-3.5 sm:px-6">
+          <Wordmark />
           <div className="min-w-0">
-            <div className="truncate text-[15px] font-semibold">{meeting.title}</div>
-            <div className="flex items-center gap-2 text-[12px] text-white/60">
+            <div className="truncate text-[16px] font-semibold">{meeting.title}</div>
+            <div className="flex items-center gap-2 text-[13px] text-fg-faint">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#ff4d6d]" /> Recording · {clock(time)} · Google Meet
             </div>
           </div>
           <button
             onClick={() => player.setRate(rate === 1 ? 4 : 1)}
-            className={`ml-auto flex items-center gap-1.5 rounded-full border px-3 py-1 text-[13px] ${rate > 1 ? 'border-[#f2a5c9] text-[#f2a5c9]' : 'border-white/25 text-white/80 hover:border-white/50'}`}
+            className={`ml-auto flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] ${rate > 1 ? 'border-coral/60 bg-coral-soft text-coral' : 'border-line text-fg-soft hover:border-line-strong hover:text-fg'}`}
           >
             <FastForward size={14} /> {rate > 1 ? 'Fast-forwarding 4×' : 'Fast-forward the demo'}
           </button>
         </header>
 
-        <div className="grid flex-1 gap-4 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_380px]">
-          <div className="flex flex-col gap-4">
+        <div className="mx-auto grid w-full max-w-[1480px] flex-1 gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_400px]">
+          <div className="flex flex-col gap-5">
             <Stage />
             <div className="flex flex-wrap items-center justify-center gap-2">
               {CAPTURE.map((c) => (
@@ -131,24 +129,26 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
                   key={c.kind}
                   disabled={ending}
                   onClick={() => capture(c.kind)}
-                  className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-[14px] font-semibold hover:bg-white/20 disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-3 text-[15px] font-semibold text-fg hover:border-line-strong hover:bg-raised disabled:opacity-40"
                 >
                   <c.icon size={16} /> {c.label}
-                  <kbd className="rounded border border-white/25 px-1 text-[11px] font-normal text-white/60">{c.key.toUpperCase()}</kbd>
+                  <kbd className="rounded-md border border-line px-1.5 text-[11px] font-normal text-fg-faint">{c.key.toUpperCase()}</kbd>
                 </button>
               ))}
-              <button onClick={end} disabled={ending} className="flex items-center gap-2 rounded-full bg-[#e0435f] px-4 py-2.5 text-[14px] font-semibold hover:bg-[#c7334e] disabled:opacity-40">
+              <button onClick={end} disabled={ending} className="flex items-center gap-2 rounded-full bg-[#ff4d6d] px-5 py-3 text-[15px] font-semibold text-white hover:bg-[#ff6b85] disabled:opacity-40">
                 <PhoneOff size={16} /> End call and get notes
               </button>
             </div>
-            <p className="text-center text-[12px] text-white/50">
+            <p className="mx-auto max-w-[60ch] text-center text-[13px] text-fg-faint">
               Simulated: a replay of a recorded stand-up standing in for the recording bot. Highlights reach back to when the speaker started.
             </p>
           </div>
 
-          <aside className="flex min-h-[360px] flex-col overflow-hidden rounded-xl bg-paper text-ink lg:max-h-[calc(100dvh-120px)]">
-            <div className="border-b border-rule px-4 py-2.5 text-[13px] font-semibold text-ink-soft">Live transcript</div>
-            <div ref={feed} className="quiet-scroll flex-1 space-y-2.5 overflow-y-auto px-4 py-3">
+          <aside className="flex min-h-[380px] flex-col overflow-hidden rounded-2xl border border-line bg-surface lg:max-h-[calc(100dvh-120px)]">
+            <div className="flex items-center gap-2 border-b border-line px-5 py-3.5 text-[15px] font-semibold">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-[#ff4d6d]" /> Live transcript
+            </div>
+            <div ref={feed} className="quiet-scroll flex-1 space-y-4 overflow-y-auto px-5 py-4">
               {shown
                 .filter((t) => t.start <= time)
                 .map((t) => {
@@ -157,44 +157,44 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
                   const upto = isNow ? Math.max(1, Math.ceil(((time - t.start) / (t.end - t.start)) * words.length)) : words.length;
                   return (
                     <div key={t.id}>
-                      <span className="text-[12px] font-semibold" style={{ color: colorOf(t.s) }}>
-                        {firstName(t.s)} <span className="font-normal text-ink-faint tabular">{clock(t.start)}</span>
+                      <span className="text-[14px] font-semibold" style={{ color: colorOf(t.s) }}>
+                        {firstName(t.s)} <span className="ml-1 text-[13px] font-normal text-fg-faint tabular">{clock(t.start)}</span>
                       </span>
-                      <p className="text-[14px] leading-snug">{words.slice(0, upto).join(' ')}</p>
+                      <p className="text-[15px] leading-relaxed text-fg-soft">{words.slice(0, upto).join(' ')}</p>
                     </div>
                   );
                 })}
             </div>
-            <div className="border-t border-rule px-4 py-3">
-              <div className="mb-1.5 text-[13px] font-semibold text-ink-soft">Captured during the call · {captured.length}</div>
+            <div className="border-t border-line px-5 py-4">
+              <div className="mb-2 text-[14px] font-semibold">Captured during the call · {captured.length}</div>
               {captured.length ? (
                 <ul className="max-h-36 space-y-1.5 overflow-y-auto">
                   {captured.map((h) => (
-                    <li key={h.id} className="flex items-baseline gap-2 text-[13px]">
-                      <span className="text-ink-faint tabular">{clock(h.start)}</span>
+                    <li key={h.id} className="flex items-baseline gap-2.5 text-[14px] text-fg-soft">
+                      <span className="text-fg-faint tabular">{clock(h.start)}</span>
                       <span className="truncate">{h.title}</span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-[13px] text-ink-faint">Press Highlight when something matters. It lands in the meeting’s clips when you hang up.</p>
+                <p className="text-[14px] leading-relaxed text-fg-faint">Press Highlight when something matters. It lands in the meeting’s clips when you hang up.</p>
               )}
             </div>
           </aside>
         </div>
 
         {ending && (
-          <div ref={overlay} className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b1a2a]/92 px-6">
+          <div ref={overlay} className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/95 px-6 backdrop-blur">
             <div className="w-full max-w-[360px]">
-              <p className="mb-5 font-serif text-[26px] italic">Wrapping up your call</p>
+              <p className="mb-6 text-[26px] font-semibold">Wrapping up your call</p>
               {[
                 'Saving the recording',
                 `Transcribing ${meeting.participants.length} speakers`,
                 'Writing notes and action items',
                 `Filing your ${captured.length} ${captured.length === 1 ? 'highlight' : 'highlights'}`,
               ].map((s) => (
-                <div key={s} className="step flex items-center gap-3 py-1.5 text-[16px] opacity-25">
-                  <span className="tick flex h-5 w-5 scale-0 items-center justify-center rounded-full bg-[#f2a5c9] text-[12px] font-bold text-ink">✓</span>
+                <div key={s} className="step flex items-center gap-3.5 py-2 text-[17px] opacity-25">
+                  <span className="tick flex h-6 w-6 scale-0 items-center justify-center rounded-full bg-coral text-[13px] font-bold text-on-coral">✓</span>
                   {s}
                 </div>
               ))}

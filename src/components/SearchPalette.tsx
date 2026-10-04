@@ -20,7 +20,7 @@ export function Marked({ text, q }: { text: string; q: string }) {
     <>
       {markParts(text, q).map((p, i) =>
         p.m ? (
-          <mark key={i} className="rounded-[3px] bg-magenta-wash px-0.5 text-magenta-deep">
+          <mark key={i} className="rounded-[3px] bg-coral-soft px-0.5 text-coral">
             {p.t}
           </mark>
         ) : (
@@ -92,34 +92,34 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
 
   return (
     <div className="fixed inset-0 z-[60] flex items-start justify-center px-3 pt-[8vh] sm:pt-[12vh]" role="dialog" aria-modal="true" aria-label="Search all meetings" onKeyDown={onKey}>
-      <div className="absolute inset-0 bg-ink/35 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="relative flex max-h-[76vh] w-full max-w-[720px] flex-col overflow-hidden rounded-2xl border border-rule bg-paper shadow-[0_24px_60px_-20px_rgba(15,34,54,0.45)]">
-        <div className="flex items-center gap-3 border-b border-rule px-4">
-          <Search size={18} className="text-ink-faint" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="relative flex max-h-[76vh] w-full max-w-[720px] flex-col overflow-hidden rounded-3xl border border-line-strong bg-surface shadow-2xl">
+        <div className="flex items-center gap-3 border-b border-line px-5">
+          <Search size={18} className="text-fg-faint" />
           <input
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search what anyone said, in any meeting"
-            className="h-14 flex-1 bg-transparent text-[16px] outline-none placeholder:text-ink-faint"
+            className="h-16 flex-1 bg-transparent text-[17px] text-fg outline-none placeholder:text-fg-faint"
             aria-label="Search query"
           />
-          <button onClick={onClose} aria-label="Close search" className="rounded-md p-1 text-ink-faint hover:bg-shoal hover:text-ink">
+          <button onClick={onClose} aria-label="Close search" className="rounded-md p-1 text-fg-faint hover:bg-raised hover:text-fg">
             <X size={18} />
           </button>
         </div>
 
         {q.trim() && speakers.length > 1 && (
-          <div className="flex flex-wrap items-center gap-1.5 border-b border-rule-soft px-4 py-2 text-[13px]">
-            <span className="text-ink-faint">Said by</span>
-            <button onClick={() => setSpeaker(null)} className={`rounded-full px-2.5 py-0.5 ${!speaker ? 'bg-ink text-white' : 'bg-shoal text-ink-soft hover:text-ink'}`}>
+          <div className="flex flex-wrap items-center gap-1.5 border-b border-line px-5 py-2.5 text-[14px]">
+            <span className="text-fg-faint">Said by</span>
+            <button onClick={() => setSpeaker(null)} className={`rounded-full px-3 py-1 ${!speaker ? 'bg-fg font-semibold text-abyss' : 'bg-raised text-fg-soft hover:text-fg'}`}>
               Anyone
             </button>
             {speakers.map(([id, n]) => (
               <button
                 key={id}
                 onClick={() => setSpeaker(speaker === id ? null : id)}
-                className={`rounded-full px-2.5 py-0.5 ${speaker === id ? 'bg-ink text-white' : 'bg-shoal text-ink-soft hover:text-ink'}`}
+                className={`rounded-full px-3 py-1 ${speaker === id ? 'bg-fg font-semibold text-abyss' : 'bg-raised text-fg-soft hover:text-fg'}`}
               >
                 {firstName(id)} <span className="tabular opacity-60">{n}</span>
               </button>
@@ -129,11 +129,11 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
 
         <div ref={listRef} className="quiet-scroll flex-1 overflow-y-auto">
           {!q.trim() && (
-            <div className="p-4">
-              <p className="mb-3 text-[13px] text-ink-faint">Try a topic that came up across several calls</p>
+            <div className="p-5">
+              <p className="mb-3 text-[14px] text-fg-faint">Try something that came up across several calls</p>
               <div className="flex flex-wrap gap-2">
                 {SUGGESTIONS.map((s) => (
-                  <button key={s} onClick={() => setQ(s)} className="rounded-full border border-rule px-3 py-1 text-[14px] text-ink-soft hover:border-ink-faint hover:text-ink">
+                  <button key={s} onClick={() => setQ(s)} className="rounded-full border border-line px-3.5 py-1.5 text-[14px] text-fg-soft hover:border-line-strong hover:text-fg">
                     {s}
                   </button>
                 ))}
@@ -141,16 +141,16 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
             </div>
           )}
           {q.trim() && docs && !groups.length && (
-            <p className="p-6 text-[15px] text-ink-soft">
+            <p className="p-6 text-[15px] text-fg-soft">
               Nothing matches “{q}”. Try fewer words, or a name like “Marcus”.
             </p>
           )}
-          {q.trim() && !docs && <p className="p-6 text-[15px] text-ink-faint">Loading transcripts…</p>}
+          {q.trim() && !docs && <p className="p-6 text-[15px] text-fg-faint">Loading transcripts…</p>}
           {groups.map((g) => (
-            <section key={g.meeting.id} className="border-b border-rule-soft px-2 py-2 last:border-0">
+            <section key={g.meeting.id} className="border-b border-line px-3 py-3 last:border-0">
               <header className="flex items-baseline justify-between gap-3 px-2 pb-1 pt-1">
-                <h3 className="truncate text-[14px] font-semibold">{g.meeting.title}</h3>
-                <span className="shrink-0 text-[12px] text-ink-faint">
+                <h3 className="truncate text-[15px] font-semibold text-fg">{g.meeting.title}</h3>
+                <span className="shrink-0 text-[13px] text-fg-faint">
                   {dateLabel(g.meeting.startsAt)} · {g.hits.length} {g.hits.length === 1 ? 'match' : 'matches'}
                 </span>
               </header>
@@ -163,11 +163,11 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                     data-i={idx}
                     onMouseMove={() => setCursor(idx)}
                     onClick={() => go(g.meeting.id, h.ts)}
-                    className={`flex w-full items-start gap-3 rounded-lg px-2 py-2 text-left ${active ? 'bg-shoal' : ''}`}
+                    className={`flex w-full items-start gap-3 rounded-xl px-2 py-2.5 text-left ${active ? 'bg-raised' : ''}`}
                   >
-                    <span className="mt-0.5 w-12 shrink-0 text-right text-[12px] text-ink-faint tabular">{h.ts != null ? clock(h.ts) : ''}</span>
-                    <span className="min-w-0 flex-1 text-[14px] leading-snug text-ink">
-                      <span className="mb-0.5 flex items-center gap-1.5 text-[12px] font-semibold text-ink-soft">
+                    <span className="mt-0.5 w-12 shrink-0 text-right text-[13px] text-fg-faint tabular">{h.ts != null ? clock(h.ts) : ''}</span>
+                    <span className="min-w-0 flex-1 text-[15px] leading-snug text-fg-soft">
+                      <span className="mb-0.5 flex items-center gap-1.5 text-[13px] font-semibold text-fg">
                         {h.kind === 'said' && person(h.speaker).name}
                         {h.kind === 'note' && (
                           <>
@@ -182,12 +182,12 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                       </span>
                       <Marked text={snippet(h.text, q)} q={q} />
                     </span>
-                    {active && <CornerDownLeft size={14} className="mt-1 shrink-0 text-ink-faint" />}
+                    {active && <CornerDownLeft size={14} className="mt-1 shrink-0 text-fg-faint" />}
                   </button>
                 );
               })}
               {g.hits.length > 4 && (
-                <button onClick={() => go(g.meeting.id, g.hits[0].ts)} className="ml-16 mt-0.5 pb-1 text-[13px] font-medium text-magenta hover:underline">
+                <button onClick={() => go(g.meeting.id, g.hits[0].ts)} className="ml-16 mt-0.5 pb-1 text-[13px] font-medium text-coral hover:underline">
                   Open all {g.hits.length} matches in this meeting
                 </button>
               )}
@@ -195,7 +195,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
           ))}
         </div>
         {q.trim() && docs && groups.length > 0 && (
-          <footer className="border-t border-rule-soft px-4 py-2 text-[12px] text-ink-faint">
+          <footer className="border-t border-line px-5 py-2.5 text-[13px] text-fg-faint">
             {total} matches in {groups.length} {groups.length === 1 ? 'meeting' : 'meetings'} · ↑↓ to move, Enter to open
           </footer>
         )}

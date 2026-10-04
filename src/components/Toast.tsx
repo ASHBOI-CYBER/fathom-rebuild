@@ -27,8 +27,8 @@ export function Toaster() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-5 z-[70] flex flex-col items-center gap-2" aria-live="polite">
       {list.map((t) => (
-        <div key={t.id} className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[14px] text-white shadow-lg">
-          <Check size={15} className="text-[#f2a5c9]" />
+        <div key={t.id} className="flex items-center gap-2.5 rounded-full border border-line-strong bg-raised px-4 py-2.5 text-[14px] text-fg shadow-2xl">
+          <Check size={16} className="text-coral" />
           {t.text}
         </div>
       ))}
