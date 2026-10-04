@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.vercel/
+.env*.local
+.env
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+# hook bookkeeping only — .agent-logs/ is committed on purpose
+.claude/hooks/.state/
+.claude/settings.local.json
