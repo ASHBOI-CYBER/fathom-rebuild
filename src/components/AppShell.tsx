@@ -9,7 +9,7 @@ import { SearchPalette } from './SearchPalette';
 import { ME, person } from '@/lib/people';
 
 const NAV = [
-  { href: '/', label: 'Meetings' },
+  { href: '/meetings', label: 'Meetings' },
   { href: '/clips', label: 'Clips' },
   { href: '/upcoming', label: 'Upcoming' },
 ];
@@ -39,7 +39,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const isActive = (href: string) => (href === '/' ? pathname === '/' || pathname.startsWith('/meetings') : pathname.startsWith(href));
+  const isActive = (href: string) => pathname.startsWith(href);
+  // a single meeting fills the screen; the list and other pages get the footer
+  const onMeeting = /^\/meetings\/[^/]+/.test(pathname);
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -48,7 +50,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button onClick={() => setNavOpenOn(pathname)} aria-label="Open menu" className="-ml-1 rounded-lg p-2 text-fg-soft hover:bg-raised hover:text-fg md:hidden">
             <List size={20} />
           </button>
-          <Link href="/" aria-label="Sounding home" className="shrink-0">
+          <Link href="/meetings" aria-label="Sounding, all meetings" className="shrink-0">
             <Wordmark />
           </Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
@@ -103,9 +105,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
 
-      {!pathname.startsWith('/meetings') && (
+      {!onMeeting && (
       <footer className="border-t border-line px-6 py-5 text-center text-[12px] text-fg-faint">
-        Sounding is a Fathom rebuild made for the 8x assignment. Not affiliated with Fathom. Signed in as {person(ME).name} in a demo workspace.
+        Sounding is a Fathom rebuild made for the 8x assignment. Not affiliated with Fathom. Signed in as {person(ME).name} in a demo workspace. <Link href="/" className="underline underline-offset-4 hover:text-fg">About Sounding</Link>
       </footer>
       )}
 

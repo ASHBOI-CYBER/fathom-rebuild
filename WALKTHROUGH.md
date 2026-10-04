@@ -2,8 +2,9 @@
 
 Record with Loom (camera bubble on) at full-screen browser width. Open these tabs before you start:
 
+0. https://ashboi-cyber.github.io/fathom-rebuild/ (the landing page)
 1. https://ashboi-cyber.github.io/fathom-rebuild/meetings/q4-planning/
-2. https://ashboi-cyber.github.io/fathom-rebuild/
+2. https://ashboi-cyber.github.io/fathom-rebuild/meetings/
 3. https://ashboi-cyber.github.io/fathom-rebuild/live/
 4. A private/incognito window, kept empty, for opening a shared clip.
 
@@ -15,13 +16,13 @@ Speak naturally. The lines below are a guide, not a script to read word for word
 
 > "First I used the real Fathom on a Google Meet call. Two things stood out: it heard '8x' as 'ATX' and put that into an action item, and searching for a word I'd said, 'GitHub', found nothing.
 >
-> This is Sounding, my rebuild of Fathom. The home page is a live 3D seabed built from the meetings themselves: every ridge is a call, and the peaks are where it got lively. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
+> This is Sounding, my rebuild of Fathom. *(Tab 0: scroll slowly through the hero.)* These particles are every word of a real eight-person call, and as I scroll they settle into that call's picture: one ring per person, one arc per time they spoke. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
 
-**On screen:** tab 1, the Q4 Planning meeting.
+**On screen:** tab 0 for the first sentences, then tab 1, the Q4 Planning meeting.
 
 ### 0:30–1:30 · The hour-long, 8-person call
 
-> "This is a 62-minute planning call with eight people. Every meeting in Sounding gets its own sonar print: each ring is a person, each arc is when they spoke, clockwise like a clock. Before pressing play I can see who dominated and where the conversation got busy."
+> "This is a 66-minute planning call with eight people. Every meeting in Sounding gets its own sonar print: each ring is a person, each arc is when they spoke, clockwise like a clock. Before pressing play I can see who dominated and where the conversation got busy."
 
 - Hover over the dial to show the tooltip, then click **The live ETA collision** in the Chapters list.
 - Press play (space bar). Point at the sweep, the lit arc, and the live caption in the centre.
@@ -52,11 +53,11 @@ Speak naturally. The lines below are a guide, not a script to read word for word
 - Open **Clips**, click **Share**, then **Copy link**.
 - Paste the link into the incognito window.
 
-> "Here's what someone who wasn't on the call sees. There's no login. It's just that moment, with the rest of the meeting shaded out, plus the transcript and notes."
+> "Here's what someone who wasn't on the call sees. There's no login. It's just that moment and the words said in it. The rest of the meeting, its notes and action items stay private."
 
 ### 3:00–3:40 · Search across every meeting
 
-- Tab 2 (home). Press **Ctrl K** and type **live ETA**.
+- Tab 2 (the app home). Press **Ctrl K** and type **live ETA**.
 
 > "Search covers every word anyone said in every meeting, plus the notes. The live-ETA promise comes up in nine of the ten calls, and I can narrow it to what Tom said."
 

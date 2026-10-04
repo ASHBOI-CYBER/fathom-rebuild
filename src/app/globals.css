@@ -153,3 +153,79 @@ p {
   50% { height: 100%; }
   100% { height: 45%; }
 }
+
+/* ---------- Landing ----------
+   The page surfaces: it opens in the deep (the app's own sea-ink) and rises to
+   pale surface light. Light sections re-declare the ink tokens, so every
+   component that paints with var(--fg) follows along. */
+.tone-light {
+  --fg: #0b1a22;
+  --fg-soft: #3a515c;
+  --fg-faint: #52707b;
+  --line: rgba(11, 26, 34, 0.1);
+  --line-strong: rgba(11, 26, 34, 0.2);
+  color: var(--fg);
+}
+.tone-dark {
+  --fg: #e4ecef;
+  --fg-soft: #9db0ba;
+  --fg-faint: #7d929c;
+  --line: rgba(196, 220, 232, 0.085);
+  --line-strong: rgba(196, 220, 232, 0.17);
+  color: var(--fg);
+}
+html:has(.landing) {
+  scroll-behavior: smooth;
+}
+
+/* A line of speech drifting past, forever, in two directions. */
+.marquee {
+  animation: marquee var(--marquee-dur, 70s) linear infinite;
+}
+.marquee-rev {
+  animation-direction: reverse;
+}
+.marquee-host:hover .marquee,
+.marquee-host:focus-within .marquee {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Calm water: rings spreading from the sounding line. */
+.ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple 9s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  opacity: 0;
+}
+@keyframes ripple {
+  0% { transform: scale(0.06); opacity: 0; }
+  12% { opacity: 0.55; }
+  100% { transform: scale(1); opacity: 0; }
+}
+.bob {
+  animation: bob 4.8s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.rise {
+  animation: rise var(--rise-dur, 14s) linear infinite;
+}
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: var(--rise-o, 0.5); }
+  100% { transform: translateY(-70vh); opacity: 0; }
+}
+@keyframes cue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee, .ripple, .bob, .rise { animation: none !important; }
+  .ripple { opacity: 0.3; }
+  .marquee-host { overflow-x: auto; }
+}

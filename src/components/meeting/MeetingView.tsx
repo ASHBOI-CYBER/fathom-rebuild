@@ -119,7 +119,7 @@ export function MeetingView({
           <div className="min-w-0">
             {header ??
               (!readOnly && (
-                <Link href="/" className="mb-3 inline-flex items-center gap-1.5 text-[14px] text-fg-faint hover:text-fg">
+                <Link href="/meetings" className="mb-3 inline-flex items-center gap-1.5 text-[14px] text-fg-faint hover:text-fg">
                   <ArrowLeft size={15} /> All meetings
                 </Link>
               ))}

@@ -1,6 +1,6 @@
 # Sounding: a Fathom rebuild
 
-**Live:** https://ashboi-cyber.github.io/fathom-rebuild/ (opens without signing in)
+**Live:** https://ashboi-cyber.github.io/fathom-rebuild/ (opens without signing in: the landing page, then **Open the demo** for the app at [/meetings](https://ashboi-cyber.github.io/fathom-rebuild/meetings/))
 **Repo:** https://github.com/ASHBOI-CYBER/fathom-rebuild
 **Agent logs:** [`.agent-logs/`](.agent-logs/) · capture setup in [`CAPTURE-TEST.md`](CAPTURE-TEST.md)
 
@@ -22,7 +22,7 @@ They shaped the priorities below.
 
 The brief says the case that matters is **an eight-person call that runs an hour**. Fathom's weakest moment is the day after that call, when you're trying to find what was decided and who said it. So I put most of the time into the meeting page and spent very little on account or settings screens.
 
-1. **The meeting page** ([try the 8-person, 62-minute planning call](https://ashboi-cyber.github.io/fathom-rebuild/meetings/q4-planning/))
+1. **The meeting page** ([try the 8-person, 66-minute planning call](https://ashboi-cyber.github.io/fathom-rebuild/meetings/q4-planning/))
    - **Sonar dial.** Every meeting is drawn as a dial: each ring is a person (loudest outermost), each arc is when they spoke, clockwise from twelve. Playback is a sonar sweep, the line being spoken lights up, and the centre carries a live caption. Drag around the dial to scrub, or click an arc to hear it. A who's-speaking scrubber and a per-speaker lane view sit underneath. You can see the shape of an hour before pressing play.
    - **Speaker focus.** Click a name on the chart, or in People, to read only what that person said. On an 8-person call this is the fastest way to answer "what did Tom actually commit to?"
    - **Transcript synced to playback.** The active line follows the playhead, with a "Back to now" button when you scroll away. You can find words in the transcript, and chapter headings carry one-line summaries.
@@ -66,7 +66,8 @@ The brief says the case that matters is **an eight-person call that runs an hour
 
 The look is a ship's bridge at night: sea-ink surfaces, one sodium-yellow signal colour (a buoy light), Big Shoulders (a condensed face from Chicago signage, close to hull markings) for display, and Familjen Grotesk for text. The visuals are drawn from the data, not decorative:
 
-- the home page is a real-time three.js seabed where every ridge is a meeting and height is how lively it got
+- the landing page opens on a three.js particle field: every word of the 8-person planning call starts as drifting noise and settles, as you scroll, into that call's sonar print, which then sweeps and beats. The page then rises from the deep to pale surface light: a pinned "Record, Find, Share" told on the real transcript, counters taken from the seeded data, the live meeting page inside a browser frame, pricing, questions, and calm water to finish. The brief behind it is in [research/landing-brief.md](research/landing-brief.md); Seedance video was too expensive on the free Higgsfield plan (72 credits a clip), so every scene is drawn live instead
+- the app's home is a real-time three.js seabed where every ridge is a meeting and height is how lively it got
 - every meeting has its own sonar print, reused on the home ledger, the meeting dial, and each clip card (with the clip's window marked)
 - the live call draws its dial as people speak
 
@@ -75,6 +76,7 @@ The design was steered with the `taste-skill` (high-end-visual-design, design-ta
 ## Stack
 
 - Next.js 16 (App Router, static export) and React 19, with Tailwind CSS 4.
+- The landing page is scroll-scrubbed: each pinned section reads its own scroll progress, so the picture is wherever the reader's thumb is.
 - GSAP drives the home entrance (greeting and print), the speaker-lane reveal and the template-switch transition. three.js renders the seabed (lazy-loaded). Phosphor icons.
 - Deployed to GitHub Pages by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
