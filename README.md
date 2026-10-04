@@ -3,6 +3,7 @@
 **Live:** https://ashboi-cyber.github.io/fathom-rebuild/ (opens without signing in: the landing page, then **Open the demo** for the app at [/meetings](https://ashboi-cyber.github.io/fathom-rebuild/meetings/))
 **Repo:** https://github.com/ASHBOI-CYBER/fathom-rebuild
 **Agent logs:** [`.agent-logs/`](.agent-logs/) · capture setup in [`CAPTURE-TEST.md`](CAPTURE-TEST.md)
+**Docs:** [BRD](docs/BRD.md) · [PRD](docs/PRD.md) · [Architecture, with diagrams](docs/ARCHITECTURE.md) · [Stats](docs/STATS.md)
 
 Sounding is a rebuild of [Fathom](https://fathom.video), the AI meeting notetaker, built for the 8x assignment. It has its own name and look on purpose, and it isn't affiliated with Fathom.
 
@@ -85,4 +86,5 @@ npm install
 npm run dev        # compiles data/source → src/data/generated, then next dev
 npm run validate   # checks every authored meeting
 npm run build      # static export to ./out
+npm run stats      # regenerates docs/STATS.md from the repo
 ```
