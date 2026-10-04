@@ -1,0 +1,154 @@
+{
+  "id": "harbor-pine-demo",
+  "title": "Harbor & Pine — Routing v3 demo & pilot terms",
+  "startsAt": "2026-10-01T18:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Demo",
+  "host": "tom",
+  "participants": ["tom", "daniel", "marcus", "elena"],
+  "externalCompany": "Harbor & Pine Logistics",
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Daniel's Routing v3 demo on Harbor & Pine's own Kent data landed well, especially the 4-second re-plan. Tom offered a free 60-truck, 6-week pilot converting at $62/truck (vs RouteWise at $52). Live ETA still has no date: Daniel deferred to Maya, and Tom promised something concrete next week.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Show Routing v3 on Harbor & Pine's real Kent orders, work through the Samsara and Oracle TMS integration with Elena, and put pilot terms on the table ahead of the Oct 30 decision.", "ref": 19 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "On last Tuesday's Kent orders (138 trucks, ~1,400 stops), v3's plan had 11 at-risk stops vs 31 for the dispatchers' plan, with ~9% fewer miles. Daniel cautioned this is plan-vs-plan only.", "ref": 24 },
+            { "text": "A simulated breakdown re-planned ~400 open stops in 4.1 seconds. Marcus said the same re-plan takes his lead at least 45 minutes on the phone today.", "ref": 42 },
+            { "text": "TMS: pilot on a nightly SFTP batch and build a middleware connector in parallel for full rollout (4–6 weeks, needs the Oct 15 change board).", "ref": 74 },
+            { "text": "Pricing: $68/truck/month list; free 6-week pilot on 60 Kent trucks, converting at $62 on a two-year term. Marcus flagged RouteWise at $52, about $50k/yr less.", "ref": 89 },
+            { "text": "Live ETA still has no date. Daniel won't commit without Maya, and Tom promised 'something concrete next week'.", "ref": 106 }
+          ]
+        },
+        {
+          "heading": "Routing v3 demo",
+          "items": [
+            { "text": "Hours of service from Samsara is a hard constraint: the solver leaves a stop unassigned rather than break a driver's legal limit. Overtime allowance is configurable.", "ref": 26 },
+            { "text": "Location rules (e.g. 45-minute Tuesday dock waits in Sumner) are set once in Tandem. Kenji's ETA model learns dock waits over time but still struggles with them.", "ref": 34 },
+            { "text": "Dispatchers can drag, lock whole routes or lock stop sequences. Vehicle attributes like liftgate prevent repeat mistakes.", "ref": 46 },
+            { "text": "The day report shows planned vs actual, on-time by appointment and overtime by driver, with spreadsheet export. Marcus called it 'the Dana screen'.", "ref": 50 },
+            { "text": "Routes can push to the existing Samsara driver app, so no new app is needed.", "ref": 54 }
+          ]
+        },
+        {
+          "heading": "Integration and reliability",
+          "items": [
+            { "text": "Samsara: read-only API token, 30-second location polling; rate limits to be checked against H&P's two internal dashboards.", "ref": 66 },
+            { "text": "SFTP batch is outbound-only and Elena can set it up herself, but it's a cutoff snapshot that misses the ~10% of orders that change intraday.", "ref": 70 },
+            { "text": "Middleware connector is near real-time but runs inside H&P's network, needs change-board approval and mapping of custom views. Tandem has built this for two on-prem TMSs, neither Oracle.", "ref": 78 },
+            { "text": "Elena raised the Sep 24 ETA outage (47 min). Her bigger concern is the 26 minutes it took to update the status page.", "ref": 84 }
+          ]
+        },
+        {
+          "heading": "Pilot terms",
+          "items": [
+            { "text": "Read-out at week three so Dana can decide by Oct 30. Walk-away clause if weeks 4–6 fall apart, in writing.", "ref": 95 },
+            { "text": "Success targets: on-time at program customers up 4–5 points and overtime on pilot trucks down a third. Also track fuel (from Samsara) and dispatcher hours.", "ref": 101 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Written pilot proposal by Tue Oct 6.", "ref": 111, "owner": "tom" },
+            { "text": "Completed security questionnaire back to Elena by Oct 9.", "ref": 112, "owner": "tom" },
+            { "text": "Batch file spec, connector architecture doc and outage post-mortem to Elena.", "ref": 79, "owner": "daniel" },
+            { "text": "Marcus briefs Dana on Monday and sets up a hands-on session for Ray with Daniel.", "ref": 115, "owner": "marcus" }
+          ]
+        }
+      ]
+    },
+    "demo": {
+      "tldr": "The live re-plan and dispatcher locks won Marcus over. Elena accepted the SFTP-first plan for the pilot but needs a real connector for 420 trucks. Price and the missing live ETA date are the open objections.",
+      "sections": [
+        { "heading": "What we showed", "items": [
+          { "text": "Dispatch board on H&P's own Kent orders from last Tuesday: 138 trucks, ~1,400 stops, at-risk stops flagged in red.", "ref": 22 },
+          { "text": "Hard hours-of-service constraints and configurable overtime allowance.", "ref": 28 },
+          { "text": "Dock-window location rules and the ML ETA model (mean error down from ~6 to ~4 minutes).", "ref": 30 },
+          { "text": "Truck 2231 breakdown: ~400 stops re-planned in 4.1 seconds, split across three trucks, with an overtime approval prompt.", "ref": 42 },
+          { "text": "End-of-day report with planned vs actual and CSV export.", "ref": 49 }
+        ] },
+        { "heading": "How they reacted", "items": [
+          { "text": "Marcus: the 4-second re-plan replaces at least 45 minutes on the phone, and avoids dumping every stop on one driver.", "ref": 43 },
+          { "text": "Marcus liked that the solver asks a person instead of 'quietly doing the dumb thing'.", "ref": 29 },
+          { "text": "Elena on pushing routes to the Samsara app: 'That is the right answer. I was ready to argue.'", "ref": 55 },
+          { "text": "Marcus on dispatcher locks: if Ray feels he's the boss of it, he'll use it.", "ref": 47 }
+        ] },
+        { "heading": "Objections", "items": [
+          { "text": "Price: RouteWise at $52/truck vs $62 pilot conversion, about $50k/yr more.", "ref": 89 },
+          { "text": "The pilot would run on beta software (GA Nov 17). Elena needs the reviewed version stated in the questionnaire.", "ref": 61 },
+          { "text": "The SFTP batch's manual handling of intraday changes is fine for 60 trucks but a dealbreaker at 420.", "ref": 77 },
+          { "text": "Status page lag during the Sep 24 outage.", "ref": 84 }
+        ] },
+        { "heading": "Open questions", "items": [
+          { "text": "Live ETA sharing delivery date. Daniel needs to check with Maya.", "ref": 104 },
+          { "text": "Samsara API headroom given H&P's existing dashboards.", "ref": 66 },
+          { "text": "Whether the change board approves the middleware connector (next meeting Oct 15).", "ref": 73 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Pilot proposal by Oct 6 with metrics, $62 conversion and walk-away clause.", "ref": 111, "owner": "tom" },
+          { "text": "Hands-on session for Ray on the Kent data.", "ref": 116, "owner": "daniel" },
+          { "text": "Concrete live ETA answer next week.", "ref": 106, "owner": "tom" }
+        ] }
+      ]
+    },
+    "sales_bant": {
+      "tldr": "Pricing is now explicit at $62 after a free pilot vs RouteWise's $52. Dana Whitfield still decides on Oct 30 from a week-three pilot read-out, and Marcus briefs her Monday.",
+      "sections": [
+        { "heading": "Budget", "items": [
+          { "text": "List $68/truck/month; pilot converts at $62 on a two-year term (~$312k/yr at 420 trucks), in line with the ~$300k range from discovery.", "ref": 86 },
+          { "text": "RouteWise at $52 is about $50k/yr cheaper. Marcus can sell $62 if the pilot is great, but not if it's merely fine.", "ref": 92 }
+        ] },
+        { "heading": "Authority", "items": [
+          { "text": "CFO Dana Whitfield decides; Marcus briefs her Monday and will lead with the live re-plan.", "ref": 115 },
+          { "text": "Elena gates on security and integration: the questionnaire is needed by Oct 9, before legal starts.", "ref": 112 }
+        ] },
+        { "heading": "Need", "items": [
+          { "text": "Mid-day re-planning today takes 45+ minutes by phone and drives overtime.", "ref": 43 },
+          { "text": "Live ETA sharing remains a must-have to get dispatchers off the phone.", "ref": 103 }
+        ] },
+        { "heading": "Timeline", "items": [
+          { "text": "6-week pilot with a week-three read-out to meet the Oct 30 decision, plus a walk-away clause for weeks 4–6.", "ref": 95 },
+          { "text": "Middleware connector can't be installed before the Oct 15 change board, so the pilot runs on SFTP.", "ref": 74 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Pilot proposal by Oct 6.", "ref": 111, "owner": "tom" },
+          { "text": "Live ETA date next week.", "ref": 106, "owner": "tom" },
+          { "text": "Brief Dana.", "ref": 115, "owner": "marcus" }
+        ] }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Send written pilot proposal: 60 Kent trucks, 6 weeks free, $62 conversion, success metrics and walk-away clause", "owner": "tom", "ref": 111, "due": "2026-10-06" },
+    { "text": "Return the completed security questionnaire to Elena, stating the Routing v3 beta version under review and SCIM support", "owner": "tom", "ref": 112, "due": "2026-10-09" },
+    { "text": "Get Marcus a concrete live ETA sharing date after checking with Maya and Daniel", "owner": "tom", "ref": 106, "due": "2026-10-09" },
+    { "text": "Send Elena the SFTP batch file spec and the middleware connector architecture doc", "owner": "daniel", "ref": 79, "due": "2026-10-02" },
+    { "text": "Send the Sep 24 ETA outage post-mortem to Elena once final", "owner": "daniel", "ref": 84 },
+    { "text": "Check Samsara API polling rates of the two internal dashboards", "owner": "elena", "ref": 67 },
+    { "text": "Brief CFO Dana Whitfield on the demo and pilot terms", "owner": "marcus", "ref": 115, "due": "2026-10-05" },
+    { "text": "Set up a 30-minute hands-on session for Ray with Daniel on the Kent data", "owner": "marcus", "ref": 117 }
+  ],
+  "highlights": [
+    { "title": "Truck breakdown re-planned: 400 stops in 4 seconds", "from": 40, "to": 43, "by": "tom", "kind": "bookmark" },
+    { "title": "Daniel's honest take on the Oracle TMS: SFTP for the pilot, connector for rollout", "from": 72, "to": 77, "by": "tom", "kind": "bookmark" },
+    { "title": "$68 list, free 60-truck pilot at $62; Marcus counters with RouteWise at $52", "from": 86, "to": 92, "by": "tom", "kind": "quote" },
+    { "title": "No live ETA date: Daniel defers to Maya, Tom promises an answer next week", "from": 103, "to": 107, "by": "daniel", "kind": "concern" }
+  ],
+  "ask": [
+    { "q": "What did we say about live ETA?", "a": "Marcus pressed for an actual month, reminding Tom he'd said 'this quarter' on Tuesday. Daniel wouldn't give a date: the pieces exist, but the customer-facing link is real work competing for the same engineers, and he wants to check with Maya first. Tom promised 'something concrete next week', and Marcus said he'd hold him to it.", "refs": [103, 104, 106, 107] },
+    { "q": "How do we compare to RouteWise?", "a": "RouteWise is $52/truck/month against Tandem's $62 pilot conversion, about $50k/yr more for 420 trucks. Tom framed that as roughly one month of H&P's chargebacks, and Elena noted RouteWise still hasn't shown support for her Oracle version. Marcus said he can sell $62 if the pilot is great but will lose to $52 if it's only fine.", "refs": [89, 90, 91, 92] },
+    { "q": "What are the pilot terms?", "a": "60 trucks out of Kent for 6 weeks at no cost, converting to the full fleet at $62/truck/month (list $68) on a two-year term. A week-three read-out lets Dana decide by Oct 30, and a written walk-away clause covers weeks 4–6. Targets: on-time at program customers up 4–5 points and overtime down a third, with fuel and dispatcher hours also tracked.", "refs": [86, 88, 95, 101, 102] },
+    { "q": "How will the Oracle TMS integration work?", "a": "There are two options. A nightly outbound SFTP batch Elena can set up herself, which misses intraday changes, or a middleware connector inside H&P's network that is near real-time but needs the Oct 15 change board and 4–6 weeks of work. Daniel recommended piloting on SFTP and building the connector in parallel. Elena agreed for the pilot but said the connector must be real for 420 trucks.", "refs": [68, 70, 72, 74, 77] },
+    { "q": "What did Daniel show in the demo?", "a": "Routing v3 on H&P's own Kent orders (138 trucks, ~1,400 stops): the dispatch board with at-risk flags, hard hours-of-service constraints, dock-window rules, dispatcher locks, and a breakdown re-plan of ~400 stops in 4.1 seconds. He also showed the end-of-day planned-vs-actual report and pushing routes into the Samsara driver app.", "refs": [22, 26, 30, 42, 49, 54] },
+    { "q": "What would make the pilot a win for Marcus?", "a": "On-time at customers with on-time programs up 4–5 points and overtime on the pilot trucks down by a third, measured against the same trucks' prior six weeks using H&P payroll data. Below that, he says, 'it's a conversation'.", "refs": [97, 101] }
+  ]
+}

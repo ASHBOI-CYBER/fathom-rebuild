@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Sounding — nautical-chart palette.
+   chart: the page, like the pale water on a chart · paper: raised surfaces
+   ink: navy chart ink · magenta: the chart's hazard/buoy colour, used only for
+   "now" (playhead, active line) and the primary action. */
+:root {
+  --chart: #eef3f4;
+  --paper: #ffffff;
+  --shoal: #dcebf0;
+  --shoal-strong: #c3dde7;
+  --ink: #0f2236;
+  --ink-soft: #46586a;
+  --ink-faint: #7c8b98;
+  --rule: #d3dde2;
+  --rule-soft: #e4ebee;
+  --magenta: #b4236a;
+  --magenta-deep: #8e1752;
+  --magenta-wash: #f7e4ee;
+  --ok: #2f7a4f;
+  --focus: #2f5bd3;
+
+  /* speaker lanes */
+  --sp-0: #0e7c86;
+  --sp-1: #2f5bd3;
+  --sp-2: #7a3ea8;
+  --sp-3: #a8730f;
+  --sp-4: #3c7a3a;
+  --sp-5: #b4532a;
+  --sp-6: #4c5f7a;
+  --sp-7: #8a5a44;
+}
+
+@theme inline {
+  --color-chart: var(--chart);
+  --color-paper: var(--paper);
+  --color-shoal: var(--shoal);
+  --color-shoal-strong: var(--shoal-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-soft: var(--rule-soft);
+  --color-magenta: var(--magenta);
+  --color-magenta-deep: var(--magenta-deep);
+  --color-magenta-wash: var(--magenta-wash);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+}
+
+html {
+  background: var(--chart);
+  color: var(--ink);
+}
+
+body {
+  background: var(--chart);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--shoal-strong);
+}
+
+/* Thin, quiet scrollbars for the transcript and side panel. */
+.quiet-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+/* Depth-contour texture: concentric rings, like a chart's contour lines. */
+.contours {
+  background-image:
+    repeating-radial-gradient(circle at 18% 120%, transparent 0 22px, rgba(15, 34, 54, 0.05) 22px 23px),
+    repeating-radial-gradient(circle at 92% -30%, transparent 0 30px, rgba(15, 34, 54, 0.04) 30px 31px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Active-speaker voice meter on the stage. */
+.voice-bar {
+  height: 40%;
+  animation: voice 0.7s ease-in-out infinite alternate;
+}
+@keyframes voice {
+  0% { height: 25%; }
+  50% { height: 100%; }
+  100% { height: 45%; }
+}

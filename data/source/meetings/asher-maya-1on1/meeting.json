@@ -1,0 +1,166 @@
+{
+  "id": "asher-maya-1on1",
+  "title": "Asher / Maya — weekly 1:1",
+  "startsAt": "2026-10-01T14:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "1:1",
+  "host": "asher",
+  "participants": ["asher", "maya"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Routing v3 beta is at 11% fewer miles, but the team is at ~110% and Daniel is a burnout risk. Tom has been promising Harbor & Pine live ETA this quarter, so Asher talks to Tom before Friday's Q4 planning and Maya brings a capacity model.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Weekly 1:1: wins, team health, the live ETA commitment problem, two-way feedback, and Maya's growth path.", "ref": 8 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "Routing v3 beta (6 fleets since Sep 8): 11% fewer miles and on-time up from 91.2% to 94.6%, holding for two weeks.", "ref": 10 },
+            { "text": "The team is running at ~110% after the outage; Daniel worked the post-outage weekend and is showing burnout signs.", "ref": 27 },
+            { "text": "Tom has been telling Harbor & Pine that live ETA ships in Q4. It is unbuilt, ~5 engineer-weeks, and competes with the driver onboarding OKR.", "ref": 43 },
+            { "text": "Agreed live ETA has to be a planning decision with the tradeoff visible, not a sales commitment.", "ref": 47 },
+            { "text": "Mutual feedback: Maya should push back earlier and with numbers; Asher should stop giving soft 'let's see' yeses that stakeholders hear as commitments.", "ref": 68 },
+            { "text": "Maya is working toward Director and now owns the frontend hiring loop.", "ref": 78 }
+          ]
+        },
+        {
+          "heading": "Routing v3 beta results",
+          "items": [
+            { "text": "ML ETA mean error is down from 6.1 to 4.3 minutes and drives much of the gain.", "ref": 10 },
+            { "text": "Gains are uneven: suburban/regional fleets at 13–14% fewer miles, the dense urban fleet ~6%. Kenji plans to use historical dock dwell times.", "ref": 12 },
+            { "text": "Maya puts Nov 17 GA at 70–75% confidence; risks are migrating non-beta fleets, the dispatcher settings UI, and urban ETA, and any new scope makes it shakier.", "ref": 16 }
+          ]
+        },
+        {
+          "heading": "Outage response",
+          "items": [
+            { "text": "The Sep 24 outage hit 312 fleets for 47 minutes and the status page lagged 26 minutes, but Ravi found the retry storm in ~15 minutes and Daniel drafted the backoff/circuit-breaker fix that night.", "ref": 18 },
+            { "text": "Brightside's Jordan appreciated the postmortem writeup, per Sofia.", "ref": 19 },
+            { "text": "Asher will publicly recognize Ravi, Daniel and Sofia.", "ref": 21, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Team capacity and Daniel",
+          "items": [
+            { "text": "Ravi is buried in outage follow-ups, and Kenji is splitting urban ETA work with beta fleet support.", "ref": 23 },
+            { "text": "Daniel worked Sat–Sun after the outage on the retry fix and Harbor & Pine demo prep, snapped at Kenji, has ~15 PTO days banked, and is deferring rest until after GA.", "ref": 27 },
+            { "text": "Asher will make Monday a firm day off for Daniel; Maya will pair Ravi with Daniel on the dispatch workers to reduce single-person dependency.", "ref": 35 },
+            { "text": "New frontend hires won't help until ~January, so Q4 relief has to come from scope.", "ref": 37 }
+          ]
+        },
+        {
+          "heading": "Live ETA commitment to Harbor & Pine",
+          "items": [
+            { "text": "Via Daniel's demo prep, Maya learned Tom told Marcus (and likely Elena) that live ETA is 'on the roadmap for Q4'.", "ref": 41 },
+            { "text": "Context: $310k ARR, RouteWise is cheaper, the decision is Oct 30, and CFO Dana Whitfield is the economic buyer.", "ref": 46 },
+            { "text": "If forced, Maya would protect onboarding, push the dispatcher settings UI to a GA fast-follow, and explore a thinner ETA-only tracking link (unscoped).", "ref": 49 },
+            { "text": "Asher will talk to Tom tomorrow morning, have him bring live ETA to planning as an ask, and find out whether anything is already in writing.", "ref": 52, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Feedback",
+          "items": [
+            { "text": "Asher to Maya: raise capacity concerns early and visibly with numbers; 'tight' gets heard as 'doable'. Example: Q3 bulk edit, which slipped the beta from August to September.", "ref": 58 },
+            { "text": "Maya to Asher: small yeses to Tom, Sofia and Leah add up on her team; 'let's see if we can fit it' is heard as a yes.", "ref": 63 },
+            { "text": "Asher acknowledged telling Tom live ETA was 'high on the list' weeks ago.", "ref": 66 }
+          ]
+        },
+        {
+          "heading": "Career growth and hiring",
+          "items": [
+            { "text": "Maya wants to grow toward Director by building cross-team planning and hiring experience.", "ref": 73 },
+            { "text": "Maya owns the frontend hiring loop: written rubric, work-sample question, a consistent design problem, and debriefs within 24 hours.", "ref": 77 },
+            { "text": "Sam Rivera is strong; Asher runs the final next Tuesday, probing maps and the 4-hour overlap, with an offer range ready.", "ref": 81 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Asher: talk to Tom before Friday's Q4 planning, get Daniel to take Monday off, post outage recognition, and tell Hannah that Maya owns the frontend loop.", "ref": 82, "owner": "asher" },
+            { "text": "Maya: bring a capacity model (11 engineers, weeks by project, both live ETA options) to Q4 planning, presented in the first 10 minutes, and send per-fleet beta numbers today.", "ref": 83, "owner": "maya" }
+          ]
+        }
+      ]
+    },
+    "one_on_one": {
+      "tldr": "Strong v3 beta and outage response, but an overstretched team and an unauthorized live ETA promise from sales. Maya and Asher traded candid feedback, Maya now owns frontend hiring on her path to Director, and both leave with commitments for Friday's Q4 planning.",
+      "sections": [
+        {
+          "heading": "Wins",
+          "items": [
+            { "text": "Routing v3 beta: 11% fewer miles; on-time 91.2% → 94.6%; ETA error 6.1 → 4.3 min.", "ref": 10 },
+            { "text": "Outage response was fast and well run: retry storm found in ~15 min, fix drafted the same night, useful blameless postmortem.", "ref": 18 },
+            { "text": "Brightside's Jordan appreciated the post-incident writeup.", "ref": 19 },
+            { "text": "Sam Rivera came through the technical round as a strong frontend candidate.", "ref": 79 }
+          ]
+        },
+        {
+          "heading": "Challenges",
+          "items": [
+            { "text": "The outage cost three people a week; the team is doing 'one and a half jobs' each.", "ref": 23 },
+            { "text": "Daniel is a burnout risk: worked the weekend, uncharacteristically short with Kenji, deferring PTO until after the Nov 17 GA.", "ref": 27 },
+            { "text": "The team is at ~110% and hires won't help until January.", "ref": 37 },
+            { "text": "Tom committed live ETA to Harbor & Pine without engineering, and Maya found out secondhand; it's ~5 engineer-weeks against the onboarding OKR.", "ref": 45 }
+          ]
+        },
+        {
+          "heading": "Feedback",
+          "items": [
+            { "text": "For Maya: push back earlier and more visibly in planning, with numbers, since 'tight' reads as 'doable'.", "ref": 56, "owner": "maya" },
+            { "text": "Asher reframed it: numbers aren't a 'no', they make the tradeoff the room's decision.", "ref": 60 },
+            { "text": "For Asher: he says yes to too many stakeholders, and soft 'let's see' answers become commitments.", "ref": 63, "owner": "asher" },
+            { "text": "Asher will route requests through planning and say 'let me check with Maya' instead of 'let's see'; Maya will call him on slips.", "ref": 68, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Growth & career",
+          "items": [
+            { "text": "Maya wants to grow toward Director, adding cross-team planning and hiring to running one team.", "ref": 73, "owner": "maya" },
+            { "text": "Asher will draft what a Director here would own within a year, to pick Maya's stretch work; a cross-team capacity model is Director-shaped.", "ref": 74, "owner": "asher" },
+            { "text": "Maya now owns the frontend hiring loop end to end.", "ref": 78, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Commitments",
+          "items": [
+            { "text": "Asher: talk to Tom before Friday's planning, make sure Daniel takes Monday off, post outage recognition, tell Hannah about the hiring loop.", "ref": 82, "owner": "asher" },
+            { "text": "Maya: capacity model for Q4 planning (11 engineers, weeks by project) and per-fleet beta numbers today.", "ref": 83, "owner": "maya" },
+            { "text": "Maya: lead with the capacity table in the first ten minutes of planning.", "ref": 85, "owner": "maya" },
+            { "text": "Maya and Hannah: have an offer range ready before Sam's final round on Tuesday.", "ref": 81, "owner": "maya" }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Talk to Tom about the live ETA promise to Harbor & Pine before Q4 planning; confirm whether anything is in writing", "owner": "asher", "ref": 52, "due": "2026-10-02" },
+    { "text": "Bring a capacity model to Q4 planning (11 engineers, weeks-by-project table, full and thin live ETA options) and present it in the first 10 minutes", "owner": "maya", "ref": 83, "due": "2026-10-02" },
+    { "text": "Make sure Daniel takes Monday off", "owner": "asher", "ref": 32, "due": "2026-10-05" },
+    { "text": "Send Asher the per-fleet Routing v3 beta breakdown", "owner": "maya", "ref": 14, "due": "2026-10-01" },
+    { "text": "Post recognition of the outage response, naming Ravi, Daniel and Sofia", "owner": "asher", "ref": 21, "due": "2026-10-01" },
+    { "text": "Tell Hannah that Maya owns the frontend hiring loop", "owner": "asher", "ref": 78 },
+    { "text": "Prepare an offer range for Sam Rivera with Hannah before Tuesday's final round", "owner": "maya", "ref": 81, "due": "2026-10-06" },
+    { "text": "Pair Ravi with Daniel on the dispatch-worker retry follow-ups", "owner": "maya", "ref": 35 }
+  ],
+  "highlights": [
+    { "title": "Routing v3 beta: 11% fewer miles, on-time 94.6%", "from": 10, "to": 12, "by": "asher", "kind": "bookmark" },
+    { "title": "Tom telling Harbor & Pine live ETA ships this quarter", "from": 41, "to": 45, "by": "maya", "kind": "concern" },
+    { "title": "Maya: 'you say yes to too many stakeholders'", "from": 63, "to": 68, "by": "asher", "kind": "quote" },
+    { "title": "Commitments before Friday's Q4 planning", "from": 82, "to": 85, "by": "maya", "kind": "action" }
+  ],
+  "ask": [
+    { "q": "What are the Routing v3 beta results?", "a": "Across the 6 beta fleets since Sep 8, Routing v3 cut miles driven by 11% and raised on-time delivery from 91.2% to 94.6%, with ETA error down from 6.1 to 4.3 minutes. Results are uneven: suburban and regional fleets are at 13–14%, while the dense urban fleet is around 6% because the ETA model still struggles with urban stops and dock waits.", "refs": [10, 12] },
+    { "q": "Why is Maya worried about Daniel?", "a": "Daniel worked the whole weekend after the Sep 24 outage on the retry fix and Harbor & Pine demo prep, snapped at Kenji over something small, and keeps deferring his ~15 banked PTO days until after the Nov 17 GA. As staff engineer he is a single point of dependency. Asher will make sure he takes Monday off, and Maya will pair Ravi with him.", "refs": [27, 29, 31, 32, 35] },
+    { "q": "What did Tom promise Harbor & Pine about live ETA?", "a": "Daniel heard in demo prep that Tom told Marcus, and likely Elena, that live ETA sharing is 'on the roadmap for Q4'. It isn't built or started, is scoped at about 5 engineer-weeks, and competes with the driver onboarding OKR. Asher will talk to Tom before Friday's planning so it's decided there as an explicit tradeoff.", "refs": [41, 43, 50] },
+    { "q": "What feedback did Asher and Maya give each other?", "a": "Asher asked Maya to push back earlier and more visibly in planning, with numbers, citing Q3's bulk edit that slipped the beta. Maya told Asher he says yes to too many stakeholders and that his 'let's see if we can fit it' is heard as a commitment. Asher admitted he'd told Tom live ETA was 'high on the list' and will route requests through planning.", "refs": [56, 58, 63, 66, 68] },
+    { "q": "What are Maya's career goals?", "a": "Maya wants to grow toward Director, building cross-team skills like planning and hiring beyond running the routing team. As a concrete step she now owns the frontend hiring loop, including the rubric, a work-sample question, and 24-hour debriefs. Asher will outline what a Director would own here so they can choose her stretch work.", "refs": [73, 74, 77, 78] },
+    { "q": "What did each person commit to before Q4 planning?", "a": "Asher will talk to Tom about live ETA before Friday, make sure Daniel takes Monday off, post outage recognition, and tell Hannah that Maya owns the frontend loop. Maya will bring a capacity model (11 engineers, weeks by project, both live ETA options), present it in the first ten minutes of planning, and send the per-fleet beta numbers today.", "refs": [82, 83, 84] }
+  ]
+}

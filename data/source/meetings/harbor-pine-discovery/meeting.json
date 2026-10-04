@@ -1,0 +1,164 @@
+{
+  "id": "harbor-pine-discovery",
+  "title": "Harbor & Pine × Tandem — Discovery call",
+  "startsAt": "2026-09-29T17:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Sales",
+  "host": "tom",
+  "participants": ["tom", "asher", "marcus", "elena"],
+  "externalCompany": "Harbor & Pine Logistics",
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Harbor & Pine (420 trucks) has strong, quantified pain: 14% overtime and ~$40k/month in chargebacks. CFO Dana Whitfield decides by Oct 30 after a pilot, RouteWise is cheaper at ~$52/truck, and Marcus calls live ETA sharing a must-have, which Tom placed on 'this quarter's' roadmap before Asher hedged.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Discovery with Marcus Hill (Director of Ops) and Elena Petrova (IT & Integrations): understand dispatch today, systems constraints and how Harbor & Pine will buy. No demo, by design.", "ref": 15 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "Nine dispatchers and two leads hand-build routes in Excel every night for 420 trucks across Kent, Portland and Spokane, often until 10–11 p.m.", "ref": 21 },
+            { "text": "Overtime is ~14% of driver hours against a 6% budget, up from 11% in the spring; late-delivery chargebacks run ~$40k/month.", "ref": 32 },
+            { "text": "Success bar from Marcus: dispatchers home by 7, overtime under 8%, chargebacks cut in half.", "ref": 47 },
+            { "text": "CFO Dana Whitfield signs off; she wants a pilot on H&P's own trucks and a decision by Oct 30, ahead of November budgeting.", "ref": 93 },
+            { "text": "Budget is around $300k/yr 'if the numbers hold'. RouteWise quoted ~$52/truck/month.", "ref": 100 },
+            { "text": "Live ETA sharing is a must-have. Tom said it is 'on the roadmap for this quarter'; Asher corrected that it is still being scoped and declined to give a date.", "ref": 131 }
+          ]
+        },
+        {
+          "heading": "Dispatch pain",
+          "items": [
+            { "text": "Mid-day re-planning is done by gut: the terminal lead calls the nearest driver, who picks up extra stops and runs into overtime.", "ref": 28 },
+            { "text": "Drivers hit hours-of-service limits with freight on board three times in August (Elena's correction of Marcus's 'twice').", "ref": 35 },
+            { "text": "Marcus guesses chargebacks split about half bad plans, half failed same-day re-plans; he has no hard data.", "ref": 42 },
+            { "text": "A bundled Oracle routing module failed about four years ago, so dispatchers are wary. Adoption depends on Kent lead Ray.", "ref": 51 }
+          ]
+        },
+        {
+          "heading": "Integrations and security",
+          "items": [
+            { "text": "Samsara telematics on all 420 trucks, with a usable API. Oracle TMS is on-prem, from 2014, heavily customized, with no API; an upgrade is not funded.", "ref": 57 },
+            { "text": "Only outbound SFTP is possible today. Any inbound connection needs a monthly change board.", "ref": 72 },
+            { "text": "About 10% of orders change after the nightly cutoff, so the TMS is not always the source of truth.", "ref": 70 },
+            { "text": "Requirements: Okta SSO (SAML), roles mapped from Okta groups, SCIM nice-to-have, SOC 2 Type II report and a ~180-question security questionnaire.", "ref": 74 },
+            { "text": "Elena is skeptical of 'file-based integration' claims and asked for Oracle on-prem references. Tom could not name one on the call.", "ref": 64 }
+          ]
+        },
+        {
+          "heading": "Live ETA sharing",
+          "items": [
+            { "text": "Dispatchers spend about a third of their day on 'where's my truck' calls; Kent logged ~340 such calls in one August week.", "ref": 136 },
+            { "text": "Elena: it must run off Samsara GPS, not a new driver app on 420 phones.", "ref": 134 },
+            { "text": "Tom's 'this quarter' framing is a commitment risk. Asher said only that Tandem is scoping it and owes Marcus something firmer.", "ref": 131 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Routing v3 demo with Daniel on Thu Oct 1, 11:00 PT, ideally on Kent route data.", "ref": 141, "owner": "tom" },
+            { "text": "Security track: Tom sends SOC 2 under NDA, Elena sends the questionnaire, TMS version and a sample export.", "ref": 147, "owner": "elena" },
+            { "text": "Pilot proposal for 50–60 Kent trucks, measured on H&P payroll and on-time data.", "ref": 123, "owner": "tom" },
+            { "text": "Marcus briefs Dana after the demo.", "ref": 152, "owner": "marcus" }
+          ]
+        }
+      ]
+    },
+    "sales_meddpicc": {
+      "tldr": "Strong pain and a credible champion. The economic buyer (CFO Dana Whitfield) has not been met, the TMS integration is a hard gate, and RouteWise undercuts on price.",
+      "sections": [
+        { "heading": "Metrics", "items": [
+          { "text": "Overtime ~14% of driver hours vs 6% target; goal is under 8%.", "ref": 32 },
+          { "text": "Late-delivery chargebacks ~$40k/month; goal is to cut them in half (~$20k).", "ref": 47 },
+          { "text": "Pilot headline metric: on-time at DC appointments, which leads chargebacks by 30–45 days.", "ref": 98 }
+        ] },
+        { "heading": "Economic buyer", "items": [
+          { "text": "Dana Whitfield, CFO. Signs off on anything this size and was burned by a yard management tool that was shut off after eight months.", "ref": 89 },
+          { "text": "Not yet engaged. Marcus will brief her after the demo and doesn't want her in before there is an ROI model.", "ref": 152 }
+        ] },
+        { "heading": "Decision criteria", "items": [
+          { "text": "In order: cuts overtime and late deliveries on H&P trucks; integrates without a six-month project; passes security; price.", "ref": 113 },
+          { "text": "Elena: the TMS integration is 'a gate, not a score'.", "ref": 115 },
+          { "text": "Live ETA sharing is framed as a must-have.", "ref": 132 }
+        ] },
+        { "heading": "Decision process", "items": [
+          { "text": "Pilot on a chunk of the fleet (likely 50–60 Kent trucks), measured on H&P's own data, then Dana decides by Oct 30.", "ref": 122 },
+          { "text": "Measurement must come from H&P payroll and on-time data, not a Tandem dashboard.", "ref": 124 }
+        ] },
+        { "heading": "Paper process", "items": [
+          { "text": "No procurement team: Marcus, Dana and outside counsel on the MSA. About two weeks from yes to signature last time.", "ref": 117 },
+          { "text": "Security sign-off must finish before legal starts, so the questionnaire is on the critical path.", "ref": 118 }
+        ] },
+        { "heading": "Identified pain", "items": [
+          { "text": "Nightly spreadsheet routing for 420 trucks; dispatchers there until 10–11 p.m., with burnout and turnover.", "ref": 21 },
+          { "text": "Same-day breakdowns are re-planned by gut, which drives overtime and hours-of-service violations.", "ref": 28 },
+          { "text": "'Where's my truck' calls eat about a third of dispatcher time.", "ref": 127 }
+        ] },
+        { "heading": "Champion", "items": [
+          { "text": "Marcus Hill is candid and motivated ('I'd rather you build it than RouteWise does') and is sharing internal data, including Kent routes.", "ref": 138 },
+          { "text": "Risk: Kent lead Ray has to buy in or dispatchers will keep the spreadsheet open.", "ref": 51 }
+        ] },
+        { "heading": "Competition", "items": [
+          { "text": "RouteWise at ~$52/truck/month. Marcus likes it mostly for price; its UI felt dated.", "ref": 106 },
+          { "text": "RouteWise claims an Oracle connector but has not confirmed support for H&P's version after two weeks.", "ref": 107 },
+          { "text": "Tandem's counter: Routing v3 beta shows 11% fewer miles and on-time up from 91.2% to 94.6%; the price gap is ~$16/truck.", "ref": 108 }
+        ] }
+      ]
+    },
+    "sales_bant": {
+      "tldr": "Budget ~$300k/yr if pilot numbers hold; CFO Dana Whitfield decides; need is acute; decision by Oct 30.",
+      "sections": [
+        { "heading": "Budget", "items": [
+          { "text": "Around $300k/yr is 'not crazy', conditional on pilot results. At 420 trucks Tandem lands around or slightly over that at list.", "ref": 100 },
+          { "text": "Price pressure from RouteWise at ~$52/truck/month.", "ref": 104 }
+        ] },
+        { "heading": "Authority", "items": [
+          { "text": "CFO Dana Whitfield signs off. Marcus is the champion and day-to-day owner.", "ref": 89 },
+          { "text": "Elena holds a security and integration veto.", "ref": 118 }
+        ] },
+        { "heading": "Need", "items": [
+          { "text": "Overtime ~14% vs a 6% target, plus three hours-of-service incidents in August.", "ref": 32 },
+          { "text": "~$40k/month in late-delivery chargebacks.", "ref": 38 },
+          { "text": "Live ETA sharing to stop 'where's my truck' calls is a must-have.", "ref": 132 }
+        ] },
+        { "heading": "Timeline", "items": [
+          { "text": "Decision by Oct 30, before Dana's November budget cycle. A pilot needs to show signal in about four weeks.", "ref": 96 },
+          { "text": "Security review is the critical path. Legal will not start until it is done.", "ref": 120 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Demo with Daniel on Thu Oct 1 at 11:00 PT.", "ref": 143, "owner": "tom" },
+          { "text": "SOC 2 report out and questionnaire in this week.", "ref": 146, "owner": "tom" },
+          { "text": "Marcus briefs Dana after the demo.", "ref": 152, "owner": "marcus" }
+        ] }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Send SOC 2 Type II report to Elena under NDA", "owner": "tom", "ref": 146, "due": "2026-09-30" },
+    { "text": "Send the security questionnaire, Oracle TMS version details and a sample nightly export", "owner": "elena", "ref": 147, "due": "2026-09-29" },
+    { "text": "Confirm which customers run an on-prem Oracle TMS and line up a reference for Elena", "owner": "tom", "ref": 63, "due": "2026-10-01" },
+    { "text": "Share one night of Kent routes (last Tuesday) so the demo runs on H&P data", "owner": "marcus", "ref": 150, "due": "2026-09-30" },
+    { "text": "Confirm SCIM provisioning support with Okta", "owner": "asher", "ref": 155 },
+    { "text": "Come back to Marcus with a firmer live ETA sharing timeline", "owner": "asher", "ref": 131 },
+    { "text": "Draft a pilot proposal for 50–60 Kent trucks, measured on H&P payroll and on-time data", "owner": "tom", "ref": 123 },
+    { "text": "Brief CFO Dana Whitfield after the Thursday demo", "owner": "marcus", "ref": 152 }
+  ],
+  "highlights": [
+    { "title": "Marcus quantifies the pain: 14% overtime, $40k/month chargebacks", "from": 30, "to": 38, "by": "tom", "kind": "quote" },
+    { "title": "Dana Whitfield signs off; pilot first, decision by Oct 30", "from": 89, "to": 93, "by": "tom", "kind": "bookmark" },
+    { "title": "RouteWise at $52/truck; Elena doesn't trust their Oracle connector", "from": 104, "to": 107, "by": "tom", "kind": "bookmark" },
+    { "title": "Tom puts live ETA on 'this quarter's' roadmap; Asher hedges", "from": 127, "to": 132, "by": "asher", "kind": "concern" }
+  ],
+  "ask": [
+    { "q": "What did we say about live ETA?", "a": "When Marcus asked for a customer-facing tracking link, Tom said live ETA sharing is 'on the roadmap for this quarter' and confirmed 'that's the plan' for end of year. Asher stepped in to say Tandem is still scoping it and would not give a date, promising something firmer. Marcus called it a must-have, and Elena said it has to run off Samsara GPS, not a new driver app.", "refs": [128, 130, 131, 132, 134] },
+    { "q": "Who is the economic buyer?", "a": "Dana Whitfield, Harbor & Pine's CFO. She signs off on anything this size and was burned by a yard management tool that was shut off after eight months, so she wants pilot results on H&P's own trucks. She hasn't been on a call; Marcus will brief her after the Oct 1 demo.", "refs": [89, 91, 152] },
+    { "q": "What are their decision criteria?", "a": "Marcus ranked them: cuts overtime and late deliveries on H&P's trucks, integrates without a six-month project, passes security, and then price. Elena added that the Oracle TMS integration is a pass/fail gate, not a weighted score. Live ETA sharing was also called a must-have.", "refs": [113, 115, 132] },
+    { "q": "How do we compare to RouteWise?", "a": "RouteWise quoted about $52/truck/month, which is cheaper, and Marcus says price is mostly what he likes about them. Their UI felt dated, and their claimed Oracle connector is unproven: two weeks on, they haven't confirmed support for H&P's version. Tom framed the ~$16/truck gap against Routing v3's beta results (11% fewer miles, on-time 91% to almost 95%) and the scale of H&P's overtime and chargeback costs.", "refs": [104, 106, 107, 108, 112] },
+    { "q": "What are the integration constraints?", "a": "Samsara is modern and has an API. The Oracle TMS is a heavily customized 2014 on-prem install with no API, only readable database views and a nightly batch export. Nothing inbound is allowed without a monthly change board, but outbound SFTP works today. About 10% of orders change after the nightly cutoff.", "refs": [55, 57, 72, 69] },
+    { "q": "What does success look like for Harbor & Pine?", "a": "Dispatchers home by 7 p.m., overtime under 8% of driver hours (from ~14%) and chargebacks halved from ~$40k/month to ~$20k. The pilot will lead with on-time at DC appointments, because chargebacks show up 30–45 days late.", "refs": [47, 97, 98] }
+  ]
+}

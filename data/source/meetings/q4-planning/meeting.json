@@ -1,0 +1,242 @@
+{
+  "id": "q4-planning",
+  "title": "Q4 Planning — Routing v3 & Driver App",
+  "startsAt": "2026-10-02T16:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Planning",
+  "host": "asher",
+  "participants": ["asher", "maya", "daniel", "priya", "tom", "sofia", "kenji", "ravi"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json", "transcript-3.json", "transcript-4.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Q4 is locked: Routing v3 GA on Nov 17, reliability fixes first (from Oct 5), a map-less Live ETA v0 that shows ETA ranges by Nov 6 with the full live map in Q1, and the onboarding redesign starting Nov 2 with one contractor. Tom will reset his \"this quarter\" live ETA promise to Harbor & Pine in writing by Oct 6.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Choose Q4 priorities the team actually believes in, with about 11 engineers of capacity before on-call and holidays.", "ref": 7, "owner": "asher" },
+            { "text": "After GA, committed integrations work, on-call, Thanksgiving and the Dec 14 freeze, only about 9 engineer-weeks are unallocated. Live ETA (5), reliability (3) and onboarding (12) all compete for them.", "ref": 147, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "Routing v3 beta beat its target. Across 6 fleets: 11% fewer miles (about 8–8.5% less drive time, not \"11% faster\") and on-time delivery up from 91.2% to 94.6%, against a 93% goal.", "ref": 17 },
+            { "text": "Tom told Harbor & Pine on Tuesday that live ETA sharing would be \"ready this quarter\". It is probably now in Marcus's evaluation doc for CFO Dana Whitfield.", "ref": 105, "owner": "tom" },
+            { "text": "Live ETA v0 replaces the full feature for Q4. It is a tracking link with an ETA range and a status timeline, with no map and no driver location. About 2.5 engineer-weeks, shipping Nov 6. The full live map moves to Q1.", "ref": 258 },
+            { "text": "Kenji's idea was adopted: show an ETA range (\"arriving 2:10–2:25\") rather than a point time. ETA error is about 9 min on dense urban stops and about 12 min at loading docks.", "ref": 247, "owner": "kenji" },
+            { "text": "Reliability work goes first and nothing preempts it: one engineer for 3 weeks from Mon Oct 5, targeting Oct 23.", "ref": 220, "owner": "ravi" },
+            { "text": "If anything slips, the priority order is GA, then reliability, then v0, then onboarding.", "ref": 260 }
+          ]
+        },
+        {
+          "heading": "Q3 in review",
+          "items": [
+            { "text": "Q3 shipped the solver migration, beta rollout tooling and dispatch board filters. The CSV import rewrite slipped about 3 weeks after 2 engineers moved to beta support.", "ref": 19, "owner": "maya" },
+            { "text": "The ML ETA model's MAE improved from 6.1 to 4.3 minutes on beta fleets.", "ref": 24, "owner": "kenji" },
+            { "text": "Sep 24 outage: 47 minutes (14:12–14:59 UTC). A Redis failover set off a retry storm from the dispatch workers. 312 fleets were affected, and the status page was only updated after 26 minutes.", "ref": 26, "owner": "ravi" },
+            { "text": "Brightside's Jordan called Sofia directly about stale ETAs and the \"all systems operational\" status page. It was also his second request for live ETA sharing. Renewal is Jan 31 at $145k ARR.", "ref": 31, "owner": "sofia" },
+            { "text": "Harbor & Pine: 420 trucks, about $310k ARR, decision Oct 30, against the cheaper RouteWise. Marcus Hill is the champion. CFO Dana Whitfield signs and has never been on a call.", "ref": 36, "owner": "tom" },
+            { "text": "Three more late-stage deals (two Texas grocery chains and a Denver parcel fleet) total roughly Harbor & Pine's ARR, and all want v3.", "ref": 44, "owner": "tom" }
+          ]
+        },
+        {
+          "heading": "Routing v3 GA scope",
+          "items": [
+            { "text": "In GA on Nov 17: the new solver as default for new fleets, a migration wizard for existing fleets (all moved by end of January), Kenji's ETA model, time windows and break rules, and v2 API parity. Multi-day routes and EV charging move to Q1.", "ref": 54, "owner": "daniel" },
+            { "text": "Code freeze is Nov 10. Rollout: 25% of eligible fleets on Nov 17, 50% the week after, all by Dec 1.", "ref": 56, "owner": "daniel" },
+            { "text": "Six engineers stay on GA through Dec 1. Maya will not move anyone off it.", "ref": 57, "owner": "maya" },
+            { "text": "Urban-dense ETA mode cuts urban error from about 8.9 to about 6 min, but has only been tested on 2 fleets. It ships behind a per-fleet flag, off by default, with Brightside first after a week of shadow mode.", "ref": 94 }
+          ]
+        },
+        {
+          "heading": "Live ETA sharing",
+          "items": [
+            { "text": "The full version is about 5 engineer-weeks: location streaming, a tokenized public link, a live map and map tile costs. It is in no one's plan.", "ref": 126, "owner": "daniel" },
+            { "text": "Brightside has asked twice. Jordan ties it to the Jan 31 renewal and to a March Sacramento launch (+60 vans).", "ref": 123, "owner": "sofia" },
+            { "text": "It is a design project too. This is the first end-customer surface, it raises driver privacy questions and needs a stale-ETA state, and the full map needs at least 2 weeks of design.", "ref": 133, "owner": "priya" },
+            { "text": "Harbor & Pine's real pain is phone calls: dispatch spends about a third of the day on \"where's my truck\" calls, which Dana sees as headcount.", "ref": 142, "owner": "tom" }
+          ]
+        },
+        {
+          "heading": "Driver app onboarding",
+          "items": [
+            { "text": "38% of new drivers never finish their first route. They drop at three points: email and password login, permissions asked with no context, and a scary live first route.", "ref": 161, "owner": "priya" },
+            { "text": "New flow: phone-number login, a 3-step permissions primer and a practice route. In the prototype, 10 of 11 drivers finished unaided. Target is below 15% drop-off.", "ref": 166, "owner": "priya" },
+            { "text": "It needs about 2 frontend engineers for 6 weeks plus about 1 week of auth backend. Sam Rivera's offer goes out Monday, with a mid-November start at best. A React Native contractor is available from Nov 2.", "ref": 187, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Reliability follow-ups",
+          "items": [
+            { "text": "Three fixes: retry budgets with jitter on dispatch workers, a circuit breaker that falls back to a clearly stale ETA, and an automated status page that posts within 5 minutes.", "ref": 194, "owner": "ravi" },
+            { "text": "Daniel called it non-negotiable, because GA increases load on the ETA service and v0 puts ETAs in front of end customers.", "ref": 199, "owner": "daniel" },
+            { "text": "A Redis failover drill will run in staging before the GA ramp.", "ref": 217, "owner": "ravi" }
+          ]
+        },
+        {
+          "heading": "Q4 OKRs",
+          "items": [
+            { "text": "Ship Routing v3 GA on Nov 17 (owner Daniel, Maya accountable). API parity was added as a KR.", "ref": 264, "owner": "daniel" },
+            { "text": "Get onboarding drop-off below 15% on pilot cohorts, with phone login and the primer live for 3 pilot fleets by Dec 11 (owner Priya).", "ref": 268, "owner": "priya" },
+            { "text": "Close Harbor & Pine by Oct 30 (owner Tom), including the scope-reset email and a v0 preview with mockups.", "ref": 270, "owner": "tom" },
+            { "text": "Keep Brightside: renewal Jan 31, set up the Sacramento expansion, and a mid-November check-in (owner Sofia).", "ref": 275, "owner": "sofia" },
+            { "text": "Reliability health metric: the status page posts within 5 minutes, no retry storms on failover, and the drill is done before the GA ramp.", "ref": 278, "owner": "ravi" }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Mon Oct 5: reliability work starts, Maya's capacity plan is due, and Sam Rivera's offer goes out.", "ref": 279 },
+            { "text": "Tue Oct 6: Tom emails Marcus to reset live ETA scope, cc Asher and Maya.", "ref": 243, "owner": "tom" },
+            { "text": "Wed Oct 7: Asher sends the final OKR doc, including the two-business-day rule for off-roadmap asks.", "ref": 286, "owner": "asher" },
+            { "text": "Fri Oct 9: Daniel's v0 tech design is due and Sofia tells Brightside the v0 date. Oct 16: Priya's page design. Oct 23: reliability and Kenji's range calibration are done.", "ref": 279 },
+            { "text": "Nov 2 onboarding starts, Nov 6 v0 ships, Nov 10 code freeze, Nov 17 GA.", "ref": 279 }
+          ]
+        }
+      ]
+    },
+    "decisions": {
+      "tldr": "Asher made the call on a scoped-down Live ETA v0 (no map, with ETA ranges, Nov 6) so reliability, GA and onboarding all fit in about 9 free engineer-weeks. Maya's condition was that Tom resets the Harbor & Pine promise in writing.",
+      "sections": [
+        {
+          "heading": "Decisions made",
+          "items": [
+            { "text": "Urban-dense ETA mode ships in GA behind a per-fleet flag, off by default. Decided by Asher with Daniel and Maya, because it has only been validated on 2 fleets and a bad default would be a GA regression.", "ref": 94, "owner": "kenji" },
+            { "text": "The urban-dense flag gets an end date: by end of January it is either made the default or deleted. Maya set this after Daniel raised the risk of permanent flags.", "ref": 85, "owner": "maya" },
+            { "text": "Brightside gets a week of shadow mode before urban-dense is enabled for them. Kenji's condition, because it is untested on their stop mix.", "ref": 89, "owner": "kenji" },
+            { "text": "Nobody is pulled off GA to build live ETA. Maya refused, Daniel backed her, and Tom accepted: GA is the board-level date, and the migration wizard is a known risk.", "ref": 151, "owner": "maya" },
+            { "text": "Reliability work goes first: one integrations engineer plus Ravi, from Mon Oct 5, target Oct 23, and nothing preempts it. Asher called it with unanimous agreement, since GA increases load and v0 exposes ETAs publicly.", "ref": 220, "owner": "ravi" },
+            { "text": "Live ETA v0 replaces the full feature for Q4. It is a per-stop tracking link with an ETA and a status timeline, with no live map and no driver location, about 2.5 engineer-weeks, shipping Nov 6. Asher proposed it because the customers' real problem is \"when\", not \"where\". Daniel confirmed the estimate and Maya confirmed it fits capacity.", "ref": 258, "owner": "asher" },
+            { "text": "The full live map is deferred to Q1 and will be scoped in December, with Priya's privacy design.", "ref": 258 },
+            { "text": "v0 shows an ETA range (\"arriving 2:10–2:25\"), not a point time. The range narrows as the van gets closer and widens or says \"updating\" when data is stale. Kenji proposed it because point ETAs would be wrong most of the time for urban and dock stops. Daniel, Tom and Priya endorsed it.", "ref": 247, "owner": "kenji" },
+            { "text": "Tom resets Harbor & Pine's expectations in writing by Oct 6. This was Maya's condition for agreeing to v0, to avoid repeating the June over-commitment. Tom agreed, reluctantly.", "ref": 240, "owner": "tom" },
+            { "text": "Onboarding starts Nov 2 with one contractor, phone login and primer first. The practice route may slip to January, and Sam Rivera joins when he lands. This follows Priya's sequencing proposal.", "ref": 190, "owner": "priya" },
+            { "text": "Priority order if anything slips is GA, then reliability, then v0, then onboarding. Asher decided it after Maya flagged zero slack. Tom briefly wanted v0 higher, then agreed.", "ref": 260, "owner": "asher" },
+            { "text": "The onboarding OKR is measured on pilot cohorts (3 fleets by Dec 11), not the whole fleet base. Priya proposed it and Maya agreed, given one contractor plus a new hire.", "ref": 268, "owner": "priya" },
+            { "text": "New process: any off-roadmap customer or prospect ask gets \"let me check with product\" and an answer within two business days. Asher and Tom agreed, and Sofia extended it to customer asks.", "ref": 286, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Open questions",
+          "items": [
+            { "text": "How v0 links get sent (SMS or email) and who pays for SMS, which matters at Harbor & Pine's volume. Daniel will put a recommendation in the tech design, and the decision will be made async.", "ref": 262, "owner": "daniel" },
+            { "text": "There is no fix this quarter for loading-dock ETA error (about 12 min, long tail). It needs dock-wait data, possibly from Harbor & Pine's Samsara feed.", "ref": 95, "owner": "kenji" },
+            { "text": "Will Marcus, and Dana behind him, accept v0 plus a Q1 map instead of the promised \"this quarter\" live ETA?", "ref": 240, "owner": "tom" },
+            { "text": "Will Sam Rivera accept, and when does he start? Best case is mid-November, realistically after Thanksgiving. The second frontend req is unlikely to land this quarter.", "ref": 180, "owner": "maya" },
+            { "text": "The status page vendor's price increase was parked for a separate thread.", "ref": 215, "owner": "ravi" }
+          ]
+        },
+        {
+          "heading": "Disagreements & how they resolved",
+          "items": [
+            { "text": "Tom and Maya clashed over Tom's sales-call commitment. Maya: \"you can't commit engineering time on a sales call.\" Tom: saying Q1 would have lost the deal to RouteWise. Asher slowed it down and reframed the question around the customer's actual problem.", "ref": 108 },
+            { "text": "Resolution: Tom owned the mistake. Maya accepted v0 on the condition of a written reset and acknowledged Tom wasn't careless. Asher will set up a commitment process with Tom.", "ref": 241 },
+            { "text": "Tom wanted urban-dense mode on for Brightside right away. Maya pointed out it is only proven on two other fleets, and it was resolved with a week of shadow mode first.", "ref": 80 },
+            { "text": "Tom asked to borrow a GA engineer for two weeks. Maya and Daniel said no, and Tom dropped it.", "ref": 152 },
+            { "text": "Tom worried a map-less v0 looks like \"half a feature\" next to RouteWise's demo. Asher reframed it around reducing phone calls, and Tom repositioned it as \"solve it in five weeks, full map in Q1 with your data\".", "ref": 232 }
+          ]
+        }
+      ]
+    },
+    "project_update": {
+      "tldr": "Routing v3 is on track for Nov 17 GA with strong beta results. Live ETA is scoped down to a Nov 6 v0, onboarding starts Nov 2 with one contractor, and reliability fixes land by Oct 23. Capacity has zero slack.",
+      "sections": [
+        {
+          "heading": "Status at a glance",
+          "items": [
+            { "text": "Routing v3: on track for GA Nov 17. Code freeze Nov 10, rollout complete Dec 1. Beta shows 11% fewer miles and on-time up from 91.2% to 94.6%.", "ref": 56, "owner": "daniel" },
+            { "text": "ML ETA model: MAE is 4.3 min overall, but about 8.9 min on dense urban stops and about 12 min on dock stops.", "ref": 67, "owner": "kenji" },
+            { "text": "Live ETA sharing: not built. A v0 (ETA range plus status timeline, no map) is committed for Nov 6.", "ref": 258 },
+            { "text": "Driver onboarding: 38% drop-off before first route. The redesign starts Nov 2, aiming for below 15% on pilot cohorts.", "ref": 156, "owner": "priya" },
+            { "text": "Reliability: Sep 24 follow-ups start Oct 5 and finish Oct 23.", "ref": 220, "owner": "ravi" }
+          ]
+        },
+        {
+          "heading": "Progress",
+          "items": [
+            { "text": "Q3 shipped the solver migration, beta rollout tooling and dispatch board filters. One dependency on undocumented v2 endpoints has already been removed.", "ref": 55, "owner": "maya" },
+            { "text": "The urban-dense ETA mode prototype brings urban error to about 6 min on 2 beta fleets. Kenji's error notebook becomes a per-mode dashboard.", "ref": 87, "owner": "kenji" },
+            { "text": "The onboarding prototype was tested with 11 drivers, and 10 completed it unaided.", "ref": 166, "owner": "priya" },
+            { "text": "Sam Rivera finished final rounds as the strongest frontend candidate this year, and the offer goes out Monday. A contractor is available from Nov 2.", "ref": 179, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Risks & blockers",
+          "items": [
+            { "text": "Zero capacity slack: 3 weeks (reliability) plus 2.5 (v0) of the 9 free engineer-weeks, with the rest going to phone-login backend and contractor review.", "ref": 229, "owner": "maya" },
+            { "text": "Harbor & Pine expectation gap: \"live ETA this quarter\" is likely in the CFO's evaluation doc, and the decision is Oct 30.", "ref": 105, "owner": "tom" },
+            { "text": "v0 depends on Ravi's circuit breaker, because a stale ETA on a public link means a support ticket for every stop.", "ref": 132, "owner": "ravi" },
+            { "text": "GA risks: v2 API parity and edge cases in the migration wizard (odd depot geocodes, custom service times).", "ref": 56, "owner": "daniel" },
+            { "text": "Onboarding staffing amounts to about 4 weeks of 1.5 engineers, not 6 weeks of 2, so the practice route may slip to January.", "ref": 189, "owner": "maya" },
+            { "text": "Brightside: if there's no tracking link by January, the Sacramento expansion (+60 vans) could go to a competitor.", "ref": 123, "owner": "sofia" }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Capacity plan reflecting today's decisions.", "ref": 258, "owner": "maya" },
+            { "text": "v0 tech design, including a recommendation on SMS vs email delivery.", "ref": 262, "owner": "daniel" },
+            { "text": "v0 tracking page design (range, timeline, stale state, fleet branding) by Oct 16, with a sketch for Daniel by Wednesday.", "ref": 234, "owner": "priya" },
+            { "text": "ETA range calibration per stop type, targeting about 80% coverage, by Oct 23.", "ref": 254, "owner": "kenji" },
+            { "text": "Retry budgets, circuit breaker and automated status page by Oct 23, plus a staging failover drill.", "ref": 217, "owner": "ravi" }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Email Marcus Hill to reset live ETA scope: v0 tracking link with ETA range on Nov 6, full live map in Q1 (draft to Asher and Maya Monday, cc Asher)", "owner": "tom", "ref": 243, "due": "2026-10-06" },
+    { "text": "Turn today's decisions into a Q4 capacity plan (GA, reliability, v0, onboarding)", "owner": "maya", "ref": 258, "due": "2026-10-05" },
+    { "text": "Write the Live ETA v0 tech design, including SMS vs email delivery and who pays for SMS", "owner": "daniel", "ref": 262, "due": "2026-10-09" },
+    { "text": "Design the v0 tracking page: ETA range, status timeline, stale state, fleet branding (sketch to Daniel by Wednesday)", "owner": "priya", "ref": 234, "due": "2026-10-16" },
+    { "text": "Ship retry budgets with jitter, the ETA service circuit breaker and automated status page posting, pairing with an integrations engineer", "owner": "ravi", "ref": 220, "due": "2026-10-23" },
+    { "text": "Schedule a Redis failover drill in staging before the GA rollout ramps", "owner": "ravi", "ref": 217 },
+    { "text": "Tell Brightside (Jordan) the Live ETA v0 date", "owner": "sofia", "ref": 258, "due": "2026-10-09" },
+    { "text": "Calibrate ETA ranges per stop type (target about 80% of arrivals inside the window), using Brightside shadow-mode data", "owner": "kenji", "ref": 254, "due": "2026-10-23" },
+    { "text": "Turn the ETA error notebook into a dashboard split by mode, and run a week of urban-dense shadow mode for Brightside", "owner": "kenji", "ref": 89 },
+    { "text": "Send the final Q4 OKR doc with owners, dates and the two-business-day rule for off-roadmap asks", "owner": "asher", "ref": 279, "due": "2026-10-07" },
+    { "text": "Make sure Hannah sends Sam Rivera's offer on Monday", "owner": "maya", "ref": 282, "due": "2026-10-05" }
+  ],
+  "highlights": [
+    { "title": "Tom admits he promised live ETA \"this quarter\" to Harbor & Pine", "from": 103, "to": 107, "by": "asher", "kind": "concern" },
+    { "title": "Maya: \"you can't commit engineering time on a sales call\"", "from": 108, "to": 112, "by": "daniel", "kind": "quote" },
+    { "title": "Maya's condition: Tom resets Harbor & Pine in writing", "from": 237, "to": 243, "by": "maya", "kind": "action" },
+    { "title": "Kenji: show an ETA range, not a point time", "from": 247, "to": 249, "by": "asher", "kind": "bookmark" },
+    { "title": "Final decision: reliability first, Live ETA v0 on Nov 6, map in Q1", "from": 258, "to": 260, "by": "sofia", "kind": "bookmark" }
+  ],
+  "ask": [
+    {
+      "q": "What did we decide about live ETA?",
+      "a": "We're not building the full live map this quarter. Instead, Live ETA v0 ships Nov 6. It is a per-stop tracking link that shows an ETA range and a status timeline (scheduled, out for delivery, three stops away, arriving, delivered), with no map and no driver location, for about 2.5 engineer-weeks. The full live map moves to Q1 and will be scoped in December. If anything slips, v0 slips before GA or reliability.",
+      "refs": [227, 247, 258, 260]
+    },
+    {
+      "q": "Who owns what?",
+      "a": "Tom resets Harbor & Pine in writing by Oct 6. Maya owns the capacity plan (Oct 5). Daniel owns the v0 tech design (Oct 9) and the GA OKR. Priya owns the v0 page design (Oct 16) and the onboarding OKR. Ravi owns the reliability fixes (Oct 23). Sofia tells Brightside the v0 date by Oct 9. Kenji calibrates ETA ranges by Oct 23. Asher sends the final OKR doc on Oct 7.",
+      "refs": [258, 264, 279]
+    },
+    {
+      "q": "What's the risk with the ETA model?",
+      "a": "The 4.3-minute MAE is an average. Error is about 8.9 minutes on dense urban stops and about 12 minutes at loading docks, with some stops off by 30, because dock wait time isn't observed. Urban-dense mode brings urban error to about 6 minutes but has only been tested on 2 fleets, so it ships behind a flag. Because v0 shows ETAs to end customers, the team will display a calibrated range instead of a point time.",
+      "refs": [67, 69, 94, 247]
+    },
+    {
+      "q": "What did Tom promise Harbor & Pine?",
+      "a": "On a Tuesday call, Tom told Marcus Hill that live ETA sharing would be \"ready this quarter\". He gave no date or scope, but Marcus wrote it down and it is likely in the evaluation doc for CFO Dana Whitfield. Tom owned it in the meeting. He agreed to email Marcus by Oct 6 resetting the scope to v0 on Nov 6, with the full map in Q1.",
+      "refs": [103, 105, 237, 243]
+    },
+    {
+      "q": "What does Kenji think?",
+      "a": "Kenji warned that the ETA model is much weaker on dense urban stops (about 8.9 min) and loading docks (about 12 min), and wanted a week of shadow mode before enabling urban-dense mode for Brightside. His key point was that v0 puts ETAs in front of end customers, who treat a point time literally, so v0 should show a range like \"arriving 2:10–2:25\". He'll calibrate it per stop type by Oct 23, targeting about 80% coverage.",
+      "refs": [67, 89, 247, 254]
+    },
+    {
+      "q": "What's the plan for driver onboarding?",
+      "a": "38% of new drivers drop off before their first route. Priya's redesign adds phone-number login, a 3-step permissions primer and a practice route, aiming for below 15%. Work starts Nov 2 with one contractor, with phone login and the primer first. Sam Rivera joins if he accepts, and the practice route may slip to January. The OKR is measured on 3 pilot fleets live by Dec 11.",
+      "refs": [156, 166, 190, 268]
+    }
+  ]
+}

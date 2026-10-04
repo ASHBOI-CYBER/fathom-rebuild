@@ -1,0 +1,145 @@
+{
+  "id": "brightside-qbr",
+  "title": "Brightside Grocers — Q3 Business Review",
+  "startsAt": "2026-09-30T15:00:00Z",
+  "platform": "teams",
+  "kind": "external",
+  "type": "Customer",
+  "host": "sofia",
+  "participants": ["sofia", "asher", "jordan", "aisha"],
+  "externalCompany": "Brightside Grocers",
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Q3 results were strong (93.8% on-time, fuel down 8%), but the Sep 24 outage and a status page that sat green for 26 minutes put the Jan 31 renewal and a 60-van Sacramento expansion at stake. Tandem gave a 10% one-month credit, and Asher committed to a dated live ETA plan by Oct 9.",
+      "sections": [
+        { "heading": "Meeting purpose", "items": [
+          { "text": "Quarterly review with Brightside's VP Ops (Jordan) and Fleet Manager (Aisha). Agenda: Q3 results, the Sep 24 outage, the roadmap including live ETA sharing, driver-side feedback, and Sacramento plus the Jan 31 renewal.", "ref": 12 }
+        ] },
+        { "heading": "Key takeaways", "items": [
+          { "text": "Q3 was strong: on-time delivery was 93.8%, up from 90.1% in Q2, and fuel per route fell 8% with the same 180 vans in 3 metros.", "ref": 16 },
+          { "text": "Jordan is more upset about the comms failure than about the outage itself. Brightside heard about it from its drivers first, and Tandem's status page stayed green for 26 minutes.", "ref": 32 },
+          { "text": "Brightside accepted a service credit of 10% of one month (about $1,200) on the October invoice. Jordan said the money is not the point. He wants a direct call or text the next time anything goes wrong.", "ref": 47 },
+          { "text": "Jordan first asked for live ETA sharing in June. Asher committed to a Q4 roadmap with a specific date for it, not a quarter, by Oct 9.", "ref": 59 },
+          { "text": "Sacramento (+60 vans, launching late February) defaults to Tandem. That depends on a clean October and November and on a credible live ETA date. Jordan decides by mid-December.", "ref": 106 }
+        ] },
+        { "heading": "Q3 results", "items": [
+          { "text": "On-time delivery was 93.8% vs 90.1% in Q2. North depot is the weakest metro at about 91%, mostly because of loading-dock waits.", "ref": 23 },
+          { "text": "The 8% fuel reduction is measured in gallons per route. Measured in dollars it is closer to 6% because of August diesel prices. Sofia will put both numbers in the deck.", "ref": 18 },
+          { "text": "Dispatchers re-optimized routes mid-day about 4x as often as in Q2, which suggests they now trust the plans.", "ref": 20 },
+          { "text": "Brightside is not in the Routing v3 beta. Asher wants to switch on v3 at the north depot first after the Nov 17 GA.", "ref": 26 }
+        ] },
+        { "heading": "Sep 24 outage", "items": [
+          { "text": "About 1,100 Brightside customers got wrong delivery windows during the first-wave morning rush. Support calls rose from about 250 to about 900, and Brightside comped fees on 300+ orders.", "ref": 30 },
+          { "text": "Drivers spent about 20 minutes restarting phones, and some called customers from personal phones. Aisha told drivers to ignore app times and just run the stop order.", "ref": 33 },
+          { "text": "Asher took ownership: the status page is updated by hand, and the incident lead was both debugging and running comms. He explained the cause (Redis failover, then a retry storm) and the fixes: retry jitter, a circuit breaker, a status page driven by alerts, and an ETA staleness flag.", "ref": 38 },
+          { "text": "The page arrived about 6 minutes late because alert thresholds were too lenient. They are being tightened this week.", "ref": 40 }
+        ] },
+        { "heading": "Live ETA sharing", "items": [
+          { "text": "Asher was blunt: live ETA is not built. It needs about 5 engineer-weeks and competes with driver onboarding for Q4 capacity.", "ref": 57 },
+          { "text": "Scoped design: a link inside the existing SMS, no app download, branded as Brightside, with the driver's location hidden until they are close.", "ref": 66 },
+          { "text": "The staleness flag must ship before or with live ETA so the link never shows a wrong time with confidence.", "ref": 63 },
+          { "text": "Aisha pointed out a benefit for drivers: fewer 'where are you' calls while they are looking for parking.", "ref": 68 }
+        ] },
+        { "heading": "Driver onboarding", "items": [
+          { "text": "Brightside is bringing on about 45 seasonal drivers for mid-November through New Year's. Last year 12 of 32 did not make it through their first week.", "ref": 89 },
+          { "text": "Pain points: email-plus-company-code login causes lockouts, 'only while using' location permissions break tracking, the first route is a live order with no practice, and the proof-of-delivery photo is two taps deep.", "ref": 84 },
+          { "text": "Priya's redesign (phone-number login, a 3-step permissions primer, a practice route) addresses nearly all of these. Aisha will provide 4–5 drivers from the October cohort to test it.", "ref": 90 }
+        ] },
+        { "heading": "Sacramento and renewal", "items": [
+          { "text": "The Sacramento depot lease is signed. Brightside plans about 60 vans starting late February, for 240 in total. Jordan must pick the routing platform by mid-December.", "ref": 104 },
+          { "text": "Sofia proposed folding Sacramento into the Jan 31 renewal as a single 240-van agreement. Jordan is open to it.", "ref": 114 },
+          { "text": "Asher proposed launching Sacramento on Routing v3 and on the new onboarding flow from day one.", "ref": 121 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Asher sends the Q4 roadmap with a live ETA date by Oct 9. Sofia books a walkthrough right after.", "ref": 59, "owner": "asher" },
+          { "text": "Sofia applies the credit, adds Jordan and Aisha to SMS incident alerts, and sends the incident report by Fri Oct 2.", "ref": 125, "owner": "sofia" },
+          { "text": "Sofia sends a combined renewal and Sacramento proposal in early November.", "ref": 116, "owner": "sofia" }
+        ] }
+      ]
+    },
+    "customer_success": {
+      "tldr": "The account is at risk but recoverable. Product results are strong, but trust took a hit from the Sep 24 outage and the slow live ETA answer. The renewal (Jan 31, $145k ARR) and a +60-van Sacramento expansion depend on a clean Oct–Nov and a credible live ETA date.",
+      "sections": [
+        { "heading": "Account health", "items": [
+          { "text": "The value delivered is clear: on-time delivery rose from 90.1% to 93.8%, fuel per route fell 8%, and dispatchers now trust re-optimization (4x more mid-day re-runs).", "ref": 16 },
+          { "text": "Sentiment is strained. After the outage, Jordan's CEO remembers Sep 24, not the Q3 numbers.", "ref": 28 },
+          { "text": "Jordan said it outright: 'I'm not looking for an excuse to leave. I'm telling you what I need to be able to stay and grow.'", "ref": 108 },
+          { "text": "The fleet manager is an advocate. Aisha's experienced drivers like the app, and she sees the on-time gains firsthand.", "ref": 78 }
+        ] },
+        { "heading": "Customer goals", "items": [
+          { "text": "A customer-facing tracking link (live ETA sharing) to cut 'where is my order' calls, keep up with competitors in two metros, and support the Sacramento launch.", "ref": 56 },
+          { "text": "Proactive incident comms: a call or text to Jordan and Aisha before drivers notice anything.", "ref": 42 },
+          { "text": "Get seasonal drivers productive on day one for the Thanksgiving peak, which runs about 1.6x normal weekly volume.", "ref": 113 },
+          { "text": "Fix loading-dock wait problems at the north depot, the lowest of the three metros at about 91% on-time.", "ref": 21 }
+        ] },
+        { "heading": "Risks", "items": [
+          { "text": "Another incident in October or November, especially during Thanksgiving week, would likely cost Tandem the Sacramento expansion.", "ref": 106 },
+          { "text": "If the Oct 9 live ETA date is far out ('next summer'), Jordan will look at another vendor for Sacramento.", "ref": 106 },
+          { "text": "Live ETA and driver onboarding compete for the same Q4 mobile and frontend engineers. Jordan wants both, and Aisha prioritizes onboarding for November.", "ref": 98 },
+          { "text": "Brightside's leadership (CEO, CFO) is watching. Jordan needs the written incident report to take upstairs.", "ref": 44 }
+        ] },
+        { "heading": "Expansion opportunities", "items": [
+          { "text": "Sacramento as a 4th metro: about 60 vans from late February, bringing the total to 240. Tandem is the default if the conditions are met. Decision by mid-December.", "ref": 104 },
+          { "text": "Fold Sacramento into the Jan 31 renewal as one 240-van agreement with volume pricing.", "ref": 114 },
+          { "text": "Launch Sacramento on Routing v3 and the new onboarding flow, which would also give the redesign its best real-world test.", "ref": 123 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Send the Q4 roadmap with a specific live ETA date by Oct 9.", "ref": 59, "owner": "asher" },
+          { "text": "Send the incident report (including the Thanksgiving change freeze) by Oct 2. Apply the 10% credit to the October invoice.", "ref": 111, "owner": "sofia" },
+          { "text": "Introduce Aisha to Priya for driver usability testing this week.", "ref": 94, "owner": "asher" },
+          { "text": "Send the combined renewal and Sacramento proposal in early November.", "ref": 116, "owner": "sofia" }
+        ] }
+      ]
+    },
+    "decisions": {
+      "tldr": "Brightside accepted a 10% one-month service credit, Tandem committed to a dated live ETA plan by Oct 9 and a Thanksgiving change freeze, and both sides agreed to treat the renewal and Sacramento as one deal.",
+      "sections": [
+        { "heading": "Decisions made", "items": [
+          { "text": "Service credit: Sofia offered 10% of one month (about $1,200) on the October invoice, pre-cleared with finance, and Jordan accepted.", "ref": 47, "owner": "sofia" },
+          { "text": "Asher committed to a Q4 roadmap by Oct 9 with a specific live ETA date, not a quarter or a range.", "ref": 61, "owner": "asher" },
+          { "text": "Jordan and Aisha will be added to direct SMS incident notifications with a 15-minute target, as part of Sofia's comms runbook.", "ref": 43, "owner": "sofia" },
+          { "text": "There will be a change freeze on the dispatch and ETA paths during Thanksgiving week, plus monthly controlled failover tests. Both go in writing in the incident report.", "ref": 110, "owner": "asher" },
+          { "text": "Renewal and Sacramento will be handled as one combined proposal in early November rather than two separate contracts.", "ref": 116, "owner": "sofia" },
+          { "text": "Brightside drivers from the October seasonal cohort will test Priya's onboarding redesign.", "ref": 93, "owner": "aisha" }
+        ] },
+        { "heading": "Open questions", "items": [
+          { "text": "What is the live ETA ship date, and how will Q4 capacity be split between live ETA and driver onboarding? This gets decided at Friday's Q4 planning.", "ref": 96 },
+          { "text": "Pricing for a 240-van combined agreement. Sofia deliberately gave no number on the call.", "ref": 116 },
+          { "text": "Is the proof-of-delivery photo step in scope for the onboarding redesign?", "ref": 87 }
+        ] },
+        { "heading": "Disagreements & how they resolved", "items": [
+          { "text": "Jordan was skeptical of another 'we're figuring out Q4' answer after hearing the same about Q3 in June. It was resolved by Asher committing to a specific date by Oct 9.", "ref": 58 },
+          { "text": "Live ETA vs onboarding priority inside Brightside: Jordan wants both, while Aisha said onboarding matters more in November. It is unresolved, and Tandem will take both inputs into Q4 planning.", "ref": 98 },
+          { "text": "Jordan said the credit doesn't cover the cost of that morning. He accepted it as a signal and made 'hear it from you first' the real condition.", "ref": 47 }
+        ] }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Send Brightside the Q4 roadmap with a specific ship date for live ETA sharing", "owner": "asher", "ref": 59, "due": "2026-10-09" },
+    { "text": "Send Jordan the written Sep 24 incident report, including the Thanksgiving week change freeze", "owner": "sofia", "ref": 111, "due": "2026-10-02" },
+    { "text": "Add Jordan and Aisha to direct SMS incident notifications", "owner": "sofia", "ref": 43, "due": "2026-09-30" },
+    { "text": "Apply a service credit of 10% of one month to Brightside's October invoice", "owner": "sofia", "ref": 46, "due": "2026-10-31" },
+    { "text": "Schedule a roadmap walkthrough with Jordan right after the Oct 9 roadmap goes out", "owner": "sofia", "ref": 75 },
+    { "text": "Introduce Aisha to Priya to set up driver usability tests on the onboarding redesign", "owner": "asher", "ref": 94, "due": "2026-10-02" },
+    { "text": "Send the seasonal driver feedback spreadsheet and line up 4–5 drivers from the October cohort for testing", "owner": "aisha", "ref": 93 },
+    { "text": "Send the Thanksgiving week volume forecast by metro", "owner": "aisha", "ref": 113 },
+    { "text": "Send the Sacramento launch timeline and van count", "owner": "jordan", "ref": 119, "due": "2026-10-09" },
+    { "text": "Prepare a combined renewal and Sacramento proposal with volume pricing at 240 vans", "owner": "sofia", "ref": 116, "due": "2026-11-06" }
+  ],
+  "highlights": [
+    { "title": "Jordan: we heard about the outage from our drivers, not from Tandem", "from": 32, "to": 33, "by": "sofia", "kind": "concern" },
+    { "title": "Jordan on live ETA: \"I asked in June\"", "from": 54, "to": 56, "by": "asher", "kind": "quote" },
+    { "title": "Asher commits to a live ETA date by Oct 9", "from": 59, "to": 61, "by": "sofia", "kind": "action" },
+    { "title": "Sacramento's 60 vans depend on reliability and live ETA", "from": 104, "to": 106, "by": "sofia", "kind": "bookmark" }
+  ],
+  "ask": [
+    { "q": "What service credit did we give Brightside for the Sep 24 outage?", "a": "Sofia offered a credit of 10% of one month, about $1,200, on the October invoice, and had cleared it with finance before the call. Jordan accepted but said the money isn't the point. What matters to him is that it doesn't happen again and that next time Brightside hears from Tandem first.", "refs": [46, 47] },
+    { "q": "What did Asher commit to on live ETA sharing?", "a": "Asher committed to send Brightside the Q4 roadmap by Oct 9 with a specific date for live ETA sharing, 'a date, not a quarter'. He was upfront that it isn't built yet, needs about 5 engineer-weeks, and competes with driver onboarding for Q4 capacity. He also said the ETA staleness flag must ship before or alongside it.", "refs": [57, 59, 61, 63] },
+    { "q": "What does the Sacramento expansion depend on?", "a": "Brightside plans about 60 vans in Sacramento from late February and would prefer to run them on Tandem. Jordan said it depends on two things: a clean October and November with no repeat of Sep 24, and a credible live ETA date. Otherwise he will look at another vendor. He needs to decide by mid-December.", "refs": [104, 106] },
+    { "q": "Why was Jordan most upset about the outage?", "a": "Not the 47-minute outage itself. It was that Brightside learned about it from a driver calling Aisha, while Tandem's status page stayed green for 26 minutes. About 1,100 customers got wrong windows and support calls went from about 250 to about 900. He asked to be called or texted directly next time.", "refs": [30, 32, 42] },
+    { "q": "What problems are Brightside's seasonal drivers having with the driver app?", "a": "Aisha listed four: email-plus-company-code login causes first-morning lockouts, 'only while using' location permissions break tracking, the first route is a live order with no practice, and the proof-of-delivery photo is two taps deep. Last year 12 of 32 seasonal drivers didn't make it through week one. Priya's redesign covers most of this, and Aisha will provide 4–5 drivers to test it.", "refs": [80, 82, 84, 86, 89] },
+    { "q": "What's the plan for the January renewal?", "a": "The renewal is due Jan 31. Sofia proposed folding Sacramento into it as a single 240-van agreement with volume pricing. She will send the combined proposal in early November, after Brightside has seen the roadmap and the live ETA date. Jordan agreed, since his CFO will want both numbers side by side.", "refs": [114, 116, 117] }
+  ]
+}

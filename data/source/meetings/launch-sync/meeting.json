@@ -1,0 +1,128 @@
+{
+  "id": "launch-sync",
+  "title": "Launch sync — Routing v3 announcement",
+  "startsAt": "2026-09-22T15:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Sync",
+  "host": "leah",
+  "participants": ["leah", "asher", "tom"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Routing v3 GA launches Nov 17 with a blog post, a Nov 19 webinar and a beta-customer case study; Asher firmly kept live ETA out of launch messaging because it isn't scheduled, and Tom will line up two reference customers.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Review Leah's launch plan for Routing v3 GA (Nov 17) and get two reference customers from Tom.", "ref": 4 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "Three launch pieces: blog post plus customer email and in-app banner on Nov 17, a 45-minute webinar on Nov 19, and a named case study from a beta fleet.", "ref": 4, "owner": "leah" },
+            { "text": "The 11% fewer-miles result is only two weeks old; Asher wants it locked at the end of October, and the case study should use the featured fleet's own number.", "ref": 10, "owner": "asher" },
+            { "text": "Live ETA stays out of all launch messaging. It is not committed (about 5 engineer-weeks, competing with driver onboarding), and Asher won't announce what isn't scheduled.", "ref": 33, "owner": "asher" },
+            { "text": "Routing v3 and the ML ETA model ship on every tier including Starter, with no price change at GA.", "ref": 56 }
+          ]
+        },
+        {
+          "heading": "Blog, webinar and case study",
+          "items": [
+            { "text": "Blog leads with outcomes for drivers and dispatchers, not the solver, and reassures customers there's no retraining since the UI barely changes.", "ref": 14 },
+            { "text": "Instead of quoting a dollar figure (Tom guessed a few hundred thousand; Asher's napkin math for one fleet was ~$90k/yr), Leah will build a savings calculator on the launch page.", "ref": 20, "owner": "leah" },
+            { "text": "Webinar: Leah and Asher frame, Daniel demos (not Kenji, who would go too deep), aiming for 300 registrations vs. 140 last time; one live session, recorded for the West Coast.", "ref": 24 },
+            { "text": "Demo will use a real anonymized beta route with Daniel's side-by-side replay tool, which Leah also wants as a GIF in the blog.", "ref": 75 }
+          ]
+        },
+        {
+          "heading": "Live ETA in launch messaging",
+          "items": [
+            { "text": "Tom wanted at least a coming-soon because prospects keep asking: Harbor & Pine calls it a must-have and Brightside has asked twice.", "ref": 30, "owner": "tom" },
+            { "text": "Asher: nobody is building it, a blog mention reads as a promise to 300 fleets, and he'd rather lose a deal on a feature than a customer on trust.", "ref": 35, "owner": "asher" },
+            { "text": "RouteWise's version is a shareable map link that refreshes about every 15 minutes, so it isn't live, but Asher acknowledged it's a real gap.", "ref": 40 },
+            { "text": "The approved answer for Q&A and sales calls is that it's a top customer request being evaluated, with no date. No Q4, no early next year, no soon.", "ref": 47 }
+          ]
+        },
+        {
+          "heading": "Pricing page update",
+          "items": [
+            { "text": "Remove the beta tag, move ML ETAs into the shared feature list, and use the claim that beta fleets drove 11% fewer miles on average, with a footnote and only after the number is locked. Avoid 'up to'.", "ref": 64, "owner": "leah" },
+            { "text": "Existing Starter customers get a version of the launch email telling them they're getting v3 at no extra cost.", "ref": 61 },
+            { "text": "Tom's request to rework the RouteWise comparison table is deferred to December.", "ref": 68, "owner": "leah" }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Leah publishes the full launch timeline in the launch doc today.", "ref": 71, "owner": "leah" },
+            { "text": "Tom asks the Columbus parcel fleet and Brightside (via Sofia) to be references this week.", "ref": 84, "owner": "tom" },
+            { "text": "Tom brings the list of deals blocked by live ETA, with numbers, to Q4 planning.", "ref": 86, "owner": "tom" }
+          ]
+        }
+      ]
+    },
+    "project_update": {
+      "tldr": "Launch plan for Nov 17 GA is set and owned by Leah. The main risks are case-study approval lead time and the 11% number moving before it's locked on Oct 30.",
+      "sections": [
+        {
+          "heading": "Status at a glance",
+          "items": [
+            { "text": "On track. Plan agreed: blog + email + banner on Nov 17, webinar Nov 19, case study approved by Nov 6, pricing page staged by Nov 10.", "ref": 71, "owner": "leah" }
+          ]
+        },
+        {
+          "heading": "Progress",
+          "items": [
+            { "text": "Beta results so far: 11% fewer miles and on-time delivery up from 91.2% to 94.6% after two weeks.", "ref": 8 },
+            { "text": "Messaging set: lead with outcomes, use the ML ETA improvement (6.1 to 4.3 min error) as the ETA story, with no live ETA mention.", "ref": 44 },
+            { "text": "Packaging confirmed: v3 is on every tier with no price changes at GA.", "ref": 56 }
+          ]
+        },
+        {
+          "heading": "Risks & blockers",
+          "items": [
+            { "text": "Case-study customer approval typically takes 3–6 weeks; Asher asked for buffer because it always slips.", "ref": 72 },
+            { "text": "The 11% figure is based on two weeks of data and could land at 10–12%, so nothing ships with the number until it's locked.", "ref": 8 },
+            { "text": "Webinar invites originally planned for Nov 2 left only 17 days to reach 300 registrations; moved to Oct 27.", "ref": 73 },
+            { "text": "Brightside is a risky live webinar guest given their repeated live ETA asks.", "ref": 81 },
+            { "text": "Sales disagrees with leaving live ETA out of launch while Harbor & Pine ($310k, deciding Oct 30) compares Tandem with the cheaper RouteWise.", "ref": 36, "owner": "tom" }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Lock the miles number with Daniel by Oct 30.", "ref": 10, "owner": "asher" },
+            { "text": "Leah writes the live ETA FAQ for webinar Q&A and sales this week.", "ref": 51, "owner": "leah" },
+            { "text": "Maya does a technical accuracy pass on the blog after Asher.", "ref": 79, "owner": "leah" },
+            { "text": "Tom secures two reference customers.", "ref": 84, "owner": "tom" }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Publish the full launch timeline with all dates in the launch doc", "owner": "leah", "ref": 71, "due": "2026-09-22" },
+    { "text": "Ask the Columbus parcel fleet and Brightside (via Sofia) to be launch references, including sign-off on their miles number", "owner": "tom", "ref": 84, "due": "2026-09-25" },
+    { "text": "Write the live ETA FAQ answer (\"we don't have a date\") for webinar Q&A and sales calls", "owner": "leah", "ref": 51, "due": "2026-09-25" },
+    { "text": "Bring the list of deals blocked by live ETA, with dollar amounts, to Q4 planning", "owner": "tom", "ref": 86 },
+    { "text": "Lock the beta fewer-miles number with Daniel", "owner": "asher", "ref": 10, "due": "2026-10-30" },
+    { "text": "Ask Daniel to run the webinar demo using his old-vs-v3 route replay tool", "owner": "leah", "ref": 77 },
+    { "text": "Build a fleet savings calculator for the launch page, labeled as based on beta results", "owner": "leah", "ref": 20 },
+    { "text": "Stage pricing page changes: drop beta tag, move ML ETAs to the shared list, add the footnoted miles claim", "owner": "leah", "ref": 63, "due": "2026-11-10" }
+  ],
+  "highlights": [
+    { "title": "Lock the 11% number late October and use the fleet's own figure", "from": 8, "to": 12, "by": "leah", "kind": "bookmark" },
+    { "title": "Asher: we won't announce live ETA because it isn't scheduled", "from": 31, "to": 38, "by": "leah", "kind": "quote" },
+    { "title": "Brightside for the case study, Columbus fleet for the webinar", "from": 80, "to": 85, "by": "leah", "kind": "action" }
+  ],
+  "ask": [
+    { "q": "Why isn't live ETA part of the Routing v3 launch?", "a": "Asher said no because live ETA isn't committed. It's about 5 engineer-weeks, it competes with driver onboarding for Q4 capacity, and nobody is building it. Announcing it would read as a promise to ~300 fleets. He told Tom to bring the affected deals to Q4 planning instead.", "refs": [33, 35, 37] },
+    { "q": "What is the launch plan and timeline?", "a": "Blog post, customer email and in-app banner on Nov 17, a webinar on Nov 19, and a beta-customer case study. Case-study draft by Oct 23 and customer approval by Nov 6. Blog draft and the locked miles number by Oct 30. Webinar invites move up to Oct 27. Pricing page changes are staged by Nov 10. Leah owns the timeline.", "refs": [4, 71, 73] },
+    { "q": "Can marketing use the 11% fewer-miles number?", "a": "Yes, but not yet. It comes from only two weeks of beta data and could end up at 10–12%, so Asher wants it locked at the end of October. The blog and pricing page will say beta fleets drove 11% fewer miles on average, with a footnote and no 'up to'. The case study will use the featured fleet's own number.", "refs": [8, 10, 64] },
+    { "q": "Which customers might be references for the launch?", "a": "The Columbus parcel fleet is the happiest beta fleet and a good live webinar guest. Brightside is a strong case-study candidate (grocery, 3 metros, renewal in January) but risky on a live webinar because of their live ETA asks. Tom will ask both this week and go through Sofia for Brightside.", "refs": [80, 81, 82, 84] },
+    { "q": "What changes on the pricing page?", "a": "v3 and the ML ETA model ship on every tier with no price change. The beta tag comes off, ML ETAs move into the shared feature list, and a footnoted 11% miles claim is added once the number is locked. Reworking the RouteWise comparison table is deferred to December.", "refs": [56, 63, 64, 68] }
+  ]
+}

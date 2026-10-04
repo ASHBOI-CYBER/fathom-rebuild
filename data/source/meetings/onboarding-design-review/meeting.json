@@ -1,0 +1,164 @@
+{
+  "id": "onboarding-design-review",
+  "title": "Design review — Driver app onboarding",
+  "startsAt": "2026-09-23T17:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Design review",
+  "host": "priya",
+  "participants": ["priya", "asher", "maya", "sofia"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Priya's new driver onboarding (SMS login, a why-first permissions primer, and a practice route) targets the 38% pre-first-route drop-off. The team decided on skip after one practice stop, a sandbox that replays recorded routes, and Spanish in v1. Who builds it is still open pending frontend hires.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Review the redesigned driver app onboarding flow and get decisions Priya needs to keep designing.", "ref": 6, "owner": "priya" }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "38% of new drivers never complete a first route. The Q4 target is below 15%.", "ref": 6 },
+            { "text": "The location-permission prompt is the biggest cliff (17 points), followed by email/password login (9 points).", "ref": 8 },
+            { "text": "Decided: drivers can skip the practice route only after one practice stop, and that stop includes the failed-delivery case.", "ref": 88, "owner": "asher" },
+            { "text": "Decided: the sandbox replays recorded routes with no live solver or ETA service, about 2–3 engineer-weeks instead of a quarter.", "ref": 89, "owner": "asher" },
+            { "text": "Decided: Spanish ships in v1 for onboarding and the core route screens.", "ref": 100, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Drop-off data",
+          "items": [
+            { "text": "The OS location prompt is shown cold, and iOS forces a mid-route upgrade to 'Always' that drivers deny. Dispatchers then see 'ghost drivers' stuck at the depot.", "ref": 10 },
+            { "text": "Login drop comes from drivers without work emails and constant password resets. Brightside depot leads keep a paper notebook of driver passwords.", "ref": 17 },
+            { "text": "Grocery fleets are worse (~45%) because of seasonal hiring; parcel is ~30%.", "ref": 22 },
+            { "text": "About a third of dropped drivers eventually finish a route, but only after dispatcher or depot-lead help. Onboarding tickets are CS's second-largest category.", "ref": 25, "owner": "sofia" }
+          ]
+        },
+        {
+          "heading": "New onboarding flow",
+          "items": [
+            { "text": "Phone-number login with an auto-filled six-digit SMS code, a texted invite link, and 90-day sessions. Shared-device fleets (~5%) re-enter a code each shift.", "ref": 27 },
+            { "text": "Three-step permissions primer explains why before each OS prompt: location 'Always' (accurate delivery windows, tracked only on shift), notifications (route changes without calls), and camera (proof-of-delivery photos, asked at first use).", "ref": 33 },
+            { "text": "In a six-driver test, all six granted location on the first try with the new flow. With the current flow, three of six denied it.", "ref": 39 },
+            { "text": "Practice route: 3–5 sandboxed stops covering scan, photo, delivered and failed delivery, about 4 minutes. The fleet sees completion in the dashboard.", "ref": 41 }
+          ]
+        },
+        {
+          "heading": "Practice route skip and sandbox scope",
+          "items": [
+            { "text": "Aisha (Brightside) says seasonal drivers need practice most and will all press skip, because everyone claims prior experience.", "ref": 57, "owner": "sofia" },
+            { "text": "A fleet-level setting was rejected because the default effectively is the product; only about a fifth of fleets change any driver app setting.", "ref": 63 },
+            { "text": "Maya: a live sandbox would mean a second isolated routing stack, kept out of dispatch, analytics and per-driver billing. That's a quarter of work while her team is on v3 GA.", "ref": 73, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Spanish localization",
+          "items": [
+            { "text": "About a third of Brightside's seasonal hires prefer Spanish. v1 scope is onboarding plus core route screens, roughly 200 strings, with a professional vendor and driver reviewers.", "ref": 94 },
+            { "text": "String extraction already exists in the app, so the work is mostly QA for longer strings.", "ref": 98, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Priya sizes onboarding in engineer-weeks, broken into slices, by Friday.", "ref": 112, "owner": "priya" },
+            { "text": "Asher takes onboarding vs. live ETA, both sized, to Q4 planning.", "ref": 111, "owner": "asher" },
+            { "text": "Sofia asks Aisha for Spanish reviewers and seasonal hires to test the new flow.", "ref": 116, "owner": "sofia" }
+          ]
+        }
+      ]
+    },
+    "decisions": {
+      "tldr": "Three decisions from Asher (skip after one practice stop, a recorded-route sandbox, Spanish in v1). Staffing stays open until Q4 planning.",
+      "sections": [
+        {
+          "heading": "Decisions made",
+          "items": [
+            { "text": "Skip practice only after one completed practice stop, with failed delivery as the first stop. Asher decided, dropping his full-skip preference after Aisha's point about seasonal drivers.", "ref": 89, "owner": "asher" },
+            { "text": "Build the sandbox on recorded routes with no live solver or ETA service. Asher decided because a live sandbox would pull Maya's team off v3 GA for a tutorial.", "ref": 89, "owner": "asher" },
+            { "text": "Spanish localization in v1 for onboarding and core route screens. Asher decided because a third of grocery seasonal drivers can't read the primer otherwise, so the 15% target would be out of reach.", "ref": 100, "owner": "asher" }
+          ]
+        },
+        {
+          "heading": "Open questions",
+          "items": [
+            { "text": "Who builds it? Frontend capacity depends on the two Senior Frontend hires (Sam Rivera onsite next week), so code likely won't start until mid-November.", "ref": 105 },
+            { "text": "How to split Q4 frontend capacity between onboarding and live ETA sharing (~5 engineer-weeks). This goes to Q4 planning.", "ref": 106 },
+            { "text": "Can scrubbed beta customer routes be used for the replay, or should it be self-recorded or made-up routes? This depends on the data terms.", "ref": 81 },
+            { "text": "Can onboarding ship in slices, starting with phone login?", "ref": 108 }
+          ]
+        },
+        {
+          "heading": "Disagreements & how they resolved",
+          "items": [
+            { "text": "Asher wanted a full skip for experienced drivers, while Sofia, relaying Aisha, argued seasonal drivers need practice. They resolved it with Asher's own middle ground: a mandatory first stop.", "ref": 66 },
+            { "text": "Asher suggested a per-fleet setting. Priya pushed back because few fleets change settings and two flows double the testing, so they went with one default instead.", "ref": 63 },
+            { "text": "Maya objected to a live sandbox on scope grounds, and Priya agreed the route only needs to look real.", "ref": 76 }
+          ]
+        }
+      ]
+    },
+    "project_update": {
+      "tldr": "Design is far enough along to size and the key scope calls are made. The project is blocked on frontend staffing, which is hiring-dependent and competes with live ETA.",
+      "sections": [
+        {
+          "heading": "Status at a glance",
+          "items": [
+            { "text": "Design in progress with scope locked on skip, sandbox and Spanish. Staffing is unresolved and the earliest realistic build start is mid-November.", "ref": 105, "owner": "priya" }
+          ]
+        },
+        {
+          "heading": "Progress",
+          "items": [
+            { "text": "Full flow prototyped in Figma: SMS login, three-step primer, practice route.", "ref": 27, "owner": "priya" },
+            { "text": "Six-driver test (four Brightside, two Columbus parcel) showed 6/6 granting location with the primer vs. 3/6 denying in the current flow.", "ref": 39 },
+            { "text": "Practice route runs about 4 minutes in testing.", "ref": 43 }
+          ]
+        },
+        {
+          "heading": "Risks & blockers",
+          "items": [
+            { "text": "No frontend engineer is free. The build depends on Senior Frontend hiring, and Sam Rivera could start early November at the earliest.", "ref": 103 },
+            { "text": "Live ETA sharing competes for the same frontend capacity in Q4.", "ref": 106, "owner": "maya" },
+            { "text": "'Only tracked on shift' copy needs legal review. The OS permission stays 'Always', but Tandem stops publishing location off shift.", "ref": 36, "owner": "maya" },
+            { "text": "Grocery seasonal hiring starts in November, so a December landing misses some of the peak.", "ref": 61 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Update prototype (skip after one stop, failed delivery first) and send location copy to legal.", "ref": 115, "owner": "priya" },
+            { "text": "Write up the replay-backend estimate.", "ref": 114, "owner": "maya" },
+            { "text": "Check Sam Rivera's timeline and the second req with Hannah.", "ref": 113, "owner": "asher" }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Size the onboarding redesign in engineer-weeks, broken into shippable slices, for Q4 planning", "owner": "priya", "ref": 112, "due": "2026-09-25" },
+    { "text": "Update the prototype: skip allowed after one practice stop, failed delivery as stop one", "owner": "priya", "ref": 115 },
+    { "text": "Send the location-permission primer copy to legal for review", "owner": "priya", "ref": 37 },
+    { "text": "Write up the recorded-route replay backend estimate", "owner": "maya", "ref": 114 },
+    { "text": "Check data terms for using scrubbed beta routes in the sandbox, or record our own", "owner": "maya", "ref": 81 },
+    { "text": "Check with Hannah on Sam Rivera's timeline and speeding up the second Senior Frontend req", "owner": "asher", "ref": 113 },
+    { "text": "Bring onboarding and live ETA sharing, both sized, to Q4 planning", "owner": "asher", "ref": 111 },
+    { "text": "Ask Aisha for 2–3 Spanish-speaking driver reviewers and seasonal hires to test the new flow", "owner": "sofia", "ref": 116, "due": "2026-09-25" }
+  ],
+  "highlights": [
+    { "title": "The 17-point cliff at the location permission prompt", "from": 8, "to": 11, "by": "asher", "kind": "bookmark" },
+    { "title": "Aisha: seasonal drivers need practice most, and they'll all press skip", "from": 57, "to": 61, "by": "sofia", "kind": "quote" },
+    { "title": "Maya: a live sandbox is a quarter of work, so replay recorded routes", "from": 73, "to": 79, "by": "maya", "kind": "concern" }
+  ],
+  "ask": [
+    { "q": "Where do new drivers drop off during onboarding?", "a": "38% of new drivers never complete a first route. The biggest cliff is the location-permission prompt (17 points), shown cold with no explanation, plus the iOS 'Always' upgrade mid-route. Email/password login loses another 9 points. Grocery fleets are worse at about 45%.", "refs": [6, 8, 10, 22] },
+    { "q": "Can experienced drivers skip the practice route?", "a": "Only after completing one practice stop, which will include the failed-delivery case. Asher wanted a full skip, but Sofia relayed Brightside fleet manager Aisha's view that seasonal drivers need practice most and would all press skip. Asher proposed the one-stop middle ground and confirmed it.", "refs": [53, 57, 59, 66, 89] },
+    { "q": "Why won't the practice-route sandbox use the live solver?", "a": "Maya warned that a live sandbox means a second isolated routing stack, kept out of dispatch, analytics and per-driver billing. That's about a quarter of work while her team is on v3 GA. Replaying recorded routes is roughly 2–3 engineer-weeks, and drivers only need the screens to look real.", "refs": [73, 77, 79] },
+    { "q": "Is Spanish in v1?", "a": "Yes. Asher decided Spanish ships in v1 for onboarding and the core route screens, roughly 200 strings. About a third of Brightside's seasonal hires prefer Spanish, and the permissions primer is useless if they can't read it. Translation will use a vendor plus driver reviewers.", "refs": [92, 94, 100] },
+    { "q": "Who is going to build the onboarding redesign?", "a": "Still open. No frontend engineer is free, so it depends on the two Senior Frontend hires. Sam Rivera is onsite next week and couldn't start before early November. It also competes with live ETA sharing for the same people, so Asher will take both, sized, to Q4 planning.", "refs": [103, 104, 105, 106, 111] }
+  ]
+}

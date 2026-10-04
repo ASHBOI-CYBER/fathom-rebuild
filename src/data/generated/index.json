@@ -1,0 +1,383 @@
+[
+ {
+  "id": "q4-planning",
+  "title": "Q4 Planning — Routing v3 & Driver App",
+  "startsAt": "2026-10-02T16:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Planning",
+  "host": "asher",
+  "participants": [
+   "asher",
+   "maya",
+   "daniel",
+   "priya",
+   "tom",
+   "sofia",
+   "kenji",
+   "ravi"
+  ],
+  "externalCompany": null,
+  "duration": 3973,
+  "tldr": "Q4 is locked: Routing v3 GA on Nov 17, reliability fixes first (from Oct 5), a map-less Live ETA v0 that shows ETA ranges by Nov 6 with the full live map in Q1, and the onboarding redesign starting Nov 2 with one contractor. Tom will reset his \"this quarter\" live ETA promise to Harbor & Pine in writing by Oct 6.",
+  "chapters": [
+   "Kickoff and agenda",
+   "Q3 in review",
+   "Routing v3 GA scope",
+   "The live ETA collision",
+   "Driver app onboarding",
+   "Reliability follow-ups",
+   "The trade-off and the decision",
+   "Q4 OKRs, owners and wrap-up"
+  ],
+  "actionCount": 11,
+  "highlightCount": 5,
+  "talk": {
+   "asher": 861.4,
+   "kenji": 212.8,
+   "maya": 532.8,
+   "daniel": 451.2,
+   "tom": 575.8,
+   "sofia": 347.6,
+   "ravi": 315.3,
+   "priya": 455.8
+  },
+  "templates": [
+   "general",
+   "decisions",
+   "project_update"
+  ]
+ },
+ {
+  "id": "routing-standup",
+  "title": "Routing squad — daily stand-up",
+  "startsAt": "2026-10-02T14:30:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Stand-up",
+  "host": "maya",
+  "participants": [
+   "maya",
+   "daniel",
+   "kenji",
+   "ravi",
+   "priya"
+  ],
+  "externalCompany": null,
+  "duration": 745,
+  "tldr": "Routing v3 GA checklist is 23/31 but a solver regression (p95 9s → 41s on 500+ stop routes) is a GA blocker for now, and the failover test was unblocked by time-sharing Ravi's staging Redis cluster from Monday.",
+  "chapters": [
+   "Updates around the room",
+   "Blocker: staging Redis for failover testing",
+   "Wrap-up and Q4 planning prep"
+  ],
+  "actionCount": 7,
+  "highlightCount": 3,
+  "talk": {
+   "maya": 158.9,
+   "daniel": 236.6,
+   "kenji": 124.3,
+   "ravi": 134.2,
+   "priya": 35
+  },
+  "templates": [
+   "general",
+   "standup"
+  ]
+ },
+ {
+  "id": "harbor-pine-demo",
+  "title": "Harbor & Pine — Routing v3 demo & pilot terms",
+  "startsAt": "2026-10-01T18:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Demo",
+  "host": "tom",
+  "participants": [
+   "tom",
+   "daniel",
+   "marcus",
+   "elena"
+  ],
+  "externalCompany": "Harbor & Pine Logistics",
+  "duration": 1798,
+  "tldr": "Daniel's Routing v3 demo on Harbor & Pine's own Kent data landed well, especially the 4-second re-plan. Tom offered a free 60-truck, 6-week pilot converting at $62/truck (vs RouteWise at $52). Live ETA still has no date: Daniel deferred to Maya, and Tom promised something concrete next week.",
+  "chapters": [
+   "Kickoff and recap",
+   "Routing v3: dispatch board, constraints and live re-planning",
+   "Samsara and the Oracle TMS",
+   "Pricing, pilot terms and live ETA"
+  ],
+  "actionCount": 8,
+  "highlightCount": 4,
+  "talk": {
+   "tom": 341.9,
+   "elena": 150.4,
+   "daniel": 873.5,
+   "marcus": 349.3
+  },
+  "templates": [
+   "general",
+   "demo",
+   "sales_bant"
+  ]
+ },
+ {
+  "id": "asher-maya-1on1",
+  "title": "Asher / Maya — weekly 1:1",
+  "startsAt": "2026-10-01T14:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "1:1",
+  "host": "asher",
+  "participants": [
+   "asher",
+   "maya"
+  ],
+  "externalCompany": null,
+  "duration": 1554,
+  "tldr": "Routing v3 beta is at 11% fewer miles, but the team is at ~110% and Daniel is a burnout risk. Tom has been promising Harbor & Pine live ETA this quarter, so Asher talks to Tom before Friday's Q4 planning and Maya brings a capacity model.",
+  "chapters": [
+   "Check-in and wins: Routing v3 beta and the outage response",
+   "Team capacity and Daniel's burnout risk",
+   "Tom promising live ETA to Harbor & Pine",
+   "Feedback both ways",
+   "Growth toward Director, hiring loop, and commitments"
+  ],
+  "actionCount": 8,
+  "highlightCount": 4,
+  "talk": {
+   "asher": 640.6,
+   "maya": 852.6
+  },
+  "templates": [
+   "general",
+   "one_on_one"
+  ]
+ },
+ {
+  "id": "brightside-qbr",
+  "title": "Brightside Grocers — Q3 Business Review",
+  "startsAt": "2026-09-30T15:00:00Z",
+  "platform": "teams",
+  "kind": "external",
+  "type": "Customer",
+  "host": "sofia",
+  "participants": [
+   "sofia",
+   "asher",
+   "jordan",
+   "aisha"
+  ],
+  "externalCompany": "Brightside Grocers",
+  "duration": 2331,
+  "tldr": "Q3 results were strong (93.8% on-time, fuel down 8%), but the Sep 24 outage and a status page that sat green for 26 minutes put the Jan 31 renewal and a 60-van Sacramento expansion at stake. Tandem gave a 10% one-month credit, and Asher committed to a dated live ETA plan by Oct 9.",
+  "chapters": [
+   "Kickoff and Q3 results",
+   "The Sep 24 outage and service credit",
+   "Live ETA sharing and the Q4 roadmap",
+   "Driver app onboarding pain for seasonal drivers",
+   "Sacramento expansion, renewal and next steps"
+  ],
+  "actionCount": 10,
+  "highlightCount": 4,
+  "talk": {
+   "sofia": 517,
+   "jordan": 685.1,
+   "asher": 648.7,
+   "aisha": 409
+  },
+  "templates": [
+   "general",
+   "customer_success",
+   "decisions"
+  ]
+ },
+ {
+  "id": "harbor-pine-discovery",
+  "title": "Harbor & Pine × Tandem — Discovery call",
+  "startsAt": "2026-09-29T17:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Sales",
+  "host": "tom",
+  "participants": [
+   "tom",
+   "asher",
+   "marcus",
+   "elena"
+  ],
+  "externalCompany": "Harbor & Pine Logistics",
+  "duration": 2167,
+  "tldr": "Harbor & Pine (420 trucks) has strong, quantified pain: 14% overtime and ~$40k/month in chargebacks. CFO Dana Whitfield decides by Oct 30 after a pilot, RouteWise is cheaper at ~$52/truck, and Marcus calls live ETA sharing a must-have, which Tom placed on 'this quarter's' roadmap before Asher hedged.",
+  "chapters": [
+   "Intros and agenda",
+   "Dispatch today: spreadsheets, overtime and chargebacks",
+   "Systems, integrations and security",
+   "Decision process, budget and RouteWise",
+   "Live ETA sharing and next steps"
+  ],
+  "actionCount": 8,
+  "highlightCount": 4,
+  "talk": {
+   "tom": 601.9,
+   "marcus": 940.1,
+   "elena": 255.3,
+   "asher": 240.9
+  },
+  "templates": [
+   "general",
+   "sales_meddpicc",
+   "sales_bant"
+  ]
+ },
+ {
+  "id": "interview-sam-rivera",
+  "title": "Interview: Sam Rivera — Senior Frontend Engineer",
+  "startsAt": "2026-09-28T20:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Interview",
+  "host": "maya",
+  "participants": [
+   "maya",
+   "priya",
+   "sam"
+  ],
+  "externalCompany": null,
+  "duration": 2457,
+  "tldr": "Strong technical and design-collaboration signal from Sam Rivera; concerns are thin geospatial experience and a ~4-hour Pacific overlap. Maya and Priya recommend advancing Sam to the final round with Asher.",
+  "chapters": [
+   "Intros and interview format",
+   "Sam's background: fintech, offline-first app, TypeScript migration",
+   "Deep dive: offline sync, conflicts and idempotency",
+   "Working with design: pushing back with data",
+   "Design problem: proof of delivery with flaky connectivity",
+   "Sam's questions and interviewer debrief"
+  ],
+  "actionCount": 6,
+  "highlightCount": 4,
+  "talk": {
+   "maya": 601.4,
+   "sam": 1589.5,
+   "priya": 172.9
+  },
+  "templates": [
+   "general",
+   "interview"
+  ]
+ },
+ {
+  "id": "incident-retro",
+  "title": "Incident retro — ETA service outage (Sep 24)",
+  "startsAt": "2026-09-25T16:30:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Retro",
+  "host": "ravi",
+  "participants": [
+   "ravi",
+   "daniel",
+   "maya",
+   "kenji",
+   "sofia",
+   "asher"
+  ],
+  "externalCompany": null,
+  "duration": 1895,
+  "tldr": "A routine Redis failover turned into a 47-minute ETA outage across 312 fleets because three safeguards were missing: Redis topology refresh, retry jitter, and a circuit breaker. Detection and comms lagged (paged 6 minutes late, status page 26 minutes late), so customers like Brightside heard about it from their drivers first. Owners are assigned for all fixes, and Maya will ring-fence Q4 reliability capacity.",
+  "chapters": [
+   "Ground rules and timeline",
+   "Root cause: failover, stale topology and the retry storm",
+   "Detection, alerting and the status page",
+   "Stale ETAs and customer impact",
+   "What went well and follow-ups"
+  ],
+  "actionCount": 10,
+  "highlightCount": 4,
+  "talk": {
+   "ravi": 714,
+   "kenji": 218.3,
+   "maya": 158.7,
+   "daniel": 352.4,
+   "sofia": 305.2,
+   "asher": 75.1
+  },
+  "templates": [
+   "general",
+   "retrospective",
+   "decisions"
+  ]
+ },
+ {
+  "id": "onboarding-design-review",
+  "title": "Design review — Driver app onboarding",
+  "startsAt": "2026-09-23T17:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Design review",
+  "host": "priya",
+  "participants": [
+   "priya",
+   "asher",
+   "maya",
+   "sofia"
+  ],
+  "externalCompany": null,
+  "duration": 1554,
+  "tldr": "Priya's new driver onboarding (SMS login, a why-first permissions primer, and a practice route) targets the 38% pre-first-route drop-off. The team decided on skip after one practice stop, a sandbox that replays recorded routes, and Spanish in v1. Who builds it is still open pending frontend hires.",
+  "chapters": [
+   "Where new drivers drop off",
+   "Walkthrough: phone login, permissions primer, practice route",
+   "Skipping the practice route, and how big the sandbox is",
+   "Decisions, Spanish, and who builds it"
+  ],
+  "actionCount": 8,
+  "highlightCount": 3,
+  "talk": {
+   "priya": 821,
+   "sofia": 211.5,
+   "maya": 237.9,
+   "asher": 188.7
+  },
+  "templates": [
+   "general",
+   "decisions",
+   "project_update"
+  ]
+ },
+ {
+  "id": "launch-sync",
+  "title": "Launch sync — Routing v3 announcement",
+  "startsAt": "2026-09-22T15:00:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Sync",
+  "host": "leah",
+  "participants": [
+   "leah",
+   "asher",
+   "tom"
+  ],
+  "externalCompany": null,
+  "duration": 1125,
+  "tldr": "Routing v3 GA launches Nov 17 with a blog post, a Nov 19 webinar and a beta-customer case study; Asher firmly kept live ETA out of launch messaging because it isn't scheduled, and Tom will line up two reference customers.",
+  "chapters": [
+   "Launch plan: blog, webinar, case study",
+   "Live ETA in the launch messaging",
+   "Pricing page update",
+   "Timeline, owners and reference customers"
+  ],
+  "actionCount": 8,
+  "highlightCount": 3,
+  "talk": {
+   "leah": 482,
+   "asher": 367.6,
+   "tom": 229
+  },
+  "templates": [
+   "general",
+   "project_update"
+  ]
+ }
+]

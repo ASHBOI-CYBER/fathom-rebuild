@@ -1,0 +1,147 @@
+{
+  "id": "incident-retro",
+  "title": "Incident retro — ETA service outage (Sep 24)",
+  "startsAt": "2026-09-25T16:30:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Retro",
+  "host": "ravi",
+  "participants": ["ravi", "daniel", "maya", "kenji", "sofia", "asher"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "A routine Redis failover turned into a 47-minute ETA outage across 312 fleets because three safeguards were missing: Redis topology refresh, retry jitter, and a circuit breaker. Detection and comms lagged (paged 6 minutes late, status page 26 minutes late), so customers like Brightside heard about it from their drivers first. Owners are assigned for all fixes, and Maya will ring-fence Q4 reliability capacity.",
+      "sections": [
+        { "heading": "Meeting purpose", "items": [
+          { "text": "Blameless but honest retro on the Sep 24 ETA service outage. Covered the timeline, root cause, detection and comms, customer impact, and follow-ups with owners.", "ref": 3 }
+        ] },
+        { "heading": "Key takeaways", "items": [
+          { "text": "The failover was routine. What made it a 47-minute outage was having none of these three safeguards: Redis client topology refresh, worker retry budgets with jitter, and an ETA service circuit breaker. Any one of them would have shrunk it.", "ref": 34 },
+          { "text": "The topology refresh fix was already in Daniel's runbook from a May staging failover, but the prod ticket sat in the backlog with nothing forcing it.", "ref": 22 },
+          { "text": "Detection was slow. The page came 6 minutes after the storm began because of a 10%-for-5-minutes threshold, and the status page was manual and went up after 26 minutes.", "ref": 41 },
+          { "text": "The model service was healthy throughout. The customer-facing harm came from stale cached ETAs that nothing marked as stale.", "ref": 66 },
+          { "text": "Maya will ring-fence about 20% of routing and platform capacity for reliability work in Q4 so these fixes don't get deprioritized again.", "ref": 101 }
+        ] },
+        { "heading": "Timeline", "items": [
+          { "text": "14:12 Redis primary failover, 14:14 retry storm, 14:20 Ravi paged, 14:31 cause suspected, 14:38 status page, 14:52 workers throttled and Redis client restarted with topology refresh, 14:59 recovered.", "ref": 5 },
+          { "text": "From 14:20 to about 14:26, Ravi chased a harmless 13:50 logging deploy. The Redis dashboard looked healthy, and only the ETA service client logs showed the stale primary.", "ref": 15 },
+          { "text": "A pod-only restart at 14:41 fell over again by 14:43 because workers were still retrying, which cost about 10 minutes.", "ref": 8 }
+        ] },
+        { "heading": "Root cause", "items": [
+          { "text": "The Redis client had periodic topology refresh off by default, so it kept hitting the old primary until the process restarted.", "ref": 20 },
+          { "text": "About 1,800 dispatch workers retried in lockstep (fixed 200 ms, 5 attempts, then a full job re-queue) and multiplied ETA service load about 6x in 90 seconds.", "ref": 31 },
+          { "text": "The ETA service had no circuit breaker, so it exhausted its connection pool and crash-looped instead of degrading.", "ref": 33 }
+        ] },
+        { "heading": "Detection and comms", "items": [
+          { "text": "The status page was manual, and Ravi was both incident commander and debugging. Going forward, a sev-1 alert should set the page to 'investigating' automatically.", "ref": 55 },
+          { "text": "Sofia first heard about the outage from Brightside's Aisha around 14:22, while the status page was still green.", "ref": 52 },
+          { "text": "Sofia needs a comms runbook with pre-approved templates. Mid-incident she lost 15 minutes wordsmithing and checking what she was allowed to say.", "ref": 58 }
+        ] },
+        { "heading": "Stale ETAs", "items": [
+          { "text": "The driver app kept counting down from its last ETA, and the notification service kept texting windows from a snapshot table that stopped updating at 14:14.", "ref": 66 },
+          { "text": "Kenji's staleness flag: expose a computed-at time on every ETA, with a default 5-minute threshold configurable per fleet. Show 'ETA updating' in the driver app and send a fallback customer message.", "ref": 74 },
+          { "text": "Asher framed the flag as a prerequisite for live ETA sharing.", "ref": 83 }
+        ] },
+        { "heading": "Next steps", "items": [
+          { "text": "Daniel: retry budgets with jitter and topology refresh everywhere by Oct 9.", "ref": 93, "owner": "daniel" },
+          { "text": "Ravi: tighter alerts Monday, status page automation, a circuit breaker in about 2 weeks, and the first prod failover test in late October.", "ref": 96, "owner": "ravi" },
+          { "text": "Ravi publishes the written postmortem Monday. Sofia turns it into a customer-facing version for Brightside.", "ref": 111, "owner": "ravi" }
+        ] }
+      ]
+    },
+    "retrospective": {
+      "tldr": "A 47-minute ETA outage (14:12–14:59 UTC, 312 fleets) caused by a Redis failover plus missing topology refresh, retry jitter, and circuit breaker. The fix was fast once the cause was found, thanks to Daniel's runbook, but detection and customer comms were late.",
+      "sections": [
+        { "heading": "Timeline", "items": [
+          { "text": "14:12 Redis cluster primary failover on one shard. The replica was promoted in about 11 seconds and nobody was paged.", "ref": 5 },
+          { "text": "14:14 dispatch workers start retrying without jitter, and the retry storm hits the ETA service.", "ref": 5 },
+          { "text": "14:20 Ravi paged, about 6 minutes late. 14:20–14:26 spent on a red-herring 13:50 deploy.", "ref": 15 },
+          { "text": "14:31 Daniel suspects the Redis client is still pointing at the old primary.", "ref": 16 },
+          { "text": "14:38 status page updated, 26 minutes after the start.", "ref": 48 },
+          { "text": "14:41 pod-only restart, which falls over again at 14:43.", "ref": 9 },
+          { "text": "14:52 workers throttled and Redis client restarted with topology refresh. 14:59 recovered. Total 47 minutes, 312 fleets.", "ref": 5 }
+        ] },
+        { "heading": "What went well", "items": [
+          { "text": "The fix was fast once the cause was known: 7 minutes from the decision to throttle to full recovery.", "ref": 87 },
+          { "text": "Daniel's May Redis failover runbook had the exact topology-refresh command and a 'reduce load first' note.", "ref": 87, "owner": "daniel" },
+          { "text": "Four engineers swarmed within 10 minutes without stepping on each other. Kenji ruled out the model service early.", "ref": 90 },
+          { "text": "Engineering answered Sofia's comms questions within about 2 minutes once she asked.", "ref": 91 }
+        ] },
+        { "heading": "What went wrong", "items": [
+          { "text": "No retry budget or jitter in the dispatch workers, plus full job re-queues on a single failed call, so retries were retried again.", "ref": 39 },
+          { "text": "The Redis client did not refresh topology on failover. A fix had been known since May but never reached prod.", "ref": 22 },
+          { "text": "The ETA service had no circuit breaker and crash-looped instead of degrading.", "ref": 33 },
+          { "text": "The status page was manual and 26 minutes late. The incident commander was also debugging, and secondary on-call was never paged.", "ref": 48 },
+          { "text": "Alert thresholds were too lenient (10% errors for 5 consecutive minutes), with no alert on retry rate or Redis client errors.", "ref": 43 },
+          { "text": "Stale ETAs were shown and texted to customers with full confidence for up to about 45 minutes.", "ref": 66 },
+          { "text": "Customers learned about the outage from their own drivers. Brightside reports over 1,000 customers with wrong windows, and there were 41 tickets from 23 fleets.", "ref": 69 }
+        ] },
+        { "heading": "Root cause", "items": [
+          { "text": "Trigger: a provider-side host failure caused a Redis primary failover.", "ref": 5 },
+          { "text": "The Redis client kept a stale slot map because periodic topology refresh was off by default.", "ref": 20 },
+          { "text": "Every route touches every shard, so one bad shard failed nearly all requests.", "ref": 26 },
+          { "text": "Lockstep retries from about 1,800 workers pushed ETA service load about 6x, and with no circuit breaker the service collapsed.", "ref": 31 },
+          { "text": "Systemic: the ETA service grew into a critical path without re-review, and known fixes had no forcing function.", "ref": 37 }
+        ] },
+        { "heading": "Follow-ups", "items": [
+          { "text": "Retry budgets with exponential backoff and jitter, no whole-job re-queue, and topology refresh enabled in all services, by Oct 9.", "ref": 93, "owner": "daniel" },
+          { "text": "Circuit breaker on the ETA service, status page automation from sev-1 alerts, monthly failover chaos test, and tighter alert thresholds plus a retry-rate alert.", "ref": 94, "owner": "ravi" },
+          { "text": "Customer comms runbook with pre-approved templates and a named contact list for large accounts.", "ref": 98, "owner": "sofia" },
+          { "text": "ETA staleness flag with a fallback customer message, about 1 week of backend work plus 1–2 days of mobile.", "ref": 85, "owner": "kenji" },
+          { "text": "Protect about 20% of routing and platform capacity for reliability in Q4, and propose a Thanksgiving change freeze.", "ref": 101, "owner": "maya" }
+        ] }
+      ]
+    },
+    "decisions": {
+      "tldr": "Owners and dates were set for every fix. Stale ETAs will trigger a fallback message rather than silence, the status page will be driven by alerts, and Maya will ring-fence Q4 reliability capacity with Asher's backing.",
+      "sections": [
+        { "heading": "Decisions made", "items": [
+          { "text": "A sev-1 alert will set the status page to 'investigating' automatically, and a human refines it afterwards. Ravi decided this because a vague banner at 14:20 beats a perfect one at 14:38.", "ref": 55, "owner": "ravi" },
+          { "text": "Incident commander and debugging roles will be separated, and secondary on-call will be paged immediately on sev-1.", "ref": 57, "owner": "ravi" },
+          { "text": "Stale ETAs will send a fallback 'running a little behind' message instead of suppressing the text. Kenji agreed after Sofia argued that silence also drives support calls.", "ref": 80, "owner": "kenji" },
+          { "text": "The staleness threshold defaults to 5 minutes and is configurable per fleet, following Daniel's point about dense urban vs rural routes.", "ref": 76, "owner": "kenji" },
+          { "text": "Maya will ask Q4 planning for about 20% of routing and platform capacity for reliability. Asher will back it, preferring to slip visible work rather than risk a repeat in Thanksgiving week.", "ref": 102, "owner": "maya" },
+          { "text": "Asher will not give Brightside a live ETA date at the QBR before planning. Instead he will promise a date for when they get a date.", "ref": 105, "owner": "asher" },
+          { "text": "Failover chaos tests run in staging first with the fixes in, then monthly in prod in a low-traffic Tuesday window.", "ref": 108, "owner": "ravi" }
+        ] },
+        { "heading": "Open questions", "items": [
+          { "text": "Should ETA requests return partial results when one shard is down? Daniel thinks it is too big for Q4.", "ref": 28 },
+          { "text": "Ravi's follow-up load (breaker, automation, chaos test, alerts) is only realistic if he isn't pulled onto other work.", "ref": 96 },
+          { "text": "Exact customer impact at Brightside is not final. They report over 1,000 wrong windows but have not confirmed a number.", "ref": 67 }
+        ] },
+        { "heading": "Disagreements & how they resolved", "items": [
+          { "text": "Hold vs send on stale ETAs: Kenji proposed holding customer texts, and Sofia said silence also floods support. They resolved on a fleet-branded fallback message.", "ref": 79 },
+          { "text": "Daniel questioned whether one 5-minute staleness threshold fits all fleets. It was resolved by making it configurable per fleet.", "ref": 75 },
+          { "text": "Maya questioned whether Ravi's list was realistic. Ravi sequenced it (thresholds Monday, automation in about 2 days, breaker in about 2 weeks) and tied it to protected capacity.", "ref": 95 }
+        ] }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Ship retry budgets with exponential backoff and jitter in dispatch workers (no whole-job re-queue) and enable Redis topology refresh in all services", "owner": "daniel", "ref": 93, "due": "2026-10-09" },
+    { "text": "Tighten ETA service alert thresholds and add alerts on worker retry rate and Redis client errors", "owner": "ravi", "ref": 96, "due": "2026-09-28" },
+    { "text": "Automate the status page so sev-1 alerts set it to 'investigating' and trigger the customer comms flow", "owner": "ravi", "ref": 61, "due": "2026-10-02" },
+    { "text": "Add a circuit breaker to the ETA service so it fails fast and serves degraded results", "owner": "ravi", "ref": 94, "due": "2026-10-12" },
+    { "text": "Run a monthly Redis failover chaos test: staging first, then the first prod run on a late-October Tuesday", "owner": "ravi", "ref": 108, "due": "2026-10-27" },
+    { "text": "Update the incident process: separate IC and comms roles, and page secondary on-call immediately for sev-1", "owner": "ravi", "ref": 57 },
+    { "text": "Publish the written postmortem for the Sep 24 outage", "owner": "ravi", "ref": 111, "due": "2026-09-28" },
+    { "text": "Draft a customer comms runbook with pre-approved templates and a named contact list, and send the templates to Ravi and Daniel for review", "owner": "sofia", "ref": 99, "due": "2026-09-30" },
+    { "text": "Build the ETA staleness flag (computed-at timestamp, 'ETA updating' in the driver app, fallback customer message)", "owner": "kenji", "ref": 85, "due": "2026-10-09" },
+    { "text": "Propose protecting about 20% of routing and platform capacity for reliability, plus a Thanksgiving change freeze, at Q4 planning", "owner": "maya", "ref": 101, "due": "2026-10-02" }
+  ],
+  "highlights": [
+    { "title": "Ravi walks the outage timeline, 14:12 to 14:59", "from": 5, "to": 5, "by": "maya", "kind": "bookmark" },
+    { "title": "Any one of three fixes would have shrunk it, and we had none", "from": 34, "to": 35, "by": "asher", "kind": "quote" },
+    { "title": "Sofia: customers learned about the outage from their own drivers", "from": 52, "to": 52, "by": "asher", "kind": "concern" },
+    { "title": "Maya ring-fences Q4 capacity for reliability work", "from": 101, "to": 102, "by": "ravi", "kind": "action" }
+  ],
+  "ask": [
+    { "q": "What caused the Sep 24 ETA outage?", "a": "A Redis primary failover at 14:12 was the trigger. Three gaps made it a 47-minute outage: the Redis client never refreshed topology and kept hitting the old primary, about 1,800 dispatch workers retried in lockstep with no jitter or budget (about 6x load), and the ETA service had no circuit breaker, so it crash-looped. Any one of those fixes would have made it much smaller.", "refs": [20, 31, 33, 34] },
+    { "q": "Why was the status page 26 minutes late?", "a": "The status page is updated by hand, and Ravi was both incident commander and the one debugging, so it slipped until Maya asked at Sofia's prompting. Paging was also late: the 10%-for-5-minutes threshold paged Ravi at 14:20, 6 minutes into the storm. The fix is automatic 'investigating' status on sev-1 alerts and separate IC and comms roles.", "refs": [41, 48, 55, 56] },
+    { "q": "Who owns which follow-ups from the retro?", "a": "Daniel owns retry budgets with jitter and enabling topology refresh everywhere. Ravi owns the circuit breaker, status-page automation, the monthly failover chaos test, and tighter alert thresholds, plus publishing the postmortem. Sofia owns the customer comms runbook and templates, Kenji the ETA staleness flag, and Maya protecting Q4 reliability capacity.", "refs": [93, 94, 98, 100, 101] },
+    { "q": "What is Kenji's ETA staleness flag?", "a": "During the outage the model service was fine, but cached ETAs went stale for up to about 45 minutes and nothing marked them stale. Kenji will expose a computed-at timestamp on every ETA. Past a threshold (default 5 minutes, configurable per fleet), the driver app shows 'ETA updating' and customers get a fallback 'running a little behind' message instead of a wrong window. Asher sees it as a prerequisite for live ETA sharing.", "refs": [66, 74, 80, 83] },
+    { "q": "What went well during the incident?", "a": "Once the cause was found, recovery took 7 minutes, largely thanks to Daniel's Redis failover runbook from a May staging incident. Four engineers swarmed within 10 minutes, and Kenji quickly ruled out the model service. The main slip in the fix itself was a pod-only restart at 14:41 that fell over again because workers were still retrying.", "refs": [87, 90, 8] },
+    { "q": "How bad was the customer impact?", "a": "312 fleets were affected over 47 minutes. Tandem got 41 tickets from 23 fleets. Brightside was hit hardest because the outage landed on its 7 a.m. grocery wave: it reports over 1,000 customers with wrong delivery windows, and its drivers were restarting phones and calling customers from personal phones.", "refs": [11, 67, 69, 70] }
+  ]
+}

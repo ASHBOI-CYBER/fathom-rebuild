@@ -1,0 +1,173 @@
+{
+  "id": "interview-sam-rivera",
+  "title": "Interview: Sam Rivera — Senior Frontend Engineer",
+  "startsAt": "2026-09-28T20:00:00Z",
+  "platform": "zoom",
+  "kind": "external",
+  "type": "Interview",
+  "host": "maya",
+  "participants": ["maya", "priya", "sam"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json", "transcript-2.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Strong technical and design-collaboration signal from Sam Rivera; concerns are thin geospatial experience and a ~4-hour Pacific overlap. Maya and Priya recommend advancing Sam to the final round with Asher.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Senior Frontend Engineer technical interview (driver app and dispatcher dashboard): background, an offline-sync deep dive, design collaboration with Priya, a proof-of-delivery design problem, and Sam's questions.", "ref": 11 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "Sam spent 5 years at fintech Pagora as tech lead of an offline-first React Native app for field agents in rural Portugal and Mozambique; the rebuild took 7 months against a 4-month estimate and eliminated paper workarounds.", "ref": 18 },
+            { "text": "Sync knowledge is deep and earned in production: moved from whole-record last-write-wins to per-field merges after losing data, and syncs money as commutative intents rather than balances.", "ref": 50 },
+            { "text": "Sam briefly said the server generates idempotency keys, then corrected it unprompted: keys are client-generated at enqueue time so retries after a lost response dedupe.", "ref": 38 },
+            { "text": "Best-in-loop design collaboration answer: brought support-ticket data (30% of agent tickets were 'did it go through') instead of a mockup, and conceded the designer's point about anxiety.", "ref": 63 },
+            { "text": "Concerns: maps/geospatial experience is limited to a Mapbox side project, and Sam's proposed 1–9 p.m. Lisbon day gives about 4 hours of Pacific overlap.", "ref": 137 },
+            { "text": "Recommendation: advance to the final round with Asher.", "ref": 139 }
+          ]
+        },
+        {
+          "heading": "Background and TypeScript migration",
+          "items": [
+            { "text": "About 7 years in React/React Native: agency work, then 5 years at Pagora (small-business lending with field agents).", "ref": 16 },
+            { "text": "Led a bottom-up JS-to-TypeScript migration of ~300k lines using allowJs, a no-new-JS lint rule, ts-migrate, and a Friday progress dashboard.", "ref": 24 },
+            { "text": "Took ~14 months to full TypeScript plus ~3 months to strict mode, enabled per directory.", "ref": 28 },
+            { "text": "Type-related incidents fell from about a quarter of mobile incidents to under 10%; Sam credited API contract tests for part of it rather than overclaiming.", "ref": 30 }
+          ]
+        },
+        {
+          "heading": "Offline sync architecture",
+          "items": [
+            { "text": "SQLite (WatermelonDB, later op-sqlite) with a transactional outbox: record update and outbox append commit together or not at all.", "ref": 34 },
+            { "text": "Server retains idempotency keys for 72 hours keyed on device id + key, sized to agents' longest realistic two-day offline stretch.", "ref": 40 },
+            { "text": "Per-field versions ordered by server sequence, not device clocks (one agent's phone was set to the wrong year); losing values kept in a history table.", "ref": 46 },
+            { "text": "Outbox lives on disk; Android flushes via WorkManager and a headless JS task, iOS flushes on foreground and network changes.", "ref": 54 },
+            { "text": "Non-retryable failures move to a dead-letter 'needs attention' list so one bad operation can't jam the queue.", "ref": 56 },
+            { "text": "Tested with a fault-injecting network layer in dev builds and server-side property tests that shuffle and duplicate operations.", "ref": 58 }
+          ]
+        },
+        {
+          "heading": "Design collaboration",
+          "items": [
+            { "text": "Compromise with designer Inês: a small pending-sync indicator, a sync history screen, and per-item clock-to-check status.", "ref": 65 },
+            { "text": "Validated with 5 agents in Coimbra; 'did it go through' tickets dropped ~40% over two months and duplicate submissions mostly stopped.", "ref": 67 },
+            { "text": "Lost an argument over dynamic type to a phone with the font cranked up; took three sprints to fix.", "ref": 73 },
+            { "text": "Prefers joining problem framing early and frequent small check-ins with real-device recordings over big handoffs.", "ref": 77 }
+          ]
+        },
+        {
+          "heading": "Proof-of-delivery design problem",
+          "items": [
+            { "text": "Decoupled capture, the 'delivered' event, and the photo upload so the driver never waits on the network.", "ref": 89 },
+            { "text": "Compress on device from 4–5 MB to roughly 200–300 KB and capture GPS accuracy plus wall-clock and monotonic timestamps.", "ref": 91 },
+            { "text": "A tiny delivered event with a ~20 KB thumbnail goes first, giving dispatch a fast preview and insurance if the phone dies.", "ref": 97 },
+            { "text": "Separate resumable upload queue (presigned URLs, chunked or tus); local file deleted only after a hash-verified server ack.", "ref": 99 },
+            { "text": "Glove-friendly one-button capture with auto-accept, plus quiet upload status so drivers know their proof is safe.", "ref": 103 },
+            { "text": "Would flag rather than block deliveries more than ~150 m from the address; candidly limited on maps rendering and clustering.", "ref": 107 }
+          ]
+        },
+        {
+          "heading": "Remote work and time zones",
+          "items": [
+            { "text": "Frontend on-call is a lighter rotation, about one week in eight; Sam's on-call would match their working hours with a Pacific backup.", "ref": 117 },
+            { "text": "Sam stays in Lisbon and proposes working 1–9 p.m. local, about 9 a.m.–1 p.m. Pacific.", "ref": 125 },
+            { "text": "Maya was candid that planning would land in Sam's evening and the team would need stronger async habits.", "ref": 126 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Priya submits her scorecard tonight.", "ref": 140, "owner": "priya" },
+            { "text": "Maya submits her scorecard by tomorrow morning and asks Hannah to schedule the final round, ideally next week.", "ref": 141, "owner": "maya" },
+            { "text": "Maya briefs Asher to probe the geospatial gap and a concrete overlap handoff scenario.", "ref": 139, "owner": "maya" },
+            { "text": "Maya sends Sam the frontend on-call doc.", "ref": 117, "owner": "maya" }
+          ]
+        }
+      ]
+    },
+    "interview": {
+      "tldr": "Sam Rivera is the strongest frontend candidate so far, with deep offline-sync experience and excellent design collaboration. Gaps are maps/geospatial and a ~4-hour time zone overlap, and the panel recommends the final round with Asher.",
+      "sections": [
+        {
+          "heading": "Candidate snapshot",
+          "items": [
+            { "text": "Lisbon-based frontend engineer with ~7 years in React/React Native; last 5 at fintech Pagora building tools for field agents with poor connectivity.", "ref": 16 },
+            { "text": "Tech lead (not a manager) of the offline-first rebuild with 3–4 mobile engineers and a dedicated backend engineer.", "ref": 22 },
+            { "text": "Led the JS-to-TypeScript migration across ~300k lines of code.", "ref": 24 }
+          ]
+        },
+        {
+          "heading": "Strengths",
+          "items": [
+            { "text": "Production-earned sync judgment: transactional outbox, per-field merges, and intent-based money operations that commute.", "ref": 50 },
+            { "text": "Self-corrects: caught their own idempotency-key mistake and explained exactly why the client must generate the key.", "ref": 38 },
+            { "text": "Pushes back on design with data and a problem statement, not a counter-mockup, and concedes good points.", "ref": 65 },
+            { "text": "Strong driver empathy: glove-friendly capture, fewer taps at 100+ stops a day, visible proof that uploads are safe.", "ref": 103 },
+            { "text": "Calibrated about impact; attributed part of the incident reduction to contract tests rather than TypeScript alone.", "ref": 30 },
+            { "text": "Thinks about observability unprompted: client p50/p95 capture-to-ack times and queue depth per region.", "ref": 111 }
+          ]
+        },
+        {
+          "heading": "Concerns",
+          "items": [
+            { "text": "Limited maps/geospatial depth: basic geofencing and haversine only, map clustering and offline tiles only in a Mapbox side project. Material because the dashboard is map-heavy; Daniel could pair.", "ref": 107 },
+            { "text": "About 4 hours of overlap with Pacific (1–9 p.m. Lisbon); planning lands in Sam's evening and late-Pacific incidents fall outside their hours.", "ref": 125 },
+            { "text": "Maya and Priya both called out the overlap as the one to watch, particularly for live design jam sessions.", "ref": 138 }
+          ]
+        },
+        {
+          "heading": "Technical signal",
+          "items": [
+            { "text": "Record update and outbox append in one SQLite transaction; per-entity ordering with a server change cursor for pulls.", "ref": 34 },
+            { "text": "Per-field versions ordered by server sequence instead of device clocks; human review for legal-name conflicts.", "ref": 48 },
+            { "text": "Queue survives app kills via WorkManager and headless JS on Android and foreground flushes on iOS; dead-lettering for poison messages.", "ref": 56 },
+            { "text": "Fault-injection network layer and property-based tests that shuffle and duplicate operations.", "ref": 58 },
+            { "text": "POD design: decoupled tiny event with thumbnail, a separate resumable upload queue, and deletion only after hash-verified ack.", "ref": 99 }
+          ]
+        },
+        {
+          "heading": "Motivation & fit",
+          "items": [
+            { "text": "Cares about engineering having a real voice in product decisions.", "ref": 120 },
+            { "text": "Enthusiastic about design being embedded, including onboarding research sessions with Priya.", "ref": 123 },
+            { "text": "Not relocating; has already planned a shifted 1–9 p.m. schedule and welcomed Maya's candor about the tradeoffs.", "ref": 127 }
+          ]
+        },
+        {
+          "heading": "Recommendation",
+          "items": [
+            { "text": "Maya: strongest frontend candidate interviewed to date.", "ref": 135, "owner": "maya" },
+            { "text": "Advance to the final round with Asher, who should probe map clustering and a concrete 3 p.m. Pacific incident handoff.", "ref": 139, "owner": "maya" },
+            { "text": "Priya agrees.", "ref": 140, "owner": "priya" }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Submit interview scorecard for Sam Rivera with the advance recommendation", "owner": "maya", "ref": 141, "due": "2026-09-29" },
+    { "text": "Submit design-collaboration scorecard for Sam Rivera", "owner": "priya", "ref": 140, "due": "2026-09-29" },
+    { "text": "Ask Hannah to schedule Sam's final round with Asher for next week", "owner": "maya", "ref": 141, "due": "2026-09-30" },
+    { "text": "Brief Asher to probe map clustering/geospatial depth and a 3 p.m. Pacific incident handoff scenario", "owner": "maya", "ref": 139, "due": "2026-10-02" },
+    { "text": "Send Sam the frontend on-call rotation doc", "owner": "maya", "ref": 117, "due": "2026-09-29" },
+    { "text": "Line up Daniel as a maps/geospatial pairing partner if Sam joins", "owner": "maya", "ref": 137 }
+  ],
+  "highlights": [
+    { "title": "Sam corrects the idempotency-key detail", "from": 38, "to": 39, "by": "maya", "kind": "quote" },
+    { "title": "Pushing back on a design with support-ticket data", "from": 63, "to": 67, "by": "priya", "kind": "quote" },
+    { "title": "Upfront about limited maps/geospatial experience", "from": 107, "to": 108, "by": "maya", "kind": "concern" },
+    { "title": "Debrief: advance Sam to the final round with Asher", "from": 137, "to": 141, "by": "maya", "kind": "action" }
+  ],
+  "ask": [
+    { "q": "How did Sam handle sync conflicts at Pagora?", "a": "The first version used whole-record last-write-wins, which lost data when two agents edited different fields of the same merchant, made worse by device clocks (one phone was set to the wrong year). Sam moved to per-field versions ordered by server sequence, kept losing values in a history table, and sent legal-name conflicts to human review. For money, the client sends commutative intents like 'record payment of €50' and only the server computes balances.", "refs": [42, 44, 46, 48, 50] },
+    { "q": "What detail did Sam get wrong, and how did they correct it?", "a": "Sam first said the server generates the idempotency key, then immediately corrected it: the client generates a UUID when the operation enters the outbox. That way a retry after a lost response carries the same key and the server can return the original result. Maya saw the self-correction as a plus.", "refs": [38, 135] },
+    { "q": "How would Sam design proof-of-delivery photos for drivers with flaky connectivity?", "a": "Sam would decouple capture, the 'delivered' event and the photo upload. The photo is compressed on device to roughly 200–300 KB, and a tiny delivered event carrying a ~20 KB thumbnail goes out first so dispatch sees it fast and has insurance if the phone dies. Full photos go through a separate resumable upload queue and are deleted locally only after a hash-verified server ack.", "refs": [89, 91, 95, 97, 99] },
+    { "q": "What are the concerns about Sam?", "a": "Two. Maps and geospatial experience is thin (basic geofencing, plus Mapbox only in a side project), which matters because the dashboard is map-heavy, though Daniel could pair. And Sam would work 1–9 p.m. Lisbon, giving only about 4 hours of overlap with Pacific.", "refs": [107, 125, 137] },
+    { "q": "What working hours did Sam propose, and how much overlap is that?", "a": "Sam is staying in Lisbon and would work roughly 1–9 p.m. local time, which is about 9 a.m.–1 p.m. Pacific, or 4 hours of overlap. Maya called it workable but said planning would land in Sam's evening and the team would need better async habits, like handoff notes and recorded design reviews.", "refs": [125, 126] },
+    { "q": "What's the recommendation and next step for Sam?", "a": "Maya and Priya both rated Sam the strongest frontend candidate so far and recommend advancing to the final round with Asher. Maya will ask Asher to probe map clustering and a concrete late-Pacific incident handoff. Priya submits her scorecard tonight, and Maya submits hers by morning and asks Hannah to schedule the final next week.", "refs": [135, 139, 140, 141] }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "id": "routing-standup",
+  "title": "Routing squad — daily stand-up",
+  "startsAt": "2026-10-02T14:30:00Z",
+  "platform": "meet",
+  "kind": "internal",
+  "type": "Stand-up",
+  "host": "maya",
+  "participants": ["maya", "daniel", "kenji", "ravi", "priya"],
+  "externalCompany": null,
+  "transcriptFiles": ["transcript-1.json"],
+  "summaries": {
+    "general": {
+      "tldr": "Routing v3 GA checklist is 23/31 but a solver regression (p95 9s → 41s on 500+ stop routes) is a GA blocker for now, and the failover test was unblocked by time-sharing Ravi's staging Redis cluster from Monday.",
+      "sections": [
+        {
+          "heading": "Meeting purpose",
+          "items": [
+            { "text": "Friday stand-up for the Routing squad ahead of the 4pm Q4 planning meeting.", "ref": 1 }
+          ]
+        },
+        {
+          "heading": "Key takeaways",
+          "items": [
+            { "text": "GA checklist is at 23 of 31; the remaining non-trivial item is a solver regression on 500+ stop routes (p95 ~9s → ~41s), likely from last week's time-window constraint change.", "ref": 2, "owner": "daniel" },
+            { "text": "Daniel treats the regression as a GA blocker unless he gets it under 15 seconds; he'll know more Monday.", "ref": 6, "owner": "daniel" },
+            { "text": "Urban-dense ETA error is 7.6 min vs. 4.3 min overall; a first dock-wait feature brings it to ~6 min offline but is likely a post-GA fast-follow.", "ref": 12, "owner": "kenji" },
+            { "text": "Staging Redis conflict resolved: Ravi gets the prod-like cluster mornings, Daniel afternoons from Monday, for a one-week trial before Maya asks for budget for a second cluster.", "ref": 44, "owner": "maya" }
+          ]
+        },
+        {
+          "heading": "Solver regression on large routes",
+          "items": [
+            { "text": "Only one beta fleet (the Columbus parcel fleet) regularly runs 500+ stop routes, but Harbor & Pine's consolidated freight runs would hit it if they sign.", "ref": 4 },
+            { "text": "Daniel suspects the solution seeding rather than the constraint itself; the seeding reads the ETA matrix, so Kenji will check whether his feature-service client bump added latency.", "ref": 8 }
+          ]
+        },
+        {
+          "heading": "ETA accuracy in dense urban areas",
+          "items": [
+            { "text": "Dock-wait feature uses historical dwell time per address and hour of day; Daniel pointed out docks often span several addresses, so Kenji will cluster them next.", "ref": 14, "owner": "kenji" },
+            { "text": "Most of the dense-bucket error comes from Brightside's downtown grocery routes, the least happy fleet right now.", "ref": 16 }
+          ]
+        },
+        {
+          "heading": "Post-outage reliability work",
+          "items": [
+            { "text": "Retry-with-jitter PR (exponential backoff, full jitter, capped attempts) directly fixes the Sep 24 retry storm, when ETA service traffic hit ~32x normal.", "ref": 22, "owner": "ravi" },
+            { "text": "Circuit breaker spike is about half done: workers would fall back to the last known ETA instead of piling on.", "ref": 22, "owner": "ravi" },
+            { "text": "Postmortem draft is done; Sofia reviews the customer-impact section before it goes wide on Monday.", "ref": 24, "owner": "ravi" }
+          ]
+        },
+        {
+          "heading": "Failover test for GA",
+          "items": [
+            { "text": "Proposed pass bar: recover within 60s under beta load, ETA retries under 2x baseline, and no ETAs older than 5 minutes on the dispatcher dashboard.", "ref": 49, "owner": "daniel" },
+            { "text": "Maya wants the pass bar in the checklist doc as evidence for Asher's go/no-go.", "ref": 50 }
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            { "text": "Daniel reviews the jitter PR this afternoon so it's merged before his failover test.", "ref": 21, "owner": "daniel" },
+            { "text": "Everyone brings engineer-week estimates to Q4 planning at 4pm; expect a live ETA vs. onboarding debate.", "ref": 55, "owner": "maya" }
+          ]
+        }
+      ]
+    },
+    "standup": {
+      "tldr": "Solver regression on big routes is the main GA risk; the staging Redis blocker is solved by time-sharing from Monday.",
+      "sections": [
+        {
+          "heading": "Daniel",
+          "items": [
+            { "text": "Yesterday: Re-walked the GA checklist, now 23 of 31 closed; isolated a p95 solve-time regression (9s → 41s) on 500+ stop routes to the time-window constraint flag.", "ref": 2 },
+            { "text": "Today: Bisecting the regression (suspects initial-solution seeding) and reviewing Ravi's jitter PR.", "ref": 2 },
+            { "text": "Blocker: Needs the prod-like staging Redis cluster for the GA failover test; resolved by taking it afternoons from Monday.", "ref": 33 }
+          ]
+        },
+        {
+          "heading": "Kenji",
+          "items": [
+            { "text": "Yesterday: Split ETA error by stop density; urban-dense MAE is 7.6 min vs. 4.3 overall. First dock-wait feature gets it to ~6 offline.", "ref": 12 },
+            { "text": "Today: Cluster dock addresses and check feature-service traces for Daniel; clustered numbers by Wednesday.", "ref": 18 },
+            { "text": "Blocker: None.", "ref": 18 }
+          ]
+        },
+        {
+          "heading": "Ravi",
+          "items": [
+            { "text": "Yesterday: Retry-with-jitter PR up for review; finished the postmortem draft.", "ref": 22 },
+            { "text": "Today: Continue the circuit breaker spike in staging (about half done); morning slots on the shared cluster.", "ref": 37 },
+            { "text": "Blocker: Waiting on Daniel's PR review.", "ref": 20 }
+          ]
+        },
+        {
+          "heading": "Priya",
+          "items": [
+            { "text": "Yesterday: Driver app onboarding work, plus tracking-page explorations for live ETA in case it's prioritized.", "ref": 26 },
+            { "text": "Today: Keep the explorations clearly labeled as not committed; focus on how to show ETA uncertainty.", "ref": 30 },
+            { "text": "Blocker: None.", "ref": 54 }
+          ]
+        },
+        {
+          "heading": "Maya",
+          "items": [
+            { "text": "Today: Running Q4 planning prep; will ask for budget for a second staging cluster if time-sharing hurts after a week.", "ref": 40 },
+            { "text": "Blocker: None.", "ref": 55 }
+          ]
+        }
+      ]
+    }
+  },
+  "actionItems": [
+    { "text": "Review Ravi's retry-with-jitter PR so it can merge before the failover test", "owner": "daniel", "ref": 21, "due": "2026-10-02" },
+    { "text": "Bisect the 500+ stop solver regression (constraint vs. seeding) and report whether it blocks GA", "owner": "daniel", "ref": 6, "due": "2026-10-05" },
+    { "text": "Check feature-service client traces to rule out ETA matrix latency in solver seeding", "owner": "kenji", "ref": 9 },
+    { "text": "Share clustered dock-wait eval numbers to decide GA vs. fast-follow", "owner": "kenji", "ref": 18, "due": "2026-10-07" },
+    { "text": "Post and pin the staging Redis time-share schedule in the staging channel", "owner": "ravi", "ref": 45, "due": "2026-10-02" },
+    { "text": "Write the failover-test pass bar into the GA checklist doc", "owner": "daniel", "ref": 50 },
+    { "text": "Get Sofia's review of the postmortem customer-impact section before it goes wide", "owner": "ravi", "ref": 24, "due": "2026-10-05" }
+  ],
+  "highlights": [
+    { "title": "Solver regression on 500+ stop routes could block GA", "from": 2, "to": 6, "by": "maya", "kind": "concern" },
+    { "title": "Dense urban ETA error is 7.6 min, mostly dock wait", "from": 12, "to": 16, "by": "kenji", "kind": "bookmark" },
+    { "title": "Staging Redis time-share deal", "from": 40, "to": 44, "by": "maya", "kind": "action" }
+  ],
+  "ask": [
+    { "q": "Is the solver regression going to block Routing v3 GA?", "a": "Possibly. On routes with 500+ stops, p95 solve time went from about 9s to about 41s, apparently from last week's time-window constraint change. Daniel considers it a GA blocker unless he can get it under 15 seconds, and expects to know more Monday after bisecting.", "refs": [2, 6] },
+    { "q": "What was blocking the failover test and how was it resolved?", "a": "The only prod-like staging Redis cluster was in use by Ravi's circuit breaker spike, and both needed to kill the primary. They agreed to time-share for a week: Ravi uses it mornings, Daniel afternoons from Monday. If that's painful, Maya will ask for budget for a second cluster.", "refs": [33, 37, 40, 44] },
+    { "q": "How accurate is the ETA model on dense urban routes?", "a": "Much worse than average: 7.6 minutes MAE in the urban-dense bucket vs. 4.3 overall, mostly from loading-dock wait. Kenji's first dock-wait feature gets it to about 6 minutes offline, but he leans toward shipping it as a post-GA fast-follow.", "refs": [12, 16, 18] },
+    { "q": "What is being done to prevent another retry storm?", "a": "Ravi's PR replaces fixed-interval retries with exponential backoff, full jitter and a cap on attempts. He is also spiking a circuit breaker so workers fall back to the last known ETA instead of hammering a failing ETA service. During the Sep 24 outage, ETA traffic hit about 32x normal.", "refs": [22] },
+    { "q": "Is the team building the live ETA tracking page?", "a": "Not yet. Priya is doing explorations only, clearly labeled as such, so the team isn't starting from a blank page if it gets prioritized. Maya expects it to be debated against onboarding at the 4pm Q4 planning meeting.", "refs": [26, 27, 57] }
+  ]
+}
