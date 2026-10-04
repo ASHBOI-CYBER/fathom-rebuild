@@ -8,6 +8,16 @@ Sounding is a rebuild of [Fathom](https://fathom.video), the AI meeting notetake
 
 The workspace is seeded with 10 recorded calls at a fictional 60-person logistics-software company. That adds up to 5½ hours of transcript.
 
+## I used Fathom first
+
+I recorded a real Google Meet call on Fathom's free plan before finishing this. Screenshots and notes are in [research/my-fathom/FINDINGS.md](research/my-fathom/FINDINGS.md). Three things stood out:
+
+- Searching my recordings for "GitHub" found nothing, even though I'd said it and it was in both action items.
+- Speech-to-text heard "8x" as "ATX", and the mistake went straight into an action item.
+- The transcript bubbles hide who spoke and when. That's fine alone, and painful with eight people.
+
+They shaped the priorities below.
+
 ## What I built first, and why
 
 The brief says the case that matters is **an eight-person call that runs an hour**. Fathom's weakest moment is the day after that call, when you're trying to find what was decided and who said it. So I put most of the time into the meeting page and spent very little on account or settings screens.

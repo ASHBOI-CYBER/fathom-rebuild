@@ -13,7 +13,9 @@ Speak naturally. The lines below are a guide, not a script to read word for word
 
 ### 0:00–0:30 · The call I made
 
-> "This is Sounding, my rebuild of Fathom. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
+> "First I used the real Fathom on a Google Meet call. Two things stood out: it heard '8x' as 'ATX' and put that into an action item, and searching for a word I'd said, 'GitHub', found nothing.
+>
+> This is Sounding, my rebuild of Fathom. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
 
 **On screen:** tab 1, the Q4 Planning meeting.
 
