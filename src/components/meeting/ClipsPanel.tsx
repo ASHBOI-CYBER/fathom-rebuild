@@ -1,5 +1,5 @@
 'use client';
-import { Bookmark, CheckSquare, Play, Quote, Share2, Trash2, TriangleAlert } from 'lucide-react';
+import { BookmarkSimple, CheckSquare, Play, Quotes, ShareNetwork, Trash, Warning } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { firstName } from '@/lib/people';
 import { userStore } from '@/lib/store';
@@ -7,10 +7,10 @@ import type { Highlight } from '@/lib/types';
 import { useMeeting } from './context';
 
 export const KIND = {
-  bookmark: { label: 'Bookmark', icon: Bookmark },
+  bookmark: { label: 'Bookmark', icon: BookmarkSimple },
   action: { label: 'Action', icon: CheckSquare },
-  quote: { label: 'Quote', icon: Quote },
-  concern: { label: 'Concern', icon: TriangleAlert },
+  quote: { label: 'Quote', icon: Quotes },
+  concern: { label: 'Concern', icon: Warning },
 } as const;
 
 export function ClipsPanel() {
@@ -37,9 +37,9 @@ export function ClipsPanel() {
 function ClipRow({ h, onPlay, onShare, onDelete }: { h: Highlight; onPlay: () => void; onShare: () => void; onDelete?: () => void }) {
   const K = KIND[h.kind] ?? KIND.bookmark;
   return (
-    <li className={`group flex items-start gap-3.5 rounded-2xl border p-4 transition-colors ${h.mine ? 'border-coral/35 bg-coral-soft' : 'border-line bg-raised/40 hover:bg-raised'}`}>
+    <li className={`group flex items-start gap-3.5 rounded-2xl border p-4 transition-colors ${h.mine ? 'border-signal/35 bg-signal-soft' : 'border-line bg-raised/40 hover:bg-raised'}`}>
       <button onClick={onPlay} aria-label={`Play clip: ${h.title}`} className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fg text-abyss transition-transform hover:scale-105">
-        <Play size={14} className="ml-0.5" fill="currentColor" />
+        <Play size={14} className="ml-0.5" weight="fill" />
       </button>
       <div className="min-w-0 flex-1">
         <p className="text-[15px] font-semibold leading-snug text-fg">{h.title}</p>
@@ -49,11 +49,11 @@ function ClipRow({ h, onPlay, onShare, onDelete }: { h: Highlight; onPlay: () =>
       </div>
       <div className="flex shrink-0 items-center gap-1">
         <button onClick={onShare} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[14px] text-fg-soft hover:bg-hover hover:text-fg">
-          <Share2 size={14} /> Share
+          <ShareNetwork size={14} /> Share
         </button>
         {onDelete && (
           <button onClick={onDelete} aria-label="Delete clip" className="rounded-full p-2 text-fg-faint hover:bg-hover hover:text-fg">
-            <Trash2 size={15} />
+            <Trash size={15} />
           </button>
         )}
       </div>

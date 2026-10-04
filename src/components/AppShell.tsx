@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Menu, Search, X } from 'lucide-react';
+import { List, MagnifyingGlass, X } from '@phosphor-icons/react';
 import { Wordmark } from './Brand';
 import { Avatar } from './Avatar';
 import { SearchPalette } from './SearchPalette';
@@ -30,18 +30,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         setSearchOpen(true);
       }
     };
+    const onOpen = () => setSearchOpen(true);
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('sounding:search', onOpen);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('sounding:search', onOpen);
+    };
   }, []);
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' || pathname.startsWith('/meetings') : pathname.startsWith(href));
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-40 border-b border-line bg-abyss/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-line bg-abyss/70 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-6 px-4 sm:px-6">
           <button onClick={() => setNavOpenOn(pathname)} aria-label="Open menu" className="-ml-1 rounded-lg p-2 text-fg-soft hover:bg-raised hover:text-fg md:hidden">
-            <Menu size={20} />
+            <List size={20} />
           </button>
           <Link href="/" aria-label="Sounding home" className="shrink-0">
             <Wordmark />
@@ -63,8 +68,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => setSearchOpen(true)}
               className="flex items-center gap-2.5 rounded-full border border-line bg-surface py-2 pl-3.5 pr-2 text-[14px] text-fg-faint transition-colors hover:border-line-strong hover:text-fg-soft"
             >
-              <Search size={16} />
-              <span className="hidden sm:inline">Search every meeting</span>
+              <MagnifyingGlass size={16} />
+              <span className="hidden sm:inline">Search</span>
               <kbd className="hidden rounded-md border border-line px-1.5 py-0.5 text-[11px] text-fg-faint sm:inline">Ctrl K</kbd>
             </button>
             <span className="hidden items-center gap-2.5 sm:flex" title={`${person(ME).name} · Tandem demo workspace`}>
@@ -95,7 +100,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="min-w-0 flex-1">{children}</main>
+      <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
 
       <footer className="border-t border-line px-6 py-5 text-center text-[12px] text-fg-faint">
         Sounding is a Fathom rebuild made for the 8x assignment. Not affiliated with Fathom. Signed in as {person(ME).name} in a demo workspace.

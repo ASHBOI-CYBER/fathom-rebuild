@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Scissors } from 'lucide-react';
+import { Scissors } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { person } from '@/lib/people';
 import type { Meeting } from '@/lib/types';
@@ -39,8 +39,8 @@ export function SharedView({ meeting, clip }: { meeting: Meeting; clip: { from: 
         )}
       </div>
       {clip && bounds && (
-        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-coral-soft px-4 py-3">
-          <Scissors size={17} className="mt-0.5 shrink-0 text-coral" />
+        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-signal-soft px-4 py-3">
+          <Scissors size={17} className="mt-0.5 shrink-0 text-signal" />
           <p className="text-[15px] text-fg">
             <b>{clip.title || 'A clip'}</b>
             <span className="text-fg-soft">

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pause, Play, RotateCcw, RotateCw, Scissors } from 'lucide-react';
+import { Pause, Play, ArrowCounterClockwise, ArrowClockwise, Scissors } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { firstName } from '@/lib/people';
 import { turnIndexAt, usePlayer } from '@/lib/player';
@@ -34,13 +34,13 @@ export function PlayerBar() {
           aria-label={playing ? 'Pause' : 'Play'}
           className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-abyss transition-transform hover:scale-105"
         >
-          {playing ? <Pause size={18} fill="currentColor" /> : <Play size={18} className="ml-0.5" fill="currentColor" />}
+          {playing ? <Pause size={18} weight="fill" /> : <Play size={18} className="ml-0.5" weight="fill" />}
         </button>
         <button onClick={() => player.skip(-10)} aria-label="Back 10 seconds" className="rounded-full p-2.5 text-fg-soft hover:bg-raised hover:text-fg">
-          <RotateCcw size={18} />
+          <ArrowCounterClockwise size={18} />
         </button>
         <button onClick={() => player.skip(10)} aria-label="Forward 10 seconds" className="rounded-full p-2.5 text-fg-soft hover:bg-raised hover:text-fg">
-          <RotateCw size={18} />
+          <ArrowClockwise size={18} />
         </button>
         <span className="ml-1 text-[15px] text-fg-faint tabular">
           <span className="font-semibold text-fg">{clock(time)}</span> / {clock(bounds ? bounds[1] : meeting.duration)}
@@ -54,7 +54,7 @@ export function PlayerBar() {
             {rate}×
           </button>
           {!readOnly && (
-            <button onClick={clipLast} title="Save the last 30 seconds as a clip" className="flex items-center gap-2 rounded-full bg-coral-soft px-3.5 py-1.5 text-[14px] font-semibold text-coral hover:bg-coral hover:text-on-coral">
+            <button onClick={clipLast} title="Save the last 30 seconds as a clip" className="flex items-center gap-2 rounded-full bg-signal-soft px-3.5 py-1.5 text-[14px] font-semibold text-signal hover:bg-signal hover:text-on-signal">
               <Scissors size={15} /> Clip last 30s
             </button>
           )}
@@ -136,7 +136,7 @@ function Scrubber() {
           onClick={() => jump(h.start, true)}
           title={`${clock(h.start)} · ${h.title}`}
           aria-label={`Play clip: ${h.title}`}
-          className="absolute top-0 h-[5px] min-w-[6px] rounded-full bg-coral/80 hover:bg-coral"
+          className="absolute top-0 h-[5px] min-w-[6px] rounded-full bg-signal/80 hover:bg-signal"
           style={{ left: pct(h.start), width: pct(h.end - h.start) }}
         />
       ))}
@@ -162,7 +162,7 @@ function Scrubber() {
         <span key={i} className="absolute top-[24px] h-[8px] w-[2px] rounded-full bg-[#f0b54a]" style={{ left: pct(t) }} />
       ))}
       {hover && <span className="pointer-events-none absolute top-[7px] h-[18px] w-px bg-white/40" style={{ left: hover.x }} />}
-      <div ref={head} className="pointer-events-none absolute top-[8px] h-4 w-4 -translate-x-1/2 rounded-full border-[3px] border-surface bg-coral shadow-[0_0_0_1px_rgba(255,122,98,0.5)]" />
+      <div ref={head} className="pointer-events-none absolute top-[8px] h-4 w-4 -translate-x-1/2 rounded-full border-[3px] border-surface bg-signal shadow-[0_0_0_1px_rgba(255,122,98,0.5)]" />
       {hover && info && (
         <div
           className="pointer-events-none absolute bottom-full z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg border border-line-strong bg-raised px-2.5 py-1.5 text-[12px] shadow-xl"

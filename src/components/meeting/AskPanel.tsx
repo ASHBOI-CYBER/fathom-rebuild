@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUp, Sparkles } from 'lucide-react';
+import { ArrowUp, Sparkle } from '@phosphor-icons/react';
 import { answer, type Answer } from '@/lib/ask';
 import { firstName } from '@/lib/people';
 import { useMeeting } from './context';
@@ -31,8 +31,8 @@ export function AskPanel() {
       <div className="flex-1 space-y-6">
         {!thread.length && (
           <div className="pb-2 pt-4 text-center">
-            <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-coral-soft text-coral">
-              <Sparkles size={20} />
+            <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-signal">
+              <Sparkle size={20} />
             </span>
             <p className="text-[19px] font-semibold">Ask anything about this call</p>
             <p className="mx-auto mt-1 max-w-[34ch] text-[15px] text-fg-soft">Every answer points to the moment it came from, so you can check it in a click.</p>
@@ -92,7 +92,7 @@ export function AskPanel() {
           className="flex items-center gap-2 rounded-full border border-line-strong bg-abyss/50 py-1.5 pl-5 pr-1.5 focus-within:border-fg-faint"
         >
           <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Ask about this meeting" aria-label="Ask about this meeting" className="flex-1 bg-transparent text-[15px] text-fg outline-none placeholder:text-fg-faint" />
-          <button type="submit" disabled={!draft.trim()} aria-label="Ask" className="flex h-9 w-9 items-center justify-center rounded-full bg-coral text-on-coral disabled:opacity-30">
+          <button type="submit" disabled={!draft.trim()} aria-label="Ask" className="flex h-9 w-9 items-center justify-center rounded-full bg-signal text-on-signal disabled:opacity-30">
             <ArrowUp size={17} />
           </button>
         </form>

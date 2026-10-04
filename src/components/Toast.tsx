@@ -1,6 +1,6 @@
 'use client';
 import { useSyncExternalStore } from 'react';
-import { Check } from 'lucide-react';
+import { Check } from '@phosphor-icons/react';
 
 type T = { id: number; text: string };
 let toasts: T[] = [];
@@ -28,7 +28,7 @@ export function Toaster() {
     <div className="pointer-events-none fixed inset-x-0 bottom-5 z-[70] flex flex-col items-center gap-2" aria-live="polite">
       {list.map((t) => (
         <div key={t.id} className="flex items-center gap-2.5 rounded-full border border-line-strong bg-raised px-4 py-2.5 text-[14px] text-fg shadow-2xl">
-          <Check size={16} className="text-coral" />
+          <Check size={16} className="text-signal" />
           {t.text}
         </div>
       ))}

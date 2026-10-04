@@ -1,6 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { Check, Copy, Plus } from 'lucide-react';
+import { Check, Copy, Plus } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { ME, firstName, person } from '@/lib/people';
 import { usePlayer } from '@/lib/player';
@@ -75,9 +75,9 @@ export function ActionsPanel() {
                 disabled={readOnly}
                 onClick={() => userStore.toggleDone(a.id)}
                 aria-label={`Mark “${a.text}” ${isDone ? 'not done' : 'done'}`}
-                className={`mt-0.5 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md border-2 transition-colors ${isDone ? 'border-coral bg-coral text-on-coral' : 'border-line-strong hover:border-coral'}`}
+                className={`mt-0.5 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md border-2 transition-colors ${isDone ? 'border-signal bg-signal text-on-signal' : 'border-line-strong hover:border-signal'}`}
               >
-                {isDone && <Check size={14} strokeWidth={3} />}
+                {isDone && <Check size={14} weight="bold" />}
               </button>
               <div className="min-w-0 flex-1">
                 <p className={`text-[16px] leading-snug ${isDone ? 'text-fg-faint line-through' : 'text-fg'}`}>{a.text}</p>
@@ -121,7 +121,7 @@ export function ActionsPanel() {
               <button onClick={() => setAdding(false)} className="ml-auto rounded-full px-3.5 py-1.5 text-[14px] text-fg-soft hover:text-fg">
                 Cancel
               </button>
-              <button onClick={add} disabled={!draft.trim()} className="rounded-full bg-coral px-4 py-1.5 text-[14px] font-semibold text-on-coral disabled:opacity-40">
+              <button onClick={add} disabled={!draft.trim()} className="rounded-full bg-signal px-4 py-1.5 text-[14px] font-semibold text-on-signal disabled:opacity-40">
                 Add item
               </button>
             </div>

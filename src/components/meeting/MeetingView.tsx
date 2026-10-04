@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Link2, Share2 } from 'lucide-react';
+import { ArrowLeft, LinkSimple, ShareNetwork } from '@phosphor-icons/react';
 import { createPlayer } from '@/lib/player';
 import { clock, dateLabel, minutes, PLATFORM_LABEL, timeLabel } from '@/lib/format';
 import { ME, speakerColor } from '@/lib/people';
@@ -13,7 +13,7 @@ import { AvatarStack } from '../Avatar';
 import { ShareDialog, shareUrl } from '../ShareDialog';
 import { toast, Toaster } from '../Toast';
 import { Ctx, type MeetingCtx, type Tab } from './context';
-import { Stage } from './Stage';
+import { SonarDial } from './SonarDial';
 import { PlayerBar } from './PlayerBar';
 import { Outline } from './Outline';
 import { Transcript } from './Transcript';
@@ -107,7 +107,7 @@ export function MeetingView({
   return (
     <Ctx.Provider value={ctx}>
       <div className={`mx-auto flex w-full max-w-[1480px] flex-col px-4 sm:px-6 ${readOnly ? 'lg:h-dvh' : 'lg:h-[calc(100dvh-4rem)]'}`}>
-        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 pb-5 pt-6">
+        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5 pb-7 pt-8">
           <div className="min-w-0">
             {header ??
               (!readOnly && (
@@ -115,8 +115,8 @@ export function MeetingView({
                   <ArrowLeft size={15} /> All meetings
                 </Link>
               ))}
-            <h1 className="text-[26px] font-semibold leading-tight tracking-[-0.015em] sm:text-[30px]">{meeting.title}</h1>
-            <p className="mt-1.5 text-[15px] text-fg-soft">
+            <h1 className="display text-[clamp(40px,4.6vw,64px)] text-fg">{meeting.title}</h1>
+            <p className="mt-3 text-[15.5px] text-fg-soft">
               {dateLabel(meeting.startsAt, local)} at {timeLabel(meeting.startsAt, local)} · {minutes(meeting.duration)} · {PLATFORM_LABEL[meeting.platform]}
               {meeting.externalCompany ? ` · with ${meeting.externalCompany}` : ''}
             </p>
@@ -134,10 +134,10 @@ export function MeetingView({
                   title="Copy link"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-fg-soft transition-colors hover:border-line-strong hover:text-fg"
                 >
-                  <Link2 size={17} />
+                  <LinkSimple size={17} />
                 </button>
-                <button onClick={() => setSharing({})} className="flex h-10 items-center gap-2 rounded-full bg-coral px-5 text-[15px] font-semibold text-on-coral transition-colors hover:bg-coral-hover">
-                  <Share2 size={16} /> Share
+                <button onClick={() => setSharing({})} className="press flex h-11 items-center gap-2 rounded-full bg-signal px-5 text-[15px] font-semibold text-on-signal hover:bg-signal-hover">
+                  <ShareNetwork size={16} /> Share
                 </button>
               </div>
             )}
@@ -146,7 +146,9 @@ export function MeetingView({
 
         <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] gap-6 pb-6 lg:grid-cols-[minmax(0,1fr)_minmax(420px,40%)]">
           <div className="quiet-scroll min-h-0 space-y-5 lg:overflow-y-auto lg:pr-1">
-            <Stage />
+            <div className="rounded-[28px] border border-line bg-surface/60 px-4 py-6 sm:px-8">
+              <SonarDial />
+            </div>
             <PlayerBar />
             <Outline />
           </div>
@@ -163,7 +165,7 @@ export function MeetingView({
                 >
                   {t.label}
                   {t.count != null && t.count > 0 && <span className="ml-1.5 text-[13px] font-normal text-fg-faint tabular">{t.count}</span>}
-                  {tab === t.id && <span className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-coral" />}
+                  {tab === t.id && <span className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-signal" />}
                 </button>
               ))}
             </div>

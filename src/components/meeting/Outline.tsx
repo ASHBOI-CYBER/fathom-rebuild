@@ -50,8 +50,8 @@ function Chapters() {
               aria-current={active ? 'step' : undefined}
               className={`group relative grid w-full grid-cols-[64px_1fr] gap-3 rounded-xl px-3 py-3 text-left transition-colors ${active ? 'bg-raised' : 'hover:bg-raised/60'}`}
             >
-              {active && <span className="absolute inset-y-3 left-0 w-[3px] rounded-full bg-coral" />}
-              <span className={`pt-px text-[14px] tabular ${active ? 'text-coral' : 'text-fg-faint'}`}>{clock(c.start)}</span>
+              {active && <span className="absolute inset-y-3 left-0 w-[3px] rounded-full bg-signal" />}
+              <span className={`pt-px text-[14px] tabular ${active ? 'text-signal' : 'text-fg-faint'}`}>{clock(c.start)}</span>
               <span className="min-w-0">
                 <span className="block text-[15px] font-semibold text-fg">{c.title}</span>
                 <span className={`mt-0.5 block text-[14px] leading-relaxed text-fg-soft ${active ? '' : 'line-clamp-1'}`}>{c.gist}</span>

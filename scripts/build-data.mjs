@@ -20,6 +20,10 @@ const hash = (s) => {
 };
 const wordCount = (s) => s.trim().split(/\s+/).filter(Boolean).length;
 const round = (n) => Math.round(n * 10) / 10;
+// Display copy uses plain punctuation: em/en dashes become a colon in titles
+// and a comma in prose. Transcripts stay verbatim.
+const title = (s) => s.replace(/\s*[—–]\s*/g, s.includes(':') ? ', ' : ': ');
+const prose = (s) => s.replace(/\s+[—–]\s+/g, ', ').replace(/\s*[—–]\s*/g, ', ');
 
 function compile(id) {
   const dir = path.join(SRC, 'meetings', id);
@@ -39,7 +43,7 @@ function compile(id) {
       turns.push({ id: t.id, s: t.s, t: t.t, start: round(clock), end: round(clock + dur) });
       clock += dur + gap;
     }
-    chapters.push({ title: ch.title, gist: ch.gist, start: round(start), end: round(clock), firstTurn: ch.turns[0].id });
+    chapters.push({ title: title(ch.title), gist: prose(ch.gist), start: round(start), end: round(clock), firstTurn: ch.turns[0].id });
   }
   const duration = Math.ceil(clock + 2);
   const byId = new Map(turns.map((t) => [t.id, t]));
@@ -51,17 +55,17 @@ function compile(id) {
   const summaries = {};
   for (const [tid, s] of Object.entries(meeting.summaries)) {
     summaries[tid] = {
-      tldr: s.tldr,
+      tldr: prose(s.tldr),
       sections: s.sections.map((sec) => ({
-        heading: sec.heading,
-        items: sec.items.map((it) => ({ ...it, ts: at(it.ref) })),
+        heading: title(sec.heading),
+        items: sec.items.map((it) => ({ ...it, text: prose(it.text), ts: at(it.ref) })),
       })),
     };
   }
 
   const full = {
     id,
-    title: meeting.title,
+    title: title(meeting.title),
     startsAt: meeting.startsAt,
     platform: meeting.platform,
     kind: meeting.kind,
@@ -74,10 +78,10 @@ function compile(id) {
     turns,
     talk,
     summaries,
-    actionItems: (meeting.actionItems || []).map((a, i) => ({ id: `${id}-a${i + 1}`, ...a, ts: at(a.ref) })),
+    actionItems: (meeting.actionItems || []).map((a, i) => ({ id: `${id}-a${i + 1}`, ...a, text: prose(a.text), ts: at(a.ref) })),
     highlights: (meeting.highlights || []).map((h, i) => ({
       id: `${id}-h${i + 1}`,
-      title: h.title,
+      title: title(h.title),
       kind: h.kind,
       by: h.by ?? meeting.host,
       start: byId.get(h.from).start,
@@ -85,7 +89,7 @@ function compile(id) {
       from: h.from,
       to: h.to,
     })),
-    ask: (meeting.ask || []).map((q) => ({ ...q, refs: (q.refs || []).map((r) => ({ ref: r, ts: at(r) })) })),
+    ask: (meeting.ask || []).map((q) => ({ ...q, a: prose(q.a), refs: (q.refs || []).map((r) => ({ ref: r, ts: at(r) })) })),
   };
 
   const index = {
@@ -106,6 +110,9 @@ function compile(id) {
     talk,
     templates: Object.keys(summaries),
     highlights: full.highlights.map(({ id, title, kind, by, start, end }) => ({ id, title, kind, by, start, end })),
+    // Compact speech segments for the sonar prints and the seabed: [speaker index, start, end] in seconds.
+    segments: turns.map((t) => [full.participants.indexOf(t.s), Math.round(t.start), Math.round(t.end)]),
+    chapterStarts: chapters.map((c) => Math.round(c.start)),
   };
 
   const search = {

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import { Check, Copy, ExternalLink, Globe2, Lock, Users, X } from 'lucide-react';
+import { Check, Copy, ArrowSquareOut, GlobeSimple, LockSimple, UsersThree, X } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import type { Highlight, Meeting } from '@/lib/types';
 import { toast } from './Toast';
@@ -8,10 +8,10 @@ import { toast } from './Toast';
 export const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 type Access = 'anyone' | 'domain' | 'invited';
-const ACCESS: { id: Access; label: string; hint: string; icon: typeof Globe2 }[] = [
-  { id: 'anyone', label: 'Anyone with the link', hint: 'No account needed to watch', icon: Globe2 },
-  { id: 'domain', label: 'Anyone at tandem.app', hint: 'Teammates sign in to watch', icon: Users },
-  { id: 'invited', label: 'Only people you invite', hint: 'Private to the names below', icon: Lock },
+const ACCESS: { id: Access; label: string; hint: string; icon: typeof GlobeSimple }[] = [
+  { id: 'anyone', label: 'Anyone with the link', hint: 'No account needed to watch', icon: GlobeSimple },
+  { id: 'domain', label: 'Anyone at tandem.app', hint: 'Teammates sign in to watch', icon: UsersThree },
+  { id: 'invited', label: 'Only people you invite', hint: 'Private to the names below', icon: LockSimple },
 ];
 
 export function shareUrl(meeting: Pick<Meeting, 'id'>, clip?: Pick<Highlight, 'start' | 'end' | 'title'>) {
@@ -61,14 +61,14 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
         <fieldset className="space-y-1.5">
           <legend className="mb-2 text-[14px] text-fg-soft">Who can open the link</legend>
           {ACCESS.map((a) => (
-            <label key={a.id} className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3 transition-colors ${access === a.id ? 'border-coral/60 bg-coral-soft' : 'border-line hover:border-line-strong'}`}>
+            <label key={a.id} className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3 transition-colors ${access === a.id ? 'border-signal/60 bg-signal-soft' : 'border-line hover:border-line-strong'}`}>
               <input type="radio" name="access" value={a.id} checked={access === a.id} onChange={() => setAccess(a.id)} className="sr-only" />
-              <a.icon size={18} className={access === a.id ? 'text-coral' : 'text-fg-faint'} />
+              <a.icon size={18} className={access === a.id ? 'text-signal' : 'text-fg-faint'} />
               <span className="flex-1">
                 <span className="block text-[15px] font-semibold text-fg">{a.label}</span>
                 <span className="block text-[13px] text-fg-faint">{a.hint}</span>
               </span>
-              {access === a.id && <Check size={17} className="text-coral" />}
+              {access === a.id && <Check size={17} className="text-signal" />}
             </label>
           ))}
         </fieldset>
@@ -79,7 +79,7 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
             <button
               onClick={() => {
                 if (!email.includes('@')) return;
-                toast(`Invite to ${email} queued (demo — no email is sent)`);
+                toast(`Invite to ${email} queued. This is a demo, so no email is sent.`);
                 setEmail('');
               }}
               className="rounded-full bg-fg px-4 py-2 text-[14px] font-semibold text-abyss"
@@ -92,9 +92,9 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
         <div className="mt-5 flex items-center gap-2 rounded-full border border-line bg-abyss/50 p-1.5 pl-4">
           <span className="min-w-0 flex-1 truncate text-[13px] text-fg-soft">{url}</span>
           <a href={url} target="_blank" rel="noreferrer" aria-label="Open link in a new tab" className="rounded-full p-2 text-fg-faint hover:bg-raised hover:text-fg">
-            <ExternalLink size={16} />
+            <ArrowSquareOut size={16} />
           </a>
-          <button onClick={copy} className="flex items-center gap-1.5 rounded-full bg-coral px-4 py-2 text-[14px] font-semibold text-on-coral hover:bg-coral-hover">
+          <button onClick={copy} className="flex items-center gap-1.5 rounded-full bg-signal px-4 py-2 text-[14px] font-semibold text-on-signal hover:bg-signal-hover">
             {copied ? <Check size={15} /> : <Copy size={15} />} {copied ? 'Copied' : 'Copy link'}
           </button>
         </div>

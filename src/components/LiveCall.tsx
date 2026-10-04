@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Bookmark, CheckSquare, FastForward, PhoneOff, TriangleAlert } from 'lucide-react';
+import { BookmarkSimple, CheckSquare, FastForward, PhoneDisconnect, Warning } from '@phosphor-icons/react';
 import { gsap } from '@/lib/gsap';
 import { clock } from '@/lib/format';
 import { ME, firstName, speakerColor } from '@/lib/people';
@@ -10,13 +10,14 @@ import { userStore } from '@/lib/store';
 import type { Highlight, HighlightKind, Meeting } from '@/lib/types';
 import { Wordmark } from './Brand';
 import { Ctx, type MeetingCtx } from './meeting/context';
-import { Stage } from './meeting/Stage';
+import { SonarDial } from './meeting/SonarDial';
+import { person } from '@/lib/people';
 import { toast, Toaster } from './Toast';
 
-const CAPTURE: { kind: HighlightKind; label: string; key: string; icon: typeof Bookmark }[] = [
-  { kind: 'bookmark', label: 'Highlight', key: 'h', icon: Bookmark },
+const CAPTURE: { kind: HighlightKind; label: string; key: string; icon: typeof BookmarkSimple }[] = [
+  { kind: 'bookmark', label: 'Highlight', key: 'h', icon: BookmarkSimple },
   { kind: 'action', label: 'Action item', key: 'a', icon: CheckSquare },
-  { kind: 'concern', label: 'Concern', key: 'x', icon: TriangleAlert },
+  { kind: 'concern', label: 'Concern', key: 'x', icon: Warning },
 ];
 
 /**
@@ -107,14 +108,14 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
         <header className="flex flex-wrap items-center gap-5 border-b border-line px-4 py-3.5 sm:px-6">
           <Wordmark />
           <div className="min-w-0">
-            <div className="truncate text-[16px] font-semibold">{meeting.title}</div>
+            <div className="display truncate text-[26px] text-fg">{meeting.title}</div>
             <div className="flex items-center gap-2 text-[13px] text-fg-faint">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#ff4d6d]" /> Recording · {clock(time)} · Google Meet
             </div>
           </div>
           <button
             onClick={() => player.setRate(rate === 1 ? 4 : 1)}
-            className={`ml-auto flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] ${rate > 1 ? 'border-coral/60 bg-coral-soft text-coral' : 'border-line text-fg-soft hover:border-line-strong hover:text-fg'}`}
+            className={`ml-auto flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] ${rate > 1 ? 'border-signal/60 bg-signal-soft text-signal' : 'border-line text-fg-soft hover:border-line-strong hover:text-fg'}`}
           >
             <FastForward size={14} /> {rate > 1 ? 'Fast-forwarding 4×' : 'Fast-forward the demo'}
           </button>
@@ -122,7 +123,17 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
 
         <div className="mx-auto grid w-full max-w-[1480px] flex-1 gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_400px]">
           <div className="flex flex-col gap-5">
-            <Stage />
+            <div className="rounded-[28px] border border-line bg-surface/60 px-4 py-6 sm:px-8">
+              <SonarDial live />
+              <ul className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="On the call">
+                {meeting.participants.map((id) => (
+                  <li key={id} className="flex items-center gap-2 text-[14px] text-fg-soft">
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ background: colorOf(id) }} />
+                    {person(id).name}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-2">
               {CAPTURE.map((c) => (
                 <button
@@ -136,7 +147,7 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
                 </button>
               ))}
               <button onClick={end} disabled={ending} className="flex items-center gap-2 rounded-full bg-[#ff4d6d] px-5 py-3 text-[15px] font-semibold text-white hover:bg-[#ff6b85] disabled:opacity-40">
-                <PhoneOff size={16} /> End call and get notes
+                <PhoneDisconnect size={16} /> End call and get notes
               </button>
             </div>
             <p className="mx-auto max-w-[60ch] text-center text-[13px] text-fg-faint">
@@ -194,7 +205,7 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
                 `Filing your ${captured.length} ${captured.length === 1 ? 'highlight' : 'highlights'}`,
               ].map((s) => (
                 <div key={s} className="step flex items-center gap-3.5 py-2 text-[17px] opacity-25">
-                  <span className="tick flex h-6 w-6 scale-0 items-center justify-center rounded-full bg-coral text-[13px] font-bold text-on-coral">✓</span>
+                  <span className="tick flex h-6 w-6 scale-0 items-center justify-center rounded-full bg-signal text-[13px] font-bold text-on-signal">✓</span>
                   {s}
                 </div>
               ))}

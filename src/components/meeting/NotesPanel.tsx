@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { gsap, settle } from '@/lib/gsap';
-import { Check, ChevronDown, Copy, Sparkles } from 'lucide-react';
+import { Check, CaretDown, Copy, Sparkle } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { firstName } from '@/lib/people';
 import { userStore, useUserState } from '@/lib/store';
@@ -18,7 +18,7 @@ export function TimeChip({ ts, className = '' }: { ts: number | null | undefined
   return (
     <button
       onClick={() => jump(ts, true)}
-      className={`inline-flex shrink-0 items-center rounded-md px-1 align-baseline text-[13px] text-fg-faint tabular transition-colors hover:bg-coral-soft hover:text-coral ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-md px-1 align-baseline text-[13px] text-fg-faint tabular transition-colors hover:bg-signal-soft hover:text-signal ${className}`}
       aria-label={`Play from ${clock(ts)}`}
     >
       {clock(ts)}
@@ -72,21 +72,21 @@ export function NotesPanel() {
             aria-haspopup="listbox"
             className="flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-[14px] text-fg-soft transition-colors hover:border-line-strong hover:text-fg"
           >
-            <Sparkles size={15} className="text-coral" />
+            <Sparkle size={15} className="text-signal" />
             <span>
               Template: <span className="font-semibold text-fg">{templateName(current)}</span>
             </span>
-            <ChevronDown size={15} className="text-fg-faint" />
+            <CaretDown size={15} className="text-fg-faint" />
           </button>
           {open && (
             <div role="listbox" className="absolute left-0 top-full z-30 mt-2 w-[340px] overflow-hidden rounded-2xl border border-line-strong bg-raised py-1.5 shadow-2xl">
               {TEMPLATES.filter((t) => available.includes(t.id)).map((t) => (
                 <button key={t.id} role="option" aria-selected={t.id === current} onClick={() => pick(t.id)} className="flex w-full items-start gap-3 px-4 py-2.5 text-left hover:bg-hover">
-                  <span className="mt-0.5 w-4 shrink-0 text-coral">{t.id === current && <Check size={16} />}</span>
+                  <span className="mt-0.5 w-4 shrink-0 text-signal">{t.id === current && <Check size={16} />}</span>
                   <span>
                     <span className="flex items-center gap-2 text-[15px] font-semibold text-fg">
                       {t.name}
-                      {t.id === suggested && <span className="rounded-full bg-coral-soft px-2 text-[11px] font-semibold text-coral">Best fit</span>}
+                      {t.id === suggested && <span className="rounded-full bg-signal-soft px-2 text-[11px] font-semibold text-signal">Best fit</span>}
                     </span>
                     <span className="block text-[13px] text-fg-soft">{t.blurb}</span>
                   </span>
@@ -111,7 +111,7 @@ export function NotesPanel() {
 
       <div ref={body}>
         <div className="mb-8 rounded-2xl bg-raised px-5 py-4">
-          <p className="mb-1 text-[13px] font-semibold text-coral">In short</p>
+          <p className="mb-1 text-[13px] font-semibold text-signal">In short</p>
           <p className="text-[17px] leading-[1.6] text-fg">{summary.tldr}</p>
         </div>
         {summary.sections.map((sec) => (

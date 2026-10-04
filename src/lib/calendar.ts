@@ -31,12 +31,12 @@ function at(daysFromNow: number, hour: number, minute = 0) {
 
 export function upcomingEvents(): CalEvent[] {
   const events: CalEvent[] = [
-    { id: 'ev-standup', title: 'Routing squad — daily stand-up', start: at(1, 9, 30), minutes: 15, platform: 'meet', attendees: ['maya', 'daniel', 'kenji', 'ravi', 'priya'], external: false, organizer: 'maya' },
-    { id: 'ev-tom', title: 'Asher / Tom — Harbor & Pine scope reset', start: at(1, 11), minutes: 30, platform: 'meet', attendees: ['asher', 'tom'], external: false, organizer: 'asher' },
-    { id: 'ev-hp-pilot', title: 'Harbor & Pine — Pilot proposal review', start: at(1, 14), minutes: 45, platform: 'zoom', attendees: ['tom', 'asher', 'marcus', 'elena'], external: true, organizer: 'tom' },
+    { id: 'ev-standup', title: 'Routing squad stand-up', start: at(1, 9, 30), minutes: 15, platform: 'meet', attendees: ['maya', 'daniel', 'kenji', 'ravi', 'priya'], external: false, organizer: 'maya' },
+    { id: 'ev-tom', title: 'Asher and Tom: Harbor & Pine scope reset', start: at(1, 11), minutes: 30, platform: 'meet', attendees: ['asher', 'tom'], external: false, organizer: 'asher' },
+    { id: 'ev-hp-pilot', title: 'Harbor & Pine pilot proposal review', start: at(1, 14), minutes: 45, platform: 'zoom', attendees: ['tom', 'asher', 'marcus', 'elena'], external: true, organizer: 'tom' },
     { id: 'ev-sam', title: 'Final round: Sam Rivera', start: at(2, 10), minutes: 45, platform: 'zoom', attendees: ['asher', 'maya', 'sam'], external: true, organizer: 'hannah' },
-    { id: 'ev-brightside', title: 'Brightside — Q4 roadmap & live ETA date', start: at(3, 12), minutes: 30, platform: 'teams', attendees: ['sofia', 'asher', 'jordan'], external: true, organizer: 'sofia' },
-    { id: 'ev-v0', title: 'Live ETA v0 — tech design review', start: at(3, 15), minutes: 60, platform: 'meet', attendees: ['asher', 'maya', 'daniel', 'priya', 'kenji', 'ravi'], external: false, organizer: 'daniel' },
+    { id: 'ev-brightside', title: 'Brightside: Q4 roadmap and live ETA date', start: at(3, 12), minutes: 30, platform: 'teams', attendees: ['sofia', 'asher', 'jordan'], external: true, organizer: 'sofia' },
+    { id: 'ev-v0', title: 'Live ETA v0 tech design review', start: at(3, 15), minutes: 60, platform: 'meet', attendees: ['asher', 'maya', 'daniel', 'priya', 'kenji', 'ravi'], external: false, organizer: 'daniel' },
   ];
   return events.sort((a, b) => a.start.getTime() - b.start.getTime());
 }

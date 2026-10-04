@@ -1,13 +1,16 @@
 'use client';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { Link2, Play } from 'lucide-react';
+import { LinkSimple, Play } from '@phosphor-icons/react';
 import { clock, dateLabel } from '@/lib/format';
 import { ME, firstName, speakerColor } from '@/lib/people';
 import { useUserState } from '@/lib/store';
 import type { Highlight, HighlightKind, MeetingIndex } from '@/lib/types';
 import { useClient } from '@/lib/useClient';
 import { Avatar } from './Avatar';
+import { SonarPrint } from './SonarPrint';
+import { PageBand } from './PageBand';
+import { R_OUTER, angleAt, arcPath } from '@/lib/sonar';
 import { KIND } from './meeting/ClipsPanel';
 import { shareUrl } from './ShareDialog';
 import { toast, Toaster } from './Toast';
@@ -32,9 +35,10 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
   const kinds = Object.keys(KIND) as HighlightKind[];
 
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 pb-24 pt-10 sm:px-6 sm:pt-14">
-      <h1 className="text-[34px] font-semibold leading-tight tracking-[-0.02em] sm:text-[40px]">Clips</h1>
-      <p className="mt-2 max-w-[62ch] text-[17px] text-fg-soft">The moments worth keeping. Send someone the 30 seconds that matter instead of the whole hour.</p>
+    <div className="relative isolate mx-auto w-full max-w-[1320px] px-5 pb-24 pt-16 sm:px-8 sm:pt-24">
+      <PageBand />
+      <h1 className="display text-[clamp(64px,8vw,112px)] text-fg">Clips</h1>
+      <p className="mt-4 max-w-[52ch] text-[18px] text-fg-soft">The moments worth keeping. Send someone the 30 seconds that matter instead of the whole hour.</p>
 
       <div className="mb-8 mt-10 flex flex-wrap gap-1" role="tablist" aria-label="Filter clips">
         <Filter on={!kind} onClick={() => setKind(null)}>
@@ -54,7 +58,14 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
         {shown.map(({ h, m }) => {
           const K = KIND[h.kind] ?? KIND.bookmark;
           return (
-            <li key={`${m.id}-${h.id}`} className={`group flex min-w-0 flex-col rounded-2xl border p-5 transition-colors ${h.mine ? 'border-coral/35 bg-coral-soft' : 'border-line bg-surface hover:border-line-strong'}`}>
+            <li key={`${m.id}-${h.id}`} className={`group grid min-w-0 grid-cols-[88px_minmax(0,1fr)] gap-5 rounded-[24px] border p-5 transition-colors ${h.mine ? 'border-signal/35 bg-signal-soft' : 'border-line bg-surface hover:border-line-strong'}`}>
+              <span className="relative block self-start">
+                <SonarPrint participants={m.participants} talk={m.talk} duration={m.duration} segments={m.segments} className="h-auto w-full opacity-70" title={`Where this clip sits in ${m.title}`} />
+                <svg viewBox="-102 -102 204 204" className="absolute inset-0 h-full w-full" aria-hidden>
+                  <path d={arcPath(R_OUTER + 5, angleAt(h.start, m.duration), Math.max(angleAt(h.end, m.duration), angleAt(h.start, m.duration) + 0.12))} fill="none" stroke="var(--signal)" strokeWidth={7} strokeLinecap="round" />
+                </svg>
+              </span>
+              <div className="flex min-w-0 flex-col">
               <p className="flex items-center gap-2 text-[13px] text-fg-faint">
                 <K.icon size={14} /> {K.label} · <span className="tabular">{clock(h.start)}</span> · {Math.max(1, Math.round(h.end - h.start))} sec
               </p>
@@ -74,11 +85,12 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
                   }}
                   className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[14px] text-fg-soft hover:bg-raised hover:text-fg"
                 >
-                  <Link2 size={15} /> Copy link
+                  <LinkSimple size={15} /> Copy link
                 </button>
                 <Link href={`/meetings/${m.id}?t=${h.start.toFixed(1)}`} className="flex items-center gap-1.5 rounded-full bg-fg px-4 py-1.5 text-[14px] font-semibold text-abyss hover:bg-white">
-                  <Play size={13} fill="currentColor" /> Play
+                  <Play size={13} weight="fill" /> Play
                 </Link>
+              </div>
               </div>
             </li>
           );

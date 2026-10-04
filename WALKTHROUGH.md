@@ -15,16 +15,18 @@ Speak naturally. The lines below are a guide, not a script to read word for word
 
 > "First I used the real Fathom on a Google Meet call. Two things stood out: it heard '8x' as 'ATX' and put that into an action item, and searching for a word I'd said, 'GitHub', found nothing.
 >
-> This is Sounding, my rebuild of Fathom. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
+> This is Sounding, my rebuild of Fathom. The home page is a live 3D seabed built from the meetings themselves: every ridge is a call, and the peaks are where it got lively. The brief said the case that matters is an eight-person call that runs an hour, so that's where I spent the time. I faked the recording bot, which the brief allows, and I'll show exactly where. Everything on top of the recording is real and working."
 
 **On screen:** tab 1, the Q4 Planning meeting.
 
 ### 0:30–1:30 · The hour-long, 8-person call
 
-> "This is a 62-minute planning call with eight people. In Fathom you get a video and a long transcript. Here, under the player, the timeline is coloured by who's speaking, and the meeting is split into chapters, so I can jump straight to 'The live ETA collision', where it got heated."
+> "This is a 62-minute planning call with eight people. Every meeting in Sounding gets its own sonar print: each ring is a person, each arc is when they spoke, clockwise like a clock. Before pressing play I can see who dominated and where the conversation got busy."
 
-- Hover over the timeline to show the tooltip, then click **The live ETA collision** in the Chapters list.
-- Press play (space bar). Point at the lit-up tile and the captions.
+- Hover over the dial to show the tooltip, then click **The live ETA collision** in the Chapters list.
+- Press play (space bar). Point at the sweep, the lit arc, and the live caption in the centre.
+
+> "The recording bot is stubbed, so instead of a fake video, playback is a sonar sweep. I can drag around the dial to scrub, or click any arc to hear that person."
 
 > "Playback is simulated from the transcript timings. That's the stubbed capture layer. The transcript follows along."
 

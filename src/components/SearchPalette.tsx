@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CheckSquare, CornerDownLeft, FileText, Search, X } from 'lucide-react';
+import { CheckSquare, ArrowElbowDownLeft, FileText, MagnifyingGlass, X } from '@phosphor-icons/react';
 import indexData from '@/data/generated/index.json';
 import { clock, dateLabel } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
@@ -9,6 +9,9 @@ import { markParts, searchAll, snippet } from '@/lib/search';
 import type { MeetingIndex, SearchDoc } from '@/lib/types';
 
 const INDEX = indexData as unknown as MeetingIndex[];
+
+/** Open the palette from anywhere (the shell listens). */
+export const openSearch = () => window.dispatchEvent(new Event('sounding:search'));
 const SUGGESTIONS = ['live ETA', 'RouteWise', 'status page', 'Sacramento', 'retry storm', 'onboarding drop-off'];
 
 let docsPromise: Promise<SearchDoc[]> | null = null;
@@ -20,7 +23,7 @@ export function Marked({ text, q }: { text: string; q: string }) {
     <>
       {markParts(text, q).map((p, i) =>
         p.m ? (
-          <mark key={i} className="rounded-[3px] bg-coral-soft px-0.5 text-coral">
+          <mark key={i} className="rounded-[3px] bg-signal-soft px-0.5 text-signal">
             {p.t}
           </mark>
         ) : (
@@ -95,7 +98,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={onClose} />
       <div className="relative flex max-h-[76vh] w-full max-w-[720px] flex-col overflow-hidden rounded-3xl border border-line-strong bg-surface shadow-2xl">
         <div className="flex items-center gap-3 border-b border-line px-5">
-          <Search size={18} className="text-fg-faint" />
+          <MagnifyingGlass size={18} className="text-fg-faint" />
           <input
             ref={inputRef}
             value={q}
@@ -182,12 +185,12 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                       </span>
                       <Marked text={snippet(h.text, q)} q={q} />
                     </span>
-                    {active && <CornerDownLeft size={14} className="mt-1 shrink-0 text-fg-faint" />}
+                    {active && <ArrowElbowDownLeft size={14} className="mt-1 shrink-0 text-fg-faint" />}
                   </button>
                 );
               })}
               {g.hits.length > 4 && (
-                <button onClick={() => go(g.meeting.id, g.hits[0].ts)} className="ml-16 mt-0.5 pb-1 text-[13px] font-medium text-coral hover:underline">
+                <button onClick={() => go(g.meeting.id, g.hits[0].ts)} className="ml-16 mt-0.5 pb-1 text-[13px] font-medium text-signal hover:underline">
                   Open all {g.hits.length} matches in this meeting
                 </button>
               )}

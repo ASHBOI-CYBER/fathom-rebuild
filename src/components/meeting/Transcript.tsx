@@ -1,6 +1,6 @@
 'use client';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDownToLine, ChevronDown, ChevronUp, Plus, Scissors, Search, X } from 'lucide-react';
+import { ArrowLineDown, CaretDown, CaretUp, Plus, Scissors, MagnifyingGlass, X } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
 import { turnIndexAt, usePlayer } from '@/lib/player';
@@ -118,7 +118,7 @@ export function Transcript() {
     <div className="relative flex h-full min-h-0 flex-col">
       <div className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-3">
         <label className="flex min-w-[180px] flex-1 items-center gap-2 rounded-full border border-line bg-abyss/50 px-3.5 py-2 focus-within:border-line-strong">
-          <Search size={15} className="text-fg-faint" />
+          <MagnifyingGlass size={15} className="text-fg-faint" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -133,10 +133,10 @@ export function Transcript() {
             <>
               <span className="shrink-0 text-[13px] text-fg-faint tabular">{hitIds.length ? `${Math.min(hitCursor, hitIds.length - 1) + 1} of ${hitIds.length}` : 'No matches'}</span>
               <button aria-label="Previous match" onClick={() => setHitCursor((c) => (c - 1 + hitIds.length) % Math.max(1, hitIds.length))} className="text-fg-faint hover:text-fg">
-                <ChevronUp size={17} />
+                <CaretUp size={17} />
               </button>
               <button aria-label="Next match" onClick={() => setHitCursor((c) => (c + 1) % Math.max(1, hitIds.length))} className="text-fg-faint hover:text-fg">
-                <ChevronDown size={17} />
+                <CaretDown size={17} />
               </button>
               <button aria-label="Clear search" onClick={() => setQuery('')} className="text-fg-faint hover:text-fg">
                 <X size={16} />
@@ -175,7 +175,7 @@ export function Transcript() {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={clipSelection}
-            className="absolute z-10 flex -translate-x-1/2 -translate-y-[130%] items-center gap-1.5 rounded-full bg-coral px-3.5 py-2 text-[14px] font-semibold text-on-coral shadow-xl"
+            className="absolute z-10 flex -translate-x-1/2 -translate-y-[130%] items-center gap-1.5 rounded-full bg-signal px-3.5 py-2 text-[14px] font-semibold text-on-signal shadow-xl"
             style={{ left: selection.x, top: selection.y }}
           >
             <Scissors size={14} /> Clip this
@@ -187,7 +187,7 @@ export function Transcript() {
           onClick={() => setFollow(true)}
           className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-fg px-4 py-2 text-[14px] font-semibold text-abyss shadow-xl"
         >
-          <ArrowDownToLine size={15} /> Back to now
+          <ArrowLineDown size={15} /> Back to now
         </button>
       )}
     </div>
@@ -198,7 +198,7 @@ function ChapterRule({ title, start }: { title: string; start: number }) {
   const { jump } = useMeeting();
   return (
     <div className="mb-1 mt-7 flex items-center gap-3 px-2 first:mt-3">
-      <button onClick={() => jump(start)} className="flex shrink-0 items-baseline gap-2 text-left hover:text-coral">
+      <button onClick={() => jump(start)} className="flex shrink-0 items-baseline gap-2 text-left hover:text-signal">
         <span className="text-[13px] text-fg-faint tabular">{clock(start)}</span>
         <span className="text-[14px] font-semibold text-fg">{title}</span>
       </button>
@@ -229,16 +229,16 @@ const TurnRow = memo(function TurnRow({
     <div
       data-turn={turn.id}
       className={`group relative rounded-xl px-3 transition-colors ${showHeader ? 'mt-3 pb-1.5 pt-2' : 'py-1'} ${
-        active ? 'bg-coral-soft' : current ? 'bg-[#f0b54a]/10' : 'hover:bg-raised/60'
+        active ? 'bg-signal-soft' : current ? 'bg-[#f0b54a]/10' : 'hover:bg-raised/60'
       }`}
     >
-      {active && <span className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-coral" />}
+      {active && <span className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-signal" />}
       {showHeader && (
         <div className="mb-0.5 flex items-baseline gap-2.5">
           <span className="text-[14px] font-semibold" style={{ color: colorOf(turn.s) }}>
             {person(turn.s).name}
           </span>
-          <button onClick={() => jump(turn.start, true)} className="text-[13px] text-fg-faint tabular hover:text-coral" aria-label={`Play from ${clock(turn.start)}`}>
+          <button onClick={() => jump(turn.start, true)} className="text-[13px] text-fg-faint tabular hover:text-signal" aria-label={`Play from ${clock(turn.start)}`}>
             {clock(turn.start)}
           </button>
         </div>
@@ -255,7 +255,7 @@ const TurnRow = memo(function TurnRow({
           onClick={() => onClip(turn)}
           title="Clip this line"
           aria-label="Clip this line"
-          className="absolute right-2 top-2 rounded-lg p-1 text-fg-faint opacity-0 transition-opacity hover:bg-hover hover:text-coral focus:opacity-100 group-hover:opacity-100"
+          className="absolute right-2 top-2 rounded-lg p-1 text-fg-faint opacity-0 transition-opacity hover:bg-hover hover:text-signal focus:opacity-100 group-hover:opacity-100"
         >
           <Plus size={17} />
         </button>

@@ -23,7 +23,7 @@ They shaped the priorities below.
 The brief says the case that matters is **an eight-person call that runs an hour**. Fathom's weakest moment is the day after that call, when you're trying to find what was decided and who said it. So I put most of the time into the meeting page and spent very little on account or settings screens.
 
 1. **The meeting page** ([try the 8-person, 62-minute planning call](https://ashboi-cyber.github.io/fathom-rebuild/meetings/q4-planning/))
-   - **Sounding chart.** One lane per speaker shows exactly when each person talked, with chapters above and clips below. You can see the shape of an hour before pressing play, and scrub, hover or click anywhere to jump. Fathom has no equivalent.
+   - **Sonar dial.** Every meeting is drawn as a dial: each ring is a person (loudest outermost), each arc is when they spoke, clockwise from twelve. Playback is a sonar sweep, the line being spoken lights up, and the centre carries a live caption. Drag around the dial to scrub, or click an arc to hear it. A who's-speaking scrubber and a per-speaker lane view sit underneath. You can see the shape of an hour before pressing play.
    - **Speaker focus.** Click a name on the chart, or in People, to read only what that person said. On an 8-person call this is the fastest way to answer "what did Tom actually commit to?"
    - **Transcript synced to playback.** The active line follows the playhead, with a "Back to now" button when you scroll away. You can find words in the transcript, and chapter headings carry one-line summaries.
    - **AI notes in 11 templates.** These include General, Decision log, Project update, MEDDPICC, BANT, Demo, Customer success, 1:1, Stand-up, Interview and Retro. The picker marks the best fit for the meeting type. Every bullet links to the second it came from.
@@ -62,10 +62,20 @@ The brief says the case that matters is **an eight-person call that runs an hour
 - Five agents wrote the 10 meetings in parallel against that spec.
 - [`scripts/validate-source.mjs`](scripts/validate-source.mjs) checks turn order, speakers, word budgets and that every summary citation resolves. CI runs it before every deploy.
 
+## Design
+
+The look is a ship's bridge at night: sea-ink surfaces, one sodium-yellow signal colour (a buoy light), Big Shoulders (a condensed face from Chicago signage, close to hull markings) for display, and Familjen Grotesk for text. The visuals are drawn from the data, not decorative:
+
+- the home page is a real-time three.js seabed where every ridge is a meeting and height is how lively it got
+- every meeting has its own sonar print, reused on the home ledger, the meeting dial, and each clip card (with the clip's window marked)
+- the live call draws its dial as people speak
+
+The design was steered with the `taste-skill` (high-end-visual-design, design-taste-frontend, redesign-existing-projects), `impeccable` and `frontend-design` skills. The link-preview image was generated with Higgsfield (z_image).
+
 ## Stack
 
 - Next.js 16 (App Router, static export) and React 19, with Tailwind CSS 4.
-- GSAP drives the one orchestrated entrance per page (talk bars on the list, chart lanes on the meeting) and the template-switch transition.
+- GSAP drives the home entrance (greeting and print), the speaker-lane reveal and the template-switch transition. three.js renders the seabed (lazy-loaded). Phosphor icons.
 - Deployed to GitHub Pages by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
 ```bash
