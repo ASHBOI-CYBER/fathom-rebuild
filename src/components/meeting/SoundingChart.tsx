@@ -4,7 +4,7 @@ import { gsap, settle, useGSAP } from '@/lib/gsap';
 import { clock } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
 import { turnIndexAt, usePlayer } from '@/lib/player';
-import { terms } from '@/lib/search';
+import { matchesAll, terms } from '@/lib/search';
 import { useMeeting } from './context';
 
 
@@ -32,7 +32,7 @@ export function SoundingChart() {
   const hits = useMemo(() => {
     const ts = terms(query);
     if (!ts.length) return [];
-    return turns.filter((t) => ts.every((w) => t.t.toLowerCase().includes(w))).map((t) => t.start);
+    return turns.filter((t) => matchesAll(t.t, ts)).map((t) => t.start);
   }, [query, turns]);
 
   // Move the playhead without re-rendering React on every frame.

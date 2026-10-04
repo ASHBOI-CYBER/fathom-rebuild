@@ -74,7 +74,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
   const go = (meetingId: string, ts: number | null) => {
     onClose();
     const params = new URLSearchParams();
-    if (ts != null) params.set('t', String(Math.floor(ts)));
+    if (ts != null) params.set('t', ts.toFixed(1));
     if (q.trim()) params.set('q', q.trim());
     router.push(`/meetings/${meetingId}?${params}`);
   };

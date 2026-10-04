@@ -8,13 +8,21 @@ import type { Meeting } from '@/lib/types';
 import { Wordmark } from './Brand';
 import { MeetingView } from './meeting/MeetingView';
 
-/** What someone who wasn't on the call sees: no account, read-only, optionally one clip. */
+/** Reads ?from, ?to and ?title for clip links. */
 export function SharedMeeting({ meeting }: { meeting: Meeting }) {
   const params = useSearchParams();
   const from = Number(params.get('from'));
   const to = Number(params.get('to'));
-  const title = params.get('title');
-  const isClip = Number.isFinite(from) && Number.isFinite(to) && to > from && params.has('from');
+  const clip = params.has('from') && Number.isFinite(from) && Number.isFinite(to) && to > from ? { from, to, title: params.get('title') } : null;
+  return <SharedView meeting={meeting} clip={clip} />;
+}
+
+/** What someone who wasn't on the call sees: no account, read-only, optionally one clip. */
+export function SharedView({ meeting, clip }: { meeting: Meeting; clip: { from: number; to: number; title: string | null } | null }) {
+  const isClip = !!clip;
+  const from = clip?.from ?? 0;
+  const to = clip?.to ?? 0;
+  const title = clip?.title;
   const bounds: [number, number] | null = isClip ? [Math.max(0, from), Math.min(meeting.duration, to)] : null;
 
   const header = (

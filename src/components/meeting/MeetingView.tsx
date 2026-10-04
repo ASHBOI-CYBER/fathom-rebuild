@@ -23,23 +23,30 @@ import { ClipsPanel } from './ClipsPanel';
 import { AskPanel } from './AskPanel';
 import { PeoplePanel } from './PeoplePanel';
 
-export function MeetingView({ meeting, readOnly = false, bounds = null, header }: { meeting: Meeting; readOnly?: boolean; bounds?: [number, number] | null; header?: React.ReactNode }) {
+export type Initial = { t?: number; q?: string; tab?: Tab };
+
+/** Reads ?t, ?q and ?tab. Kept separate so the static HTML can render MeetingView without them. */
+export function MeetingFromParams(props: Omit<Parameters<typeof MeetingView>[0], 'initial'>) {
   const params = useSearchParams();
-  const [player] = useState(() => createPlayer(meeting.duration, bounds));
+  const initial: Initial = { t: Number(params.get('t')) || undefined, q: params.get('q') ?? undefined, tab: (params.get('tab') as Tab) || undefined };
+  return <MeetingView {...props} initial={initial} />;
+}
+
+export function MeetingView({ meeting, readOnly = false, bounds = null, header, initial = {} }: { meeting: Meeting; readOnly?: boolean; bounds?: [number, number] | null; header?: React.ReactNode; initial?: Initial }) {
+  // Deep link: /meetings/x?t=754.2 opens at that moment (seeked before first render).
+  const [player] = useState(() => {
+    const p = createPlayer(meeting.duration, bounds);
+    if (!readOnly && initial.t) p.seek(initial.t);
+    return p;
+  });
   const [focus, setFocus] = useState<string[]>([]);
-  const [query, setQuery] = useState(() => (readOnly ? '' : params.get('q') ?? ''));
-  const [tab, setTab] = useState<Tab>(() => (params.get('tab') as Tab) || (bounds || params.get('q') || params.get('t') ? 'transcript' : 'notes'));
+  const [query, setQuery] = useState(() => (readOnly ? '' : initial.q ?? ''));
+  const [tab, setTab] = useState<Tab>(() => initial.tab || (bounds || initial.q || initial.t ? 'transcript' : 'notes'));
   const [sharing, setSharing] = useState<{ clip?: Highlight } | null>(null);
   const mine = useUserState(selectHighlights(meeting.id));
   const local = useClient();
 
   useEffect(() => () => player.destroy(), [player]);
-
-  // Deep link: /meetings/x?t=754 opens at that moment.
-  useEffect(() => {
-    const t = Number(params.get('t'));
-    if (!readOnly && t > 0) player.seek(t);
-  }, [params, player, readOnly]);
 
   const starts = useMemo(() => meeting.turns.map((t) => t.start), [meeting.turns]);
   const colorOf = useCallback((id: string) => speakerColor(meeting.participants, id), [meeting.participants]);
@@ -156,7 +163,7 @@ export function MeetingView({ meeting, readOnly = false, bounds = null, header }
           )}
         </header>
 
-        <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(400px,44%)]">
+        <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(400px,44%)]">
           <div className="quiet-scroll min-h-0 space-y-4 px-4 py-4 sm:px-6 lg:overflow-y-auto">
             <div className="mx-auto max-w-[880px] space-y-3">
               <Stage />
@@ -183,7 +190,7 @@ export function MeetingView({ meeting, readOnly = false, bounds = null, header }
                 </button>
               ))}
             </div>
-            <div className={`min-h-0 flex-1 ${tab === 'transcript' ? 'h-[72vh] lg:h-auto' : 'quiet-scroll overflow-y-auto'}`} role="tabpanel">
+            <div className={`min-h-0 ${tab === 'transcript' ? 'h-[72vh] flex-none lg:h-auto lg:flex-1' : 'quiet-scroll flex-1 overflow-y-auto'}`} role="tabpanel">
               {tab === 'notes' && <NotesPanel />}
               {tab === 'transcript' && <Transcript />}
               {tab === 'actions' && <ActionsPanel />}

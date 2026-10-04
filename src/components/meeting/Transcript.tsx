@@ -4,7 +4,7 @@ import { ArrowDownToLine, ChevronDown, ChevronUp, Plus, Scissors, Search, X } fr
 import { clock } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
 import { turnIndexAt, usePlayer } from '@/lib/player';
-import { terms } from '@/lib/search';
+import { matchesAll, terms } from '@/lib/search';
 import type { Turn } from '@/lib/types';
 import { Marked } from '../SearchPalette';
 import { toast } from '../Toast';
@@ -17,9 +17,6 @@ export function Transcript() {
   const bounds = usePlayer(player, (s) => s.bounds);
   const scroller = useRef<HTMLDivElement>(null);
   const [follow, setFollow] = useState(true);
-  const [hitState, setHitState] = useState({ q: query, i: 0 });
-  const hitCursor = hitState.q === query ? hitState.i : 0;
-  const setHitCursor = (fn: (c: number) => number) => setHitState({ q: query, i: fn(hitCursor) });
   const [selection, setSelection] = useState<{ from: number; to: number; x: number; y: number } | null>(null);
   const programmatic = useRef(false);
 
@@ -33,8 +30,18 @@ export function Transcript() {
   const hitIds = useMemo(() => {
     const ts = terms(query);
     if (!ts.length) return [];
-    return visible.filter((t) => ts.every((w) => t.t.toLowerCase().includes(w))).map((t) => t.id);
+    return visible.filter((t) => matchesAll(t.t, ts)).map((t) => t.id);
   }, [query, visible]);
+
+  // Start on the match at (or just after) the playhead, e.g. when arriving from search.
+  const [hitState, setHitState] = useState(() => {
+    const t = player.get().time;
+    const byId = new Map(meeting.turns.map((x) => [x.id, x]));
+    const i = hitIds.findIndex((id) => (byId.get(id)?.end ?? 0) >= t);
+    return { q: query, i: Math.max(0, i) };
+  });
+  const hitCursor = hitState.q === query ? hitState.i : 0;
+  const setHitCursor = (fn: (c: number) => number) => setHitState({ q: query, i: fn(hitCursor) });
 
   const scrollToTurn = useCallback((id: number, smooth = true) => {
     const el = scroller.current?.querySelector<HTMLElement>(`[data-turn="${id}"]`);
@@ -49,13 +56,20 @@ export function Transcript() {
   // Follow the playhead while playing, unless the reader has scrolled away.
   const activeId = meeting.turns[activeIdx]?.id;
   useEffect(() => {
-    if (follow && activeId != null) scrollToTurn(activeId);
-  }, [activeId, follow, scrollToTurn]);
+    // Glide while playing; jump instantly on seeks and first load.
+    if (follow && activeId != null) scrollToTurn(activeId, player.get().playing);
+  }, [activeId, follow, scrollToTurn, player]);
 
-  // When jumping to a search hit, centre it.
+  // When stepping through matches, centre the current one. On first mount the
+  // playhead wins, so a deep link from search lands on the exact line.
+  const firstHitScroll = useRef(true);
   useEffect(() => {
+    if (firstHitScroll.current) {
+      firstHitScroll.current = false;
+      if (player.get().time > 0) return;
+    }
     if (hitIds.length) scrollToTurn(hitIds[Math.min(hitCursor, hitIds.length - 1)]);
-  }, [hitIds, hitCursor, scrollToTurn]);
+  }, [hitIds, hitCursor, scrollToTurn, player]);
 
   const onScroll = () => {
     if (!programmatic.current && playing) setFollow(false);

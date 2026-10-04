@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { SharedMeeting } from '@/components/SharedMeeting';
+import { SharedMeeting, SharedView } from '@/components/SharedMeeting';
 import { getMeeting, meetingIds } from '@/lib/data';
 
 export const dynamicParams = false;
@@ -20,7 +20,7 @@ export default async function SharePage({ params }: { params: Promise<{ id: stri
   const meeting = getMeeting(id);
   if (!meeting) notFound();
   return (
-    <Suspense>
+    <Suspense fallback={<SharedView meeting={meeting} clip={null} />}>
       <SharedMeeting meeting={meeting} />
     </Suspense>
   );

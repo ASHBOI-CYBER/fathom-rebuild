@@ -19,13 +19,23 @@ export function terms(q: string) {
     .filter((t) => t.length > 1);
 }
 
+const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// Terms match at the start of a word: "eta" finds "ETAs", "live" doesn't find "delivery".
+const wordStart = (t: string) => new RegExp(`(^|[^a-z0-9])${esc(t)}`);
+
+/** True when every query term starts a word in `text`. */
+export function matchesAll(text: string, ts: string[]) {
+  const n = norm(text);
+  return ts.every((t) => wordStart(t).test(n));
+}
+
 function scoreText(text: string, phrase: string, ts: string[]) {
   const n = norm(text);
-  if (!ts.every((t) => n.includes(t))) return 0;
+  if (!matchesAll(text, ts)) return 0;
   let s = 1;
   if (phrase.length > 2 && n.includes(phrase)) s += 3;
-  // Prefer whole-word matches over substrings.
-  for (const t of ts) if (new RegExp(`\\b${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(n)) s += 0.5;
+  // Prefer whole-word matches over prefixes.
+  for (const t of ts) if (new RegExp(`(^|[^a-z0-9])${esc(t)}($|[^a-z0-9])`).test(n)) s += 0.5;
   return s;
 }
 
@@ -68,7 +78,7 @@ export function searchAll(q: string, docs: SearchDoc[], index: MeetingIndex[], s
 export function markParts(text: string, q: string) {
   const ts = terms(q);
   if (!ts.length) return [{ t: text, m: false }];
-  const re = new RegExp(`(${ts.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+  const re = new RegExp(`(?<![A-Za-z0-9])(${ts.map(esc).join('|')})`, 'gi');
   return text.split(re).filter(Boolean).map((t) => ({ t, m: ts.includes(norm(t)) }));
 }
 

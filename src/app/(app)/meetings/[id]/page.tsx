@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { MeetingView } from '@/components/meeting/MeetingView';
+import { MeetingFromParams, MeetingView } from '@/components/meeting/MeetingView';
 import { getMeeting, meetingIds } from '@/lib/data';
 
 export const dynamicParams = false;
@@ -19,8 +19,10 @@ export default async function MeetingPage({ params }: { params: Promise<{ id: st
   const meeting = getMeeting(id);
   if (!meeting) notFound();
   return (
-    <Suspense>
-      <MeetingView meeting={meeting} />
+    // The fallback is the full meeting, so the static HTML has real content;
+    // the param-aware version (deep links like ?t=&q=) takes over on the client.
+    <Suspense fallback={<MeetingView meeting={meeting} />}>
+      <MeetingFromParams meeting={meeting} />
     </Suspense>
   );
 }
