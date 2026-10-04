@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useFocusTrap } from '@/lib/useFocusTrap';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CheckSquare, ArrowElbowDownLeft, FileText, MagnifyingGlass, X } from '@phosphor-icons/react';
 import indexData from '@/data/generated/index.json';
@@ -50,6 +51,8 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
   };
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, open, inputRef);
 
   useEffect(() => {
     if (!open) return;
@@ -65,7 +68,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
     if (!docs || !q.trim()) return [];
     const counts = new Map<string, number>();
     for (const g of searchAll(q, docs, INDEX)) for (const h of g.hits) if (h.kind === 'said' && h.speaker) counts.set(h.speaker, (counts.get(h.speaker) || 0) + 1);
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4);
   }, [q, docs]);
 
   useEffect(() => {
@@ -94,7 +97,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-start justify-center px-3 pt-[8vh] sm:pt-[12vh]" role="dialog" aria-modal="true" aria-label="Search all meetings" onKeyDown={onKey}>
+    <div className="fixed inset-0 z-[60] flex items-start justify-center px-3 pt-[8vh] sm:pt-[12vh]" role="dialog" aria-modal="true" aria-label="Search all meetings" onKeyDown={onKey} ref={dialogRef}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={onClose} />
       <div className="relative flex max-h-[76vh] w-full max-w-[720px] flex-col overflow-hidden rounded-3xl border border-line-strong bg-surface shadow-2xl">
         <div className="flex items-center gap-3 border-b border-line px-5">

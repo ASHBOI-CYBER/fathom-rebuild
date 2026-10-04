@@ -21,9 +21,11 @@ const hash = (s) => {
 const wordCount = (s) => s.trim().split(/\s+/).filter(Boolean).length;
 const round = (n) => Math.round(n * 10) / 10;
 // Display copy uses plain punctuation: em/en dashes become a colon in titles
-// and a comma in prose. Transcripts stay verbatim.
-const title = (s) => s.replace(/\s*[—–]\s*/g, s.includes(':') ? ', ' : ': ');
-const prose = (s) => s.replace(/\s+[—–]\s+/g, ', ').replace(/\s*[—–]\s*/g, ', ');
+// and a comma in prose. Ranges keep their meaning ("8–8.5%" -> "8-8.5%",
+// "14:12–14:59" -> "14:12-14:59"). Transcripts stay verbatim.
+const ranges = (s) => s.replace(/([0-9][0-9%.:]*[a-zA-Z%]*)\s*[–—]\s*(?=[$~0-9])/g, '$1-');
+const title = (s) => ranges(s).replace(/\s*[—–]\s*/g, s.includes(':') ? ', ' : ': ');
+const prose = (s) => ranges(s).replace(/\s+[—–]\s+/g, ', ').replace(/\s*[—–]\s*/g, ', ');
 
 function compile(id) {
   const dir = path.join(SRC, 'meetings', id);

@@ -108,7 +108,7 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
         <header className="flex flex-wrap items-center gap-5 border-b border-line px-4 py-3.5 sm:px-6">
           <Wordmark />
           <div className="min-w-0">
-            <div className="display truncate text-[26px] text-fg">{meeting.title}</div>
+            <h1 className="display truncate text-[26px] text-fg">{meeting.title}</h1>
             <div className="flex items-center gap-2 text-[13px] text-fg-faint">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#ff4d6d]" /> Recording · {clock(time)} · Google Meet
             </div>
@@ -146,7 +146,7 @@ export function LiveCall({ meeting }: { meeting: Meeting }) {
                   <kbd className="rounded-md border border-line px-1.5 text-[11px] font-normal text-fg-faint">{c.key.toUpperCase()}</kbd>
                 </button>
               ))}
-              <button onClick={end} disabled={ending} className="flex items-center gap-2 rounded-full bg-[#ff4d6d] px-5 py-3 text-[15px] font-semibold text-white hover:bg-[#ff6b85] disabled:opacity-40">
+              <button onClick={end} disabled={ending} className="press flex items-center gap-2 rounded-full border border-[#ff8696]/60 px-5 py-3 text-[15px] font-semibold text-[#ffa3ae] hover:bg-[#ff4d6d]/15 disabled:opacity-40">
                 <PhoneDisconnect size={16} /> End call and get notes
               </button>
             </div>

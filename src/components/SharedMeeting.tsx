@@ -28,30 +28,18 @@ export function SharedView({ meeting, clip }: { meeting: Meeting; clip: { from: 
           <Wordmark />
           <span className="hidden text-[14px] text-fg-faint sm:inline">Shared with you by {person(meeting.host).name}</span>
         </span>
-        {clip ? (
-          <Link href={`/share/${meeting.id}/`} className="rounded-full border border-line px-4 py-2 text-[14px] font-semibold text-fg-soft hover:border-line-strong hover:text-fg">
-            Watch the whole meeting
-          </Link>
-        ) : (
-          <Link href="/" className="text-[14px] text-fg-faint underline-offset-4 hover:text-fg hover:underline">
-            Explore the demo workspace
-          </Link>
-        )}
+        <Link href="/" className="text-[14px] text-fg-faint underline-offset-4 hover:text-fg hover:underline">
+          What is Sounding?
+        </Link>
       </div>
       {clip && bounds && (
-        <div className="mt-5 flex items-start gap-3 rounded-2xl bg-signal-soft px-4 py-3">
-          <Scissors size={17} className="mt-0.5 shrink-0 text-signal" />
-          <p className="text-[15px] text-fg">
-            <b>{clip.title || 'A clip'}</b>
-            <span className="text-fg-soft">
-              {' '}
-              · {clock(bounds[0])} to {clock(bounds[1])}. Press play to watch just this part.
-            </span>
-          </p>
-        </div>
+        <p className="mt-8 flex items-center gap-2 text-[14px] text-signal">
+          <Scissors size={15} /> A {Math.max(1, Math.round(bounds[1] - bounds[0]))}-second clip, shared with you
+        </p>
       )}
     </div>
   );
 
-  return <MeetingView key={clip ? `${clip.from}-${clip.to}` : 'full'} meeting={meeting} readOnly bounds={bounds} header={header} />;
+  const heading = clip && bounds ? { title: clip.title || 'A moment from the call', byline: `From ${meeting.title}, ${clock(bounds[0])} to ${clock(bounds[1])}` } : undefined;
+  return <MeetingView key={clip ? `${clip.from}-${clip.to}` : 'full'} meeting={meeting} readOnly bounds={bounds} header={header} heading={heading} />;
 }

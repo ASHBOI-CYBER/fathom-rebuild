@@ -229,16 +229,16 @@ const TurnRow = memo(function TurnRow({
     <div
       data-turn={turn.id}
       className={`group relative rounded-xl px-3 transition-colors ${showHeader ? 'mt-3 pb-1.5 pt-2' : 'py-1'} ${
-        active ? 'bg-signal-soft' : current ? 'bg-[#f0b54a]/10' : 'hover:bg-raised/60'
+        active ? '' : current ? 'bg-signal-soft' : 'hover:bg-raised/60'
       }`}
     >
-      {active && <span className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-signal" />}
+      {active && <span className="absolute inset-y-2 left-0 w-[2px] rounded-full bg-signal" />}
       {showHeader && (
         <div className="mb-0.5 flex items-baseline gap-2.5">
           <span className="text-[14px] font-semibold" style={{ color: colorOf(turn.s) }}>
             {person(turn.s).name}
           </span>
-          <button onClick={() => jump(turn.start, true)} className="text-[13px] text-fg-faint tabular hover:text-signal" aria-label={`Play from ${clock(turn.start)}`}>
+          <button onClick={() => jump(turn.start, true)} className="-my-1 inline-flex min-h-6 items-center rounded-md px-1 text-[13px] text-fg-faint tabular hover:text-signal" aria-label={`Play from ${clock(turn.start)}`}>
             {clock(turn.start)}
           </button>
         </div>

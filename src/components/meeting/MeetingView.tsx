@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, LinkSimple, ShareNetwork } from '@phosphor-icons/react';
 import { createPlayer } from '@/lib/player';
 import { clock, dateLabel, minutes, PLATFORM_LABEL, timeLabel } from '@/lib/format';
-import { ME, speakerColor } from '@/lib/people';
+import { ME, person, speakerColor } from '@/lib/people';
 import { selectHighlights, userStore, useUserState } from '@/lib/store';
 import type { Highlight, Meeting } from '@/lib/types';
 import { useClient } from '@/lib/useClient';
@@ -36,12 +36,15 @@ export function MeetingView({
   readOnly = false,
   bounds = null,
   header,
+  heading,
   initial = {},
 }: {
   meeting: Meeting;
   readOnly?: boolean;
   bounds?: [number, number] | null;
   header?: React.ReactNode;
+  /** Override the page title (shared clips lead with the clip, not the meeting). */
+  heading?: { title: string; byline: string };
   initial?: Initial;
 }) {
   // Deep link: /meetings/x?t=754.2 opens at that moment (seeked before first render).
@@ -65,11 +68,13 @@ export function MeetingView({
 
   const createClip = useCallback(
     (from: number, to: number, title?: string, kind: Highlight['kind'] = 'bookmark') => {
-      const h: Highlight = { id: `mine-${Date.now()}`, title: title ?? `Clip at ${clock(from)}`, kind, by: ME, start: from, end: Math.max(to, from + 3), mine: true, createdAt: new Date().toISOString() };
+      const said = meeting.turns.find((t) => t.end >= from + 1) ?? meeting.turns[0];
+      const auto = said ? `${said.s === ME ? 'You' : person(said.s).name.split(' ')[0]}: “${said.t.split(/s+/).slice(0, 9).join(' ')}…”` : `Clip at ${clock(from)}`;
+      const h: Highlight = { id: `mine-${Date.now()}`, title: title ?? auto, kind, by: ME, start: from, end: Math.max(to, from + 3), mine: true, createdAt: new Date().toISOString() };
       userStore.addHighlight(meeting.id, h);
       return h;
     },
-    [meeting.id],
+    [meeting.id, meeting.turns],
   );
 
   const jump = useCallback(
@@ -96,18 +101,21 @@ export function MeetingView({
 
   const ctx: MeetingCtx = { meeting, player, starts, colorOf, focus, setFocus, query, setQuery, tab, setTab, highlights, createClip, share: (clip) => setSharing({ clip }), jump, readOnly };
 
-  const tabs: { id: Tab; label: string; count?: number }[] = [
+  const clipOnly = readOnly && !!bounds;
+  const tabs: { id: Tab; label: string; count?: number }[] = clipOnly
+    ? [{ id: 'transcript', label: 'What was said' }]
+    : [
     { id: 'notes', label: 'Summary' },
     { id: 'transcript', label: 'Transcript' },
     { id: 'actions', label: 'Action items', count: meeting.actionItems.length },
     { id: 'clips', label: 'Clips', count: highlights.length },
     ...(readOnly ? [] : [{ id: 'ask' as Tab, label: 'Ask' }]),
-  ];
+      ];
 
   return (
     <Ctx.Provider value={ctx}>
       <div className={`mx-auto flex w-full max-w-[1480px] flex-col px-4 sm:px-6 ${readOnly ? 'lg:h-dvh' : 'lg:h-[calc(100dvh-4rem)]'}`}>
-        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5 pb-7 pt-8">
+        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5 pb-6 pt-7">
           <div className="min-w-0">
             {header ??
               (!readOnly && (
@@ -115,10 +123,14 @@ export function MeetingView({
                   <ArrowLeft size={15} /> All meetings
                 </Link>
               ))}
-            <h1 className="display text-[clamp(40px,4.6vw,64px)] text-fg">{meeting.title}</h1>
-            <p className="mt-3 text-[15.5px] text-fg-soft">
-              {dateLabel(meeting.startsAt, local)} at {timeLabel(meeting.startsAt, local)} · {minutes(meeting.duration)} · {PLATFORM_LABEL[meeting.platform]}
-              {meeting.externalCompany ? ` · with ${meeting.externalCompany}` : ''}
+            <h1 className="display max-w-[30ch] text-[clamp(36px,3.7vw,54px)] text-fg">{heading?.title ?? meeting.title}</h1>
+            <p className="mt-3 text-[15px] text-fg-soft">
+              {heading?.byline ?? (
+                <>
+                  {dateLabel(meeting.startsAt, local)} at {timeLabel(meeting.startsAt, local)} · {minutes(meeting.duration)} · {PLATFORM_LABEL[meeting.platform]}
+                  {meeting.externalCompany ? ` · with ${meeting.externalCompany}` : ''}
+                </>
+              )}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -145,26 +157,28 @@ export function MeetingView({
         </header>
 
         <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] gap-6 pb-6 lg:grid-cols-[minmax(0,1fr)_minmax(420px,40%)]">
-          <div className="quiet-scroll min-h-0 space-y-5 lg:overflow-y-auto lg:pr-1">
-            <div className="rounded-[28px] border border-line bg-surface/60 px-4 py-6 sm:px-8">
+          <div className="quiet-scroll relative min-h-0 space-y-5 lg:overflow-y-auto lg:pr-1">
+            <div className="rounded-[20px] border border-line bg-surface/50 px-4 py-6 sm:px-8">
               <SonarDial />
             </div>
-            <PlayerBar />
-            <Outline />
+            <div className="sticky bottom-0 z-10 -mx-1 bg-abyss/85 px-1 pb-1 pt-1 backdrop-blur-md">
+              <PlayerBar />
+            </div>
+            {!clipOnly && <Outline />}
           </div>
 
-          <section className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface" aria-label="Meeting details">
-            <div className="quiet-scroll flex shrink-0 gap-1 overflow-x-auto border-b border-line px-4 pt-2" role="tablist" aria-label="Meeting views">
+          <section className="flex min-h-0 flex-col overflow-hidden rounded-[20px] border border-line bg-surface" aria-label="Meeting details">
+            <div className="quiet-scroll flex shrink-0 gap-1 overflow-x-auto border-b border-line px-4 pt-2 [mask-image:linear-gradient(to_right,black_82%,transparent)] sm:[mask-image:none]" role="tablist" aria-label="Meeting views">
               {tabs.map((t) => (
                 <button
                   key={t.id}
                   role="tab"
                   aria-selected={tab === t.id}
                   onClick={() => setTab(t.id)}
-                  className={`relative shrink-0 px-3 pb-3 pt-2.5 text-[15px] transition-colors ${tab === t.id ? 'font-semibold text-fg' : 'text-fg-faint hover:text-fg-soft'}`}
+                  className={`relative shrink-0 px-3 pb-3.5 pt-3 text-[15px] transition-colors ${tab === t.id ? 'font-semibold text-fg' : 'text-fg-soft hover:text-fg'}`}
                 >
                   {t.label}
-                  {t.count != null && t.count > 0 && <span className="ml-1.5 text-[13px] font-normal text-fg-faint tabular">{t.count}</span>}
+                  {t.count != null && t.count > 0 && <span className="ml-1.5 text-[13px] font-normal text-fg-faint tabular">{' '}{t.count}</span>}
                   {tab === t.id && <span className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-signal" />}
                 </button>
               ))}

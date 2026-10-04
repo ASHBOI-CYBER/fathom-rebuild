@@ -4,13 +4,15 @@ export function Avatar({ id, color, size = 28, ring = false }: { id: string; col
   return (
     <span
       title={person(id).name}
+      role="img"
+      aria-label={person(id).name}
       className="inline-flex shrink-0 select-none items-center justify-center rounded-full font-semibold"
       style={{
         width: size,
         height: size,
         background: color,
         color: 'var(--abyss)',
-        fontSize: Math.round(size * 0.38),
+        fontSize: Math.max(10, Math.round(size * 0.38)),
         boxShadow: ring ? '0 0 0 2px var(--abyss)' : undefined,
       }}
     >
@@ -25,7 +27,7 @@ export function AvatarStack({ ids, colorOf, size = 24, max = 5 }: { ids: string[
   return (
     <span className="flex items-center">
       {shown.map((id, i) => (
-        <span key={id} style={{ marginLeft: i ? -size * 0.28 : 0 }}>
+        <span key={id} style={{ marginLeft: i ? -size * 0.16 : 0 }}>
           <Avatar id={id} color={colorOf(id)} size={size} ring />
         </span>
       ))}

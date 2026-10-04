@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useFocusTrap } from '@/lib/useFocusTrap';
 import { Check, Copy, ArrowSquareOut, GlobeSimple, LockSimple, UsersThree, X } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
 import type { Highlight, Meeting } from '@/lib/types';
@@ -26,6 +27,8 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
   const [copied, setCopied] = useState(false);
   const [email, setEmail] = useState('');
   const url = useMemo(() => shareUrl(meeting, clip), [meeting, clip]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, true);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -41,7 +44,7 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
   };
 
   return (
-    <div className="fixed inset-0 z-[65] flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <div className="fixed inset-0 z-[65] flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="share-title" ref={dialogRef}>
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       <div className="relative w-full max-w-[540px] rounded-t-3xl border border-line-strong bg-surface p-6 shadow-2xl sm:rounded-3xl">
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -100,7 +103,7 @@ export function ShareDialog({ meeting, clip, onClose }: { meeting: Meeting; clip
         </div>
         <p className="mt-4 text-[13px] leading-relaxed text-fg-faint">
           {clip
-            ? 'They’ll see just this moment with its transcript and the meeting notes, even if they weren’t on the call.'
+            ? 'They’ll see this moment and the words said in it. The rest of the meeting, its notes and action items stay private.'
             : 'They’ll see the recording, transcript and notes. Your private clips and checked-off items stay yours.'}
         </p>
       </div>

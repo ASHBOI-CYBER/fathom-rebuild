@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { colorIndex } from '@/lib/people';
 import { R_INNER, R_OUTER, angleAt, arcPath, polar, ringLayout, type Segment } from '@/lib/sonar';
 
 type Props = {
@@ -10,6 +11,8 @@ type Props = {
   /** Fine detail (minute ticks, chapter lines) for large renderings. */
   detail?: boolean;
   dim?: string[];
+  /** Single-tone silhouette for small sizes, where eight hues turn to confetti. */
+  mono?: boolean;
   className?: string;
   title?: string;
 };
@@ -19,7 +22,7 @@ type Props = {
  * arc is when they spoke, clockwise from twelve. No two meetings look alike,
  * because no two meetings went alike.
  */
-export function SonarPrint({ participants, talk, duration, segments, chapterStarts = [], detail = false, dim = [], className = '', title }: Props) {
+export function SonarPrint({ participants, talk, duration, segments, chapterStarts = [], detail = false, dim = [], mono = false, className = '', title }: Props) {
   const layout = useMemo(() => ringLayout(participants, talk), [participants, talk]);
 
   const arcs = useMemo(() => {
@@ -29,7 +32,8 @@ export function SonarPrint({ participants, talk, duration, segments, chapterStar
       const r = layout.radius.get(id) ?? R_INNER;
       const a0 = angleAt(s, duration);
       const a1 = Math.max(angleAt(e, duration), a0 + minSweep);
-      return { key: i, id, sp, d: arcPath(r, a0, a1) };
+      const ring = layout.order.indexOf(id) / Math.max(1, layout.order.length - 1);
+      return { key: i, id, sp, ring, d: arcPath(r, a0, a1) };
     });
   }, [segments, participants, duration, layout]);
 
@@ -76,10 +80,10 @@ export function SonarPrint({ participants, talk, duration, segments, chapterStar
           key={a.key}
           d={a.d}
           fill="none"
-          stroke={`var(--sp-${a.sp % 8})`}
-          strokeWidth={sw}
+          stroke={mono ? (a.ring === 1 ? 'var(--signal)' : 'var(--fg)') : `var(--sp-${colorIndex(a.id)})`}
+          strokeWidth={mono ? sw * 1.15 : sw}
           strokeLinecap="butt"
-          opacity={dim.length && !dim.includes(a.id) ? 0.14 : 0.92}
+          opacity={dim.length && !dim.includes(a.id) ? 0.14 : mono ? (a.ring === 1 ? 0.95 : 0.16 + 0.3 * a.ring) : 0.92}
         />
       ))}
     </svg>

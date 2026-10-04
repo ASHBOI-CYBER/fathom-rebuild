@@ -5,14 +5,13 @@ import { useMemo, useState } from 'react';
 import { CalendarCheck, Broadcast } from '@phosphor-icons/react';
 import { RULE_LABEL, ruleRecords, upcomingEvents, type RecordRule } from '@/lib/calendar';
 import { PLATFORM_LABEL } from '@/lib/format';
-import { ME, person } from '@/lib/people';
+import { ME, person, personColor } from '@/lib/people';
 import { userStore, useUserState } from '@/lib/store';
 import { useClient } from '@/lib/useClient';
 import { AvatarStack } from './Avatar';
 import { RecordToggle } from './RecordToggle';
 import { PageBand } from './PageBand';
 
-const colorFor = (attendees: string[]) => (id: string) => `var(--sp-${attendees.indexOf(id) % 8})`;
 
 export function Upcoming() {
   const client = useClient();
@@ -60,14 +59,14 @@ export function Upcoming() {
                       <div className="min-w-0 flex-1">
                         <div className="text-[16px] font-semibold leading-snug">{e.title}</div>
                         <div className="mt-1.5 flex flex-wrap items-center gap-2.5 text-[13px] text-fg-faint">
-                          <AvatarStack ids={e.attendees} colorOf={colorFor(e.attendees)} size={22} max={5} />
+                          <AvatarStack ids={e.attendees} colorOf={personColor} size={22} max={5} />
                           <span>
                             {PLATFORM_LABEL[e.platform]}
                             {e.external ? ' · external' : ''} · organized by {e.organizer === ME ? 'you' : person(e.organizer).name.split(' ')[0]}
                           </span>
                         </div>
                       </div>
-                      <RecordToggle on={on} onChange={(v) => userStore.setRecord(e.id, v)} />
+                      <RecordToggle on={on} onChange={(v) => userStore.setRecord(e.id, v)} label={e.title} />
                     </li>
                   );
                 })}

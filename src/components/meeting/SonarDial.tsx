@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pause, Play } from '@phosphor-icons/react';
 import { clock } from '@/lib/format';
-import { firstName, person } from '@/lib/people';
+import { firstName, person, personColor } from '@/lib/people';
 import { turnIndexAt, usePlayer } from '@/lib/player';
 import { R_INNER, R_OUTER, angleAt, arcPath, ringLayout, speakerAtRadius, type Segment } from '@/lib/sonar';
 import { SonarPrint } from '../SonarPrint';
@@ -33,8 +33,11 @@ export function SonarDial({ live = false }: { live?: boolean }) {
   // Rotate the beam outside React: one transform per frame.
   useEffect(() => {
     const place = () => {
-      const deg = (360 * player.get().time) / meeting.duration;
+      const t = player.get().time;
+      const deg = (360 * t) / meeting.duration;
       if (beam.current) beam.current.style.transform = `rotate(${deg}deg)`;
+      box.current?.setAttribute('aria-valuenow', String(Math.round(t)));
+      box.current?.setAttribute('aria-valuetext', clock(t));
     };
     place();
     return player.subscribe(place);
@@ -75,7 +78,7 @@ export function SonarDial({ live = false }: { live?: boolean }) {
   const sw = layout.band * (meeting.participants.length > 5 ? 0.58 : 0.5);
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[600px] select-none">
+    <div className="relative mx-auto aspect-square w-full max-w-[min(560px,58vh)] select-none">
       <div
         ref={box}
         className={`absolute inset-0 touch-none ${live ? '' : 'cursor-crosshair'}`}
@@ -87,7 +90,7 @@ export function SonarDial({ live = false }: { live?: boolean }) {
         aria-label="Seek around the dial"
         aria-valuemin={0}
         aria-valuemax={Math.round(meeting.duration)}
-        aria-valuenow={Math.round(turn?.start ?? 0)}
+        aria-valuenow={0}
         onKeyDown={(e) => {
           if (e.key === 'ArrowRight') player.skip(10);
           if (e.key === 'ArrowLeft') player.skip(-10);
@@ -126,6 +129,9 @@ export function SonarDial({ live = false }: { live?: boolean }) {
 
         {/* the line being spoken, lit */}
         {live && <LiveArc />}
+        {live && (
+          <span aria-hidden className="pointer-events-none absolute inset-[16%] animate-[ping_3.2s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full border border-signal/25" />
+        )}
         {!live && turn && active != null && (
           <svg viewBox="-102 -102 204 204" className="pointer-events-none absolute inset-0 h-full w-full">
             <path
@@ -170,10 +176,10 @@ function CenterReadout({ playing }: { playing: boolean }) {
   if (!speaking || t < 0.5) {
     return (
       <>
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-fg text-abyss transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-active:scale-95">
-          {playing ? <Pause size={22} weight="fill" /> : <Play size={22} weight="fill" className="ml-0.5" />}
+        <span className="display text-[clamp(30px,3.4vw,44px)] tabular text-fg">{clock(t)}</span>
+        <span className="mt-1.5 flex items-center gap-1.5 text-[12.5px] text-fg-soft transition-colors group-hover:text-signal">
+          {playing ? <Pause size={12} weight="fill" /> : <Play size={12} weight="fill" />} {playing ? 'Pause' : 'Space to play'}
         </span>
-        <span className="display mt-3 text-[clamp(18px,2.4vw,28px)] tabular text-fg">{clock(t)}</span>
       </>
     );
   }
@@ -182,7 +188,7 @@ function CenterReadout({ playing }: { playing: boolean }) {
   const from = Math.max(0, Math.min(at - 6, words.length - 11));
   return (
     <>
-      <span className="text-[clamp(11px,1.1vw,13px)] font-semibold" style={{ color: `var(--sp-${meeting.participants.indexOf(turn.s) % 8})` }}>
+      <span className="text-[clamp(11px,1.1vw,13px)] font-semibold" style={{ color: personColor(turn.s) }}>
         {person(turn.s).name}
       </span>
       <span className="mt-1 line-clamp-4 text-[clamp(11px,1.05vw,14px)] leading-snug">

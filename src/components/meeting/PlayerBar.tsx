@@ -26,7 +26,7 @@ export function PlayerBar() {
   };
 
   return (
-    <div className="rounded-2xl border border-line bg-surface px-4 pb-3 pt-4 sm:px-5">
+    <div className="rounded-[20px] border border-line bg-surface px-4 pb-3 pt-4 sm:px-5">
       <Scrubber />
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <button
@@ -136,9 +136,11 @@ function Scrubber() {
           onClick={() => jump(h.start, true)}
           title={`${clock(h.start)} · ${h.title}`}
           aria-label={`Play clip: ${h.title}`}
-          className="absolute top-0 h-[5px] min-w-[6px] rounded-full bg-signal/80 hover:bg-signal"
-          style={{ left: pct(h.start), width: pct(h.end - h.start) }}
-        />
+          className="group/clip absolute -top-2 flex h-5 min-w-[18px] -translate-x-[6px] items-center px-[6px]"
+          style={{ left: pct(h.start), width: `calc(${pct(h.end - h.start)} + 12px)` }}
+        >
+          <span className="block h-[5px] w-full rounded-full bg-signal/80 group-hover/clip:bg-signal" />
+        </button>
       ))}
       {/* the track: who spoke when */}
       <div className="absolute inset-x-0 top-[11px] h-[10px] overflow-hidden rounded-full bg-raised">

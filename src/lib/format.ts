@@ -31,11 +31,11 @@ export function dayGroup(iso: string, now: Date, local = true) {
 
 // Before hydration we format in UTC/en-US so the static HTML matches; after, in the viewer's locale and zone.
 export function dateLabel(iso: string, local = true) {
-  return new Date(iso).toLocaleDateString(local ? undefined : 'en-US', { weekday: 'short', month: 'short', day: 'numeric', ...(local ? {} : { timeZone: 'UTC' }) });
+  return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', ...(local ? {} : { timeZone: 'UTC' }) });
 }
 
 export function timeLabel(iso: string, local = true) {
-  return new Date(iso).toLocaleTimeString(local ? undefined : 'en-US', { hour: 'numeric', minute: '2-digit', ...(local ? {} : { timeZone: 'UTC' }) });
+  return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', ...(local ? {} : { timeZone: 'UTC' }) });
 }
 
 export const PLATFORM_LABEL = { meet: 'Google Meet', zoom: 'Zoom', teams: 'Microsoft Teams' } as const;

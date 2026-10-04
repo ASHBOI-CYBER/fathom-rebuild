@@ -16,7 +16,7 @@ export function Outline() {
   const { meeting } = useMeeting();
   const [view, setView] = useState<'chapters' | 'speakers'>('chapters');
   return (
-    <div className="rounded-2xl border border-line bg-surface p-2">
+    <div className="rounded-[20px] border border-line bg-surface p-2">
       <div className="flex items-center gap-1 p-1" role="tablist" aria-label="Navigate the meeting">
         {(['chapters', 'speakers'] as const).map((v) => (
           <button

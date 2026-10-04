@@ -66,6 +66,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="ml-auto flex items-center gap-3">
             <button
               onClick={() => setSearchOpen(true)}
+              aria-label="Search every meeting"
               className="flex items-center gap-2.5 rounded-full border border-line bg-surface py-2 pl-3.5 pr-2 text-[14px] text-fg-faint transition-colors hover:border-line-strong hover:text-fg-soft"
             >
               <MagnifyingGlass size={16} />
@@ -102,9 +103,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
 
+      {!pathname.startsWith('/meetings') && (
       <footer className="border-t border-line px-6 py-5 text-center text-[12px] text-fg-faint">
         Sounding is a Fathom rebuild made for the 8x assignment. Not affiliated with Fathom. Signed in as {person(ME).name} in a demo workspace.
       </footer>
+      )}
 
       <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>

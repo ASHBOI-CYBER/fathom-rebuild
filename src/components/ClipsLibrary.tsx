@@ -40,25 +40,35 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
       <h1 className="display text-[clamp(64px,8vw,112px)] text-fg">Clips</h1>
       <p className="mt-4 max-w-[52ch] text-[18px] text-fg-soft">The moments worth keeping. Send someone the 30 seconds that matter instead of the whole hour.</p>
 
-      <div className="mb-8 mt-10 flex flex-wrap gap-1" role="tablist" aria-label="Filter clips">
-        <Filter on={!kind} onClick={() => setKind(null)}>
-          All
+      <div className="mb-8 mt-10 flex flex-wrap gap-1" role="group" aria-label="Filter clips">
+        <Filter on={kind !== 'mine'} onClick={() => setKind(null)}>
+          Everyone’s
         </Filter>
         <Filter on={kind === 'mine'} onClick={() => setKind('mine')}>
           Saved by me
         </Filter>
-        {kinds.map((k) => (
-          <Filter key={k} on={kind === k} onClick={() => setKind(k)}>
-            {KIND[k].label}s
-          </Filter>
-        ))}
+        <label className="ml-2 flex items-center gap-2 text-[14px] text-fg-soft">
+          <span className="sr-only">Clip type</span>
+          <select
+            value={kind && kind !== 'mine' ? kind : ''}
+            onChange={(e) => setKind((e.target.value as HighlightKind) || null)}
+            className="rounded-full border border-line bg-surface px-4 py-2 text-[14px] text-fg-soft hover:border-line-strong"
+          >
+            <option value="">Any type</option>
+            {kinds.map((k) => (
+              <option key={k} value={k}>
+                {KIND[k].label}s
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2">
         {shown.map(({ h, m }) => {
           const K = KIND[h.kind] ?? KIND.bookmark;
           return (
-            <li key={`${m.id}-${h.id}`} className={`group grid min-w-0 grid-cols-[88px_minmax(0,1fr)] gap-5 rounded-[24px] border p-5 transition-colors ${h.mine ? 'border-signal/35 bg-signal-soft' : 'border-line bg-surface hover:border-line-strong'}`}>
+            <li key={`${m.id}-${h.id}`} className={`group grid min-w-0 grid-cols-[88px_minmax(0,1fr)] gap-5 rounded-[24px] border p-5 transition-colors border-line bg-surface hover:border-line-strong`}>
               <span className="relative block self-start">
                 <SonarPrint participants={m.participants} talk={m.talk} duration={m.duration} segments={m.segments} className="h-auto w-full opacity-70" title={`Where this clip sits in ${m.title}`} />
                 <svg viewBox="-102 -102 204 204" className="absolute inset-0 h-full w-full" aria-hidden>
@@ -67,9 +77,10 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
               </span>
               <div className="flex min-w-0 flex-col">
               <p className="flex items-center gap-2 text-[13px] text-fg-faint">
+                {h.mine && <span className="mr-1 rounded-md bg-signal-soft px-1.5 py-px text-[12px] font-semibold text-signal">Yours</span>}
                 <K.icon size={14} /> {K.label} · <span className="tabular">{clock(h.start)}</span> · {Math.max(1, Math.round(h.end - h.start))} sec
               </p>
-              <p className="mt-2 text-[17px] font-semibold leading-snug text-fg">{h.title}</p>
+              <p className="mt-2 text-[19px] font-semibold leading-snug text-fg">{h.title}</p>
               <p className="mt-1 truncate text-[14px] text-fg-soft">
                 From {m.title}, {dateLabel(m.startsAt, local)}
               </p>
@@ -83,11 +94,12 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
                     navigator.clipboard?.writeText(shareUrl(m, h));
                     toast('Clip link copied');
                   }}
+                  aria-label={`Copy link to ${h.title}`}
                   className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[14px] text-fg-soft hover:bg-raised hover:text-fg"
                 >
                   <LinkSimple size={15} /> Copy link
                 </button>
-                <Link href={`/meetings/${m.id}?t=${h.start.toFixed(1)}`} className="flex items-center gap-1.5 rounded-full bg-fg px-4 py-1.5 text-[14px] font-semibold text-abyss hover:bg-white">
+                <Link href={`/meetings/${m.id}?t=${h.start.toFixed(1)}`} aria-label={`Play ${h.title}`} className="flex items-center gap-1.5 rounded-full bg-fg px-4 py-1.5 text-[14px] font-semibold text-abyss hover:bg-white">
                   <Play size={13} weight="fill" /> Play
                 </Link>
               </div>
@@ -104,7 +116,7 @@ export function ClipsLibrary({ meetings }: { meetings: MeetingIndex[] }) {
 
 function Filter({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button role="tab" aria-selected={on} onClick={onClick} className={`rounded-full px-4 py-2 text-[14px] transition-colors ${on ? 'bg-fg font-semibold text-abyss' : 'text-fg-soft hover:bg-raised hover:text-fg'}`}>
+    <button aria-pressed={on} onClick={onClick} className={`rounded-full px-4 py-2 text-[14px] transition-colors ${on ? 'bg-fg font-semibold text-abyss' : 'text-fg-soft hover:bg-raised hover:text-fg'}`}>
       {children}
     </button>
   );

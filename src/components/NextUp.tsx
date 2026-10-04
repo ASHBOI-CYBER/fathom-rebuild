@@ -29,7 +29,7 @@ export function NextUp() {
       <Link href="/upcoming" className="text-fg-soft underline-offset-4 hover:text-fg hover:underline">
         Next: <span className="font-semibold text-fg">{next.title}</span>, {when(next.start)}
       </Link>
-      <RecordToggle on={overrides[next.id] ?? ruleRecords(rule, next, ME)} onChange={(v) => userStore.setRecord(next.id, v)} />
+      <RecordToggle on={overrides[next.id] ?? ruleRecords(rule, next, ME)} onChange={(v) => userStore.setRecord(next.id, v)} label={next.title} />
     </div>
   );
 }

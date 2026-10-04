@@ -14,7 +14,7 @@
   --line-strong: rgba(196, 220, 232, 0.17);
   --fg: #e4ecef;
   --fg-soft: #9db0ba;
-  --fg-faint: #687d88;
+  --fg-faint: #7d929c;
   --signal: #ebc95c;
   --signal-hover: #f4d97f;
   --signal-soft: rgba(235, 201, 92, 0.12);
@@ -22,15 +22,17 @@
   --ok: #7fd3a6;
   --focus: #f4d97f;
 
-  /* speakers: sea glass, periwinkle, lilac, rust, kelp, shell, sand, steel */
-  --sp-0: #77c7bf;
-  --sp-1: #8fa8ff;
-  --sp-2: #c2a0ff;
-  --sp-3: #ee9a6c;
-  --sp-4: #a7cf7d;
-  --sp-5: #f0a5c2;
-  --sp-6: #cdb98d;
-  --sp-7: #7fb0d4;
+  /* speakers, drawn from the shoreline: sea glass, harbour blue, dusk lilac,
+     rust buoy, kelp, shell pink, dune sand, steel. Muted so the sodium signal
+     stays the only warm light on the page. */
+  --sp-0: #6fbdb4;
+  --sp-1: #7f9fd6;
+  --sp-2: #a895d4;
+  --sp-3: #cf8f6c;
+  --sp-4: #93bd7f;
+  --sp-5: #d697ad;
+  --sp-6: #bdae8a;
+  --sp-7: #6fa7c4;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
