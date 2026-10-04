@@ -1,8 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useMemo, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { gsap, settle, useGSAP } from '@/lib/gsap';
 import { CheckSquare, Scissors, Search } from 'lucide-react';
 import { AvatarStack } from './Avatar';
 import { TalkBar } from './TalkBar';
@@ -12,7 +11,6 @@ import { ME, person, speakerColor } from '@/lib/people';
 import type { MeetingIndex } from '@/lib/types';
 import { useClient } from '@/lib/useClient';
 
-gsap.registerPlugin(useGSAP);
 
 type Filter = 'all' | 'external' | 'internal' | 'mine';
 const FILTERS: { id: Filter; label: string }[] = [
@@ -58,7 +56,7 @@ export function MeetingList({ meetings }: { meetings: MeetingIndex[] }) {
   useGSAP(
     () => {
       gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('.talk-seg', { scaleX: 0, duration: 0.7, ease: 'power3.out', stagger: { each: 0.012, from: 'start' } });
+        settle(gsap.from('.talk-seg', { scaleX: 0, duration: 0.7, ease: 'power3.out', stagger: { each: 0.012, from: 'start' } }));
       });
     },
     { scope: root },

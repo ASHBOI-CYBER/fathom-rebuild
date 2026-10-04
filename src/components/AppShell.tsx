@@ -17,7 +17,9 @@ const NAV = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
-  const [navOpen, setNavOpen] = useState(false);
+  const [navOpenOn, setNavOpenOn] = useState<string | null>(null);
+  const navOpen = navOpenOn === pathname;
+  const setNavOpen = (open: boolean) => setNavOpenOn(open ? pathname : null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -32,8 +34,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
-
-  useEffect(() => setNavOpen(false), [pathname]);
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' || pathname.startsWith('/meetings') : pathname.startsWith(href));
 

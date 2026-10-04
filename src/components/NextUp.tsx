@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import { useClient } from '@/lib/useClient';
 import { upcomingEvents, ruleRecords, type CalEvent } from '@/lib/calendar';
 import { ME } from '@/lib/people';
 import { PLATFORM_LABEL } from '@/lib/format';
@@ -18,8 +19,8 @@ function when(d: Date) {
 
 export function NextUp() {
   // Dates are relative to the viewer's clock, so render after mount.
-  const [events, setEvents] = useState<CalEvent[] | null>(null);
-  useEffect(() => setEvents(upcomingEvents().slice(0, 3)), []);
+  const client = useClient();
+  const events = useMemo<CalEvent[] | null>(() => (client ? upcomingEvents().slice(0, 3) : null), [client]);
   const overrides = useUserState((s) => s.record);
 
   return (

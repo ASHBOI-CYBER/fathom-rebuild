@@ -1,14 +1,12 @@
 'use client';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { gsap, settle, useGSAP } from '@/lib/gsap';
 import { clock } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
 import { turnIndexAt } from '@/lib/player';
 import { terms } from '@/lib/search';
 import { useMeeting } from './context';
 
-gsap.registerPlugin(useGSAP);
 
 /**
  * The sounding chart: one lane per speaker showing exactly when each person
@@ -21,7 +19,7 @@ export function SoundingChart() {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const head = useRef<HTMLDivElement>(null);
-  const [hover, setHover] = useState<{ x: number; t: number } | null>(null);
+  const [hover, setHover] = useState<{ x: number; t: number; w: number } | null>(null);
 
   const lanes = useMemo(
     () => [...meeting.participants].sort((a, b) => (meeting.talk[b] || 0) - (meeting.talk[a] || 0)),
@@ -39,7 +37,10 @@ export function SoundingChart() {
   // Move the playhead without re-rendering React on every frame.
   useEffect(() => {
     const place = () => {
-      if (head.current) head.current.style.left = `${(100 * player.get().time) / duration}%`;
+      const t = player.get().time;
+      if (head.current) head.current.style.left = `${(100 * t) / duration}%`;
+      track.current?.setAttribute('aria-valuenow', String(Math.round(t)));
+      track.current?.setAttribute('aria-valuetext', clock(t));
     };
     place();
     return player.subscribe(place);
@@ -48,7 +49,7 @@ export function SoundingChart() {
   useGSAP(
     () => {
       gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.fromTo('.lane-bars', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut', stagger: 0.05 });
+        settle(gsap.fromTo('.lane-bars', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut', stagger: 0.05 }));
       });
     },
     { scope: root },
@@ -65,7 +66,7 @@ export function SoundingChart() {
   };
   const onPointerMove = (e: React.PointerEvent) => {
     const r = track.current!.getBoundingClientRect();
-    setHover({ x: e.clientX - r.left, t: timeAt(e.clientX) });
+    setHover({ x: e.clientX - r.left, t: timeAt(e.clientX), w: r.width });
     if (e.buttons === 1) player.seek(timeAt(e.clientX));
   };
 
@@ -128,6 +129,7 @@ export function SoundingChart() {
           aria-label="Seek through the meeting"
           aria-valuemin={0}
           aria-valuemax={Math.round(duration)}
+          aria-valuenow={0}
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === 'ArrowRight') player.skip(10);
@@ -150,7 +152,7 @@ export function SoundingChart() {
           {hover && hoverInfo && (
             <div
               className="pointer-events-none absolute -top-2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-ink px-2 py-1 text-[11px] text-white shadow-lg"
-              style={{ left: Math.min(Math.max(hover.x, 60), (track.current?.clientWidth ?? 600) - 60) }}
+              style={{ left: Math.min(Math.max(hover.x, 60), hover.w - 60) }}
             >
               <span className="font-semibold tabular">{clock(hover.t)}</span>
               {hoverInfo.speaker && <span className="text-white/75"> · {firstName(hoverInfo.speaker)}</span>}

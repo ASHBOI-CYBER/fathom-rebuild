@@ -21,16 +21,33 @@ export function createPlayer(duration: number, bounds: [number, number] | null =
   const lo = () => (state.bounds ? state.bounds[0] : 0);
   const hi = () => (state.bounds ? state.bounds[1] : state.duration);
 
-  const tick = (now: number) => {
-    const dt = (now - last) / 1000;
+  let watchdog = 0;
+  const step = (now: number) => {
+    const dt = Math.max(0, (now - last) / 1000);
     last = now;
     const next = state.time + dt * state.rate;
     if (next >= hi()) {
+      stop();
       set({ time: hi(), playing: false });
-      return;
+      return false;
     }
     set({ time: next });
-    raf = requestAnimationFrame(tick);
+    return true;
+  };
+  const tick = (now: number) => {
+    if (step(now)) raf = requestAnimationFrame(tick);
+  };
+  const stop = () => {
+    cancelAnimationFrame(raf);
+    window.clearInterval(watchdog);
+  };
+  // If animation frames stall (throttled or embedded views), keep time moving.
+  const startWatchdog = () => {
+    window.clearInterval(watchdog);
+    watchdog = window.setInterval(() => {
+      const now = performance.now();
+      if (state.playing && now - last > 150) step(now);
+    }, 100);
   };
 
   const api = {
@@ -47,9 +64,10 @@ export function createPlayer(duration: number, bounds: [number, number] | null =
       last = performance.now();
       set({ playing: true });
       raf = requestAnimationFrame(tick);
+      startWatchdog();
     },
     pause() {
-      cancelAnimationFrame(raf);
+      stop();
       set({ playing: false });
     },
     toggle() {
@@ -67,7 +85,7 @@ export function createPlayer(duration: number, bounds: [number, number] | null =
       set({ rate });
     },
     destroy() {
-      cancelAnimationFrame(raf);
+      stop();
       listeners.clear();
     },
   };

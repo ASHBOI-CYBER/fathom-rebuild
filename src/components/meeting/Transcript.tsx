@@ -17,7 +17,9 @@ export function Transcript() {
   const bounds = usePlayer(player, (s) => s.bounds);
   const scroller = useRef<HTMLDivElement>(null);
   const [follow, setFollow] = useState(true);
-  const [hitCursor, setHitCursor] = useState(0);
+  const [hitState, setHitState] = useState({ q: query, i: 0 });
+  const hitCursor = hitState.q === query ? hitState.i : 0;
+  const setHitCursor = (fn: (c: number) => number) => setHitState({ q: query, i: fn(hitCursor) });
   const [selection, setSelection] = useState<{ from: number; to: number; x: number; y: number } | null>(null);
   const programmatic = useRef(false);
 
@@ -33,8 +35,6 @@ export function Transcript() {
     if (!ts.length) return [];
     return visible.filter((t) => ts.every((w) => t.t.toLowerCase().includes(w))).map((t) => t.id);
   }, [query, visible]);
-
-  useEffect(() => setHitCursor(0), [query]);
 
   const scrollToTurn = useCallback((id: number, smooth = true) => {
     const el = scroller.current?.querySelector<HTMLElement>(`[data-turn="${id}"]`);

@@ -33,10 +33,18 @@ export function Marked({ text, q }: { text: string; q: string }) {
 
 export function SearchPalette({ open, onClose }: { open: boolean; onClose: () => void }) {
   const router = useRouter();
-  const [q, setQ] = useState('');
+  const [q, setQRaw] = useState('');
   const [docs, setDocs] = useState<SearchDoc[] | null>(null);
-  const [speaker, setSpeaker] = useState<string | null>(null);
+  const [speaker, setSpeakerRaw] = useState<string | null>(null);
   const [cursor, setCursor] = useState(0);
+  const setQ = (v: string) => {
+    setQRaw(v);
+    setCursor(0);
+  };
+  const setSpeaker = (v: string | null) => {
+    setSpeakerRaw(v);
+    setCursor(0);
+  };
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +56,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
 
   const groups = useMemo(() => (docs ? searchAll(q, docs, INDEX, speaker) : []), [q, docs, speaker]);
   const flat = useMemo(() => groups.flatMap((g) => g.hits.slice(0, 4).map((h) => ({ g, h }))), [groups]);
+  const rowIndex = useMemo(() => new Map(flat.map((x, n) => [x.h, n])), [flat]);
   const total = groups.reduce((n, g) => n + g.hits.length, 0);
   const speakers = useMemo(() => {
     if (!docs || !q.trim()) return [];
@@ -56,7 +65,6 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
   }, [q, docs]);
 
-  useEffect(() => setCursor(0), [q, speaker]);
   useEffect(() => {
     listRef.current?.querySelector(`[data-i="${cursor}"]`)?.scrollIntoView({ block: 'nearest' });
   }, [cursor]);
@@ -82,7 +90,6 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
     } else if (e.key === 'Enter' && flat[cursor]) go(flat[cursor].g.meeting.id, flat[cursor].h.ts);
   };
 
-  let i = -1;
   return (
     <div className="fixed inset-0 z-[60] flex items-start justify-center px-3 pt-[8vh] sm:pt-[12vh]" role="dialog" aria-modal="true" aria-label="Search all meetings" onKeyDown={onKey}>
       <div className="absolute inset-0 bg-ink/35 backdrop-blur-[2px]" onClick={onClose} />
@@ -148,8 +155,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                 </span>
               </header>
               {g.hits.slice(0, 4).map((h) => {
-                i += 1;
-                const idx = i;
+                const idx = rowIndex.get(h) ?? -1;
                 const active = idx === cursor;
                 return (
                   <button

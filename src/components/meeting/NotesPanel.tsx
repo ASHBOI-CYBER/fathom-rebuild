@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { gsap, settle } from '@/lib/gsap';
 import { Check, ChevronDown, Copy, Sparkles } from 'lucide-react';
 import { clock } from '@/lib/format';
 import { firstName } from '@/lib/people';
@@ -40,10 +40,13 @@ export function NotesPanel() {
   const body = useRef<HTMLDivElement>(null);
   const menu = useRef<HTMLDivElement>(null);
 
-  // Show what changed when switching templates.
+  // Show what changed when switching templates (not on first render).
+  const shownTemplate = useRef(current);
   useEffect(() => {
+    if (shownTemplate.current === current) return;
+    shownTemplate.current = current;
     if (!body.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    gsap.fromTo(body.current.children, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' });
+    settle(gsap.fromTo(body.current.children, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' }));
   }, [current]);
 
   useEffect(() => {

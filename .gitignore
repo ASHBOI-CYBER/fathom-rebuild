@@ -10,3 +10,4 @@ next-env.d.ts
 # hook bookkeeping only — .agent-logs/ is committed on purpose
 .claude/hooks/.state/
 .claude/settings.local.json
+src/data/generated/
