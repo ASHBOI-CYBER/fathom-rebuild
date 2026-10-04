@@ -76,6 +76,7 @@ export type MeetingIndex = {
   highlightCount: number;
   talk: Record<string, number>;
   templates: string[];
+  highlights: Highlight[];
 };
 
 /** Compact search records: turns are [id, speaker, start, text]. */

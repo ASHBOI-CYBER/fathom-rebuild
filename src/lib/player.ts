@@ -84,9 +84,10 @@ export function createPlayer(duration: number, bounds: [number, number] | null =
     setRate(rate: number) {
       set({ rate });
     },
+    /** Stop the clock on unmount. Safe under StrictMode's mount/unmount/mount. */
     destroy() {
       stop();
-      listeners.clear();
+      state = { ...state, playing: false };
     },
   };
   return api;

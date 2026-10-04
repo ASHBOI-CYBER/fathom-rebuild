@@ -105,6 +105,7 @@ function compile(id) {
     highlightCount: full.highlights.length,
     talk,
     templates: Object.keys(summaries),
+    highlights: full.highlights.map(({ id, title, kind, by, start, end }) => ({ id, title, kind, by, start, end })),
   };
 
   const search = {

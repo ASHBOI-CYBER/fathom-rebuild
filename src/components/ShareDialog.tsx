@@ -14,7 +14,7 @@ const ACCESS: { id: Access; label: string; hint: string; icon: typeof Globe2 }[]
   { id: 'invited', label: 'Only people you invite', hint: 'Private to the names below', icon: Lock },
 ];
 
-export function shareUrl(meeting: Meeting, clip?: Highlight) {
+export function shareUrl(meeting: Pick<Meeting, 'id'>, clip?: Pick<Highlight, 'start' | 'end' | 'title'>) {
   const base = `${typeof window !== 'undefined' ? window.location.origin : ''}${BASE}/share/${meeting.id}/`;
   if (!clip) return base;
   const p = new URLSearchParams({ from: clip.start.toFixed(1), to: clip.end.toFixed(1), title: clip.title });

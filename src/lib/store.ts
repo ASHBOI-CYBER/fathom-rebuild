@@ -4,6 +4,7 @@
 // localStorage (this is a static demo with no backend).
 import { useSyncExternalStore } from 'react';
 import type { ActionItem, Highlight } from './types';
+import type { RecordRule } from './calendar';
 
 type UserState = {
   highlights: Record<string, Highlight[]>;
@@ -11,10 +12,11 @@ type UserState = {
   actions: Record<string, ActionItem[]>;
   template: Record<string, string>;
   record: Record<string, boolean>;
+  rule: RecordRule;
 };
 
 const KEY = 'sounding:v1';
-const EMPTY: UserState = { highlights: {}, done: {}, actions: {}, template: {}, record: {} };
+const EMPTY: UserState = { highlights: {}, done: {}, actions: {}, template: {}, record: {}, rule: 'external' };
 
 let state: UserState = EMPTY;
 let loaded = false;
@@ -82,6 +84,9 @@ export const userStore = {
   },
   setTemplate(meetingId: string, template: string) {
     update((s) => ({ ...s, template: { ...s.template, [meetingId]: template } }));
+  },
+  setRule(rule: RecordRule) {
+    update((s) => ({ ...s, rule, record: {} }));
   },
   setRecord(eventId: string, on: boolean) {
     update((s) => ({ ...s, record: { ...s.record, [eventId]: on } }));

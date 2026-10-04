@@ -3,7 +3,7 @@ import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { gsap, settle, useGSAP } from '@/lib/gsap';
 import { clock } from '@/lib/format';
 import { firstName, person } from '@/lib/people';
-import { turnIndexAt } from '@/lib/player';
+import { turnIndexAt, usePlayer } from '@/lib/player';
 import { terms } from '@/lib/search';
 import { useMeeting } from './context';
 
@@ -19,6 +19,7 @@ export function SoundingChart() {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const head = useRef<HTMLDivElement>(null);
+  const bounds = usePlayer(player, (s) => s.bounds);
   const [hover, setHover] = useState<{ x: number; t: number; w: number } | null>(null);
 
   const lanes = useMemo(
@@ -140,6 +141,12 @@ export function SoundingChart() {
           {chapters.slice(1).map((c) => (
             <span key={c.start} className="absolute inset-y-0 w-px bg-rule" style={{ left: `${(100 * c.start) / duration}%` }} />
           ))}
+          {bounds && (
+            <>
+              <span className="pointer-events-none absolute inset-y-0 left-0 z-[1] bg-paper/75" style={{ width: `${(100 * bounds[0]) / duration}%` }} />
+              <span className="pointer-events-none absolute inset-y-0 right-0 z-[1] bg-paper/75" style={{ width: `${100 - (100 * bounds[1]) / duration}%` }} />
+            </>
+          )}
           {lanes.map((id) => (
             <Lane key={id} id={id} h={laneH} dim={!!focus.length && !focus.includes(id)} />
           ))}

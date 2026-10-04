@@ -15,7 +15,7 @@ export type RecordRule = 'all' | 'external' | 'hosted' | 'none';
 
 export const RULE_LABEL: Record<RecordRule, string> = {
   all: 'All meetings with a video link',
-  external: 'Meetings with people outside Tandem',
+  external: 'Meetings with people outside Tandem, plus ones I organize',
   hosted: 'Only meetings I organize',
   none: 'Nothing automatically',
 };
@@ -43,7 +43,7 @@ export function upcomingEvents(): CalEvent[] {
 
 export function ruleRecords(rule: RecordRule, e: CalEvent, me: string) {
   if (rule === 'all') return true;
-  if (rule === 'external') return e.external;
+  if (rule === 'external') return e.external || e.organizer === me;
   if (rule === 'hosted') return e.organizer === me;
   return false;
 }

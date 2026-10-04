@@ -22,6 +22,7 @@ export function NextUp() {
   const client = useClient();
   const events = useMemo<CalEvent[] | null>(() => (client ? upcomingEvents().slice(0, 3) : null), [client]);
   const overrides = useUserState((s) => s.record);
+  const rule = useUserState((s) => s.rule);
 
   return (
     <section className="mb-8" aria-labelledby="next-up">
@@ -35,7 +36,7 @@ export function NextUp() {
       </div>
       <div className="grid min-h-[104px] gap-2 sm:grid-cols-3">
         {events?.map((e) => {
-          const on = overrides[e.id] ?? (ruleRecords('external', e, ME) || e.organizer === ME);
+          const on = overrides[e.id] ?? ruleRecords(rule, e, ME);
           return (
             <div key={e.id} className="flex flex-col justify-between gap-3 rounded-xl border border-rule bg-paper/60 p-3.5">
               <div>

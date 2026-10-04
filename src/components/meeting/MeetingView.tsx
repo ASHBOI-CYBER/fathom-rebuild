@@ -28,7 +28,7 @@ export function MeetingView({ meeting, readOnly = false, bounds = null, header }
   const [player] = useState(() => createPlayer(meeting.duration, bounds));
   const [focus, setFocus] = useState<string[]>([]);
   const [query, setQuery] = useState(() => (readOnly ? '' : params.get('q') ?? ''));
-  const [tab, setTab] = useState<Tab>(() => (bounds || params.get('q') || params.get('t') ? 'transcript' : 'notes'));
+  const [tab, setTab] = useState<Tab>(() => (params.get('tab') as Tab) || (bounds || params.get('q') || params.get('t') ? 'transcript' : 'notes'));
   const [sharing, setSharing] = useState<{ clip?: Highlight } | null>(null);
   const mine = useUserState(selectHighlights(meeting.id));
   const local = useClient();
